@@ -2,9 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import MainLayout from "./components/layout/MainLayout";
 import Homepage from "./pages/Homepage/Homepage";
-import Login from "./pages/Login/Login";
-import Signup from "./pages/Signup/Signup";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import AuthPage from "./pages/AuthPage";
 
 function App() {
   return (
@@ -13,8 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Homepage />} />
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<Signup />} />
+            <Route path="auth" element={<AuthPage />} />
             <Route path="dashboard" element={<Dashboard />} />
           </Route>
         </Routes>

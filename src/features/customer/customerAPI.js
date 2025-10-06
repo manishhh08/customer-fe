@@ -1,0 +1,31 @@
+import { apiProcessor } from "../../utils/axiosHelper";
+
+const apiUrl = import.meta.env.VITE_APP_API_URL + "/api/v1";
+
+//create new customer
+export const createCustomer = async (obj) => {
+  return apiProcessor({
+    method: "POST",
+    url: `${apiUrl}/auth/register`,
+    data: obj,
+  });
+};
+
+// login customer
+export const loginCustomer = async (obj) => {
+  return apiProcessor({
+    method: "POST",
+    url: `${apiUrl}/auth/login`,
+    data: obj,
+  });
+};
+
+// refresh token
+export const refreshTokenApi = () => {
+  return apiProcessor({
+    method: "get",
+    url: `${apiUrl}/auth/refresh-token`,
+    isPrivate: true,
+    isRefresh: true,
+  });
+};

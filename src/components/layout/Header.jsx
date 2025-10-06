@@ -19,10 +19,10 @@ const Header = () => {
             <Nav.Link as={Link} to="/dashboard">
               Dashboard
             </Nav.Link>
-            <Nav.Link as={Link} to="/login">
+            <Nav.Link as={Link} to="/auth?tab=login">
               Login
             </Nav.Link>
-            <Nav.Link as={Link} to="/signup">
+            <Nav.Link as={Link} to="/auth?tab=signup">
               Signup
             </Nav.Link>
           </Nav>
