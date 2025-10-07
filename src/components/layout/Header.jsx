@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import brandName from "../../assets/logo.png";
 
 const Header = () => {
   return (
@@ -12,7 +13,13 @@ const Header = () => {
       bg="dark"
     >
       <Container>
-        <Navbar.Brand href="/">ECW</Navbar.Brand>
+        <Navbar.Brand href="/">
+          <img
+            src={brandName}
+            alt="Brand Logo"
+            style={{ height: "40px", width: "auto" }}
+          />
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto gap-4">
