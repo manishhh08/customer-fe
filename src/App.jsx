@@ -17,7 +17,7 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
           </Route>
         </Routes>
-        <ToastContainer />
+        <ToastContainer position="top-right" theme="light" />
       </div>
     </>
   );
