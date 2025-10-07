@@ -1,5 +1,26 @@
+import { toast } from "react-toastify";
 import { storeToken } from "../../utils/storageFunction";
-import { loginCustomer } from "./customerAPI";
+import { createCustomer, loginCustomer } from "./customerAPI";
+
+export const registerCustomerAction = (form) => async (dispatch) => {
+  try {
+    const data = await createCustomer(form);
+    if (data.status === "success") {
+      //dispatch(getAllUserAction());
+      toast[data.status](data.message);
+      return data;
+    } else {
+      toast[data.status](data.message || "Something went wrong");
+    }
+    return data;
+  } catch (error) {
+    toast[data.status](data?.message || "Something went wrong");
+    return {
+      status: "error",
+      message: error?.message || "Something went wrong",
+    };
+  }
+};
 
 export const loginCustomerAction = (form) => async (dispatch) => {
   let data = await loginCustomer(form);
