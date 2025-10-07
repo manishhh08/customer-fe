@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+
 import { CustomInput } from "./custominput/CustomInput";
 import useForm from "../hooks/useForm";
 import { Button, Form, Row, Col, InputGroup } from "react-bootstrap";
 import { createCustomer } from "../features/customer/customerAPI";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const SignupForm = () => {
   const navigate = useNavigate();

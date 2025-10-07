@@ -4,6 +4,7 @@ import MainLayout from "./components/layout/MainLayout";
 import Homepage from "./pages/Homepage/Homepage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import AuthPage from "./pages/AuthPage";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
           </Route>
         </Routes>
+        <ToastContainer />
       </div>
     </>
   );
