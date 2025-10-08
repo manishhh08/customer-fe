@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+
 import { CustomInput } from "./custominput/CustomInput";
 import useForm from "../hooks/useForm";
 import { Button, Form, Row, Col, InputGroup } from "react-bootstrap";
 import { createCustomer } from "../features/customer/customerAPI";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const SignupForm = () => {
     email: "",
     password: "",
     cpassword: "",
+    phone: "",
   };
 
   const { form, handleOnChange } = useForm(initialState);
@@ -35,10 +37,8 @@ const SignupForm = () => {
     try {
       let data = await createCustomer(form);
       if (data.status) {
-        toast.success(data.message);
+        toast[data.status](data.message);
         navigate("/auth?tab=login");
-      } else {
-        toast.error(data.message);
       }
     } catch (err) {
       toast.error("Something went wrong!");
@@ -87,7 +87,17 @@ const SignupForm = () => {
           onChange={handleOnChange}
         />
       </Form.Group>
-
+      {/* phone field */}
+      <Form.Group className="mb-3 d-flex flex-column" controlId="phone">
+        <Form.Label className="fw-bold text-start">Phone Number</Form.Label>
+        <Form.Control
+          type="text"
+          name="phone"
+          placeholder="Enter phone number"
+          value={form.phone}
+          onChange={handleOnChange}
+        />
+      </Form.Group>
       {/* Password */}
       <Form.Group
         className="mb-3 d-flex flex-column"
