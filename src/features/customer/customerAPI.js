@@ -4,7 +4,6 @@ const apiUrl = import.meta.env.VITE_APP_API_URL + "/api/v1";
 
 //create new customer
 export const createCustomer = async (obj) => {
-  console.log(1122, apiUrl);
   return apiProcessor({
     method: "POST",
     url: `${apiUrl}/auth/register`,
