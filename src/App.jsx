@@ -5,6 +5,7 @@ import Homepage from "./pages/Homepage/Homepage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import AuthPage from "./pages/AuthPage";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import ProductDetail from "./components/ProductDetail";
 import Cart from "./components/Cart";
