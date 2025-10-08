@@ -103,8 +103,8 @@
 
 .card-neo:hover {
   transform: translateY(-6px);
-  box-shadow: 0 16px 50px rgba(0, 194, 255, 0.22),
-    0 6px 16px rgba(90, 103, 255, 0.18);
+  box-shadow: 0 16px 50px rgba(0, 194, 255, 0.32),
+    0 6px 16px rgba(90, 103, 255, 0.3);
 }
 
 .chip {
@@ -144,14 +144,6 @@
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
 }
 
-.rounded-20 {
-  border-radius: 20px;
-}
-
-.rounded-16 {
-  border-radius: 16px;
-}
-
 .icon-pill {
   width: 40px;
   height: 40px;
@@ -171,6 +163,14 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.link-title {
+  color: #f3f1ff;
+}
+.link-title:hover {
+  text-decoration: underline;
+  color: #ffffff;
 }
 
 @supports not (aspect-ratio: 1) {
