@@ -146,7 +146,7 @@ export default function Homepage() {
             <Col lg={6}>
               <div className="position-relative">
                 <div
-                  className="position-absolute top-0 start-0 w-100 h-100 rounded-20"
+                  className="position-absolute top-0 start-0 w-100 h-100 rounded-4"
                   style={{
                     background:
                       "linear-gradient(90deg,var(--neo-start),var(--neo-mid),var(--neo-end))",
@@ -155,7 +155,7 @@ export default function Homepage() {
                   }}
                 />
                 <div
-                  className="position-relative rounded-20 overflow-hidden border"
+                  className="position-relative rounded-4 overflow-hidden border"
                   style={{ borderColor: "var(--neo-border)" }}
                 >
                   <img
@@ -192,9 +192,14 @@ export default function Homepage() {
           <Row className="g-4">
             {featured.map((p) => (
               <Col xs={12} md={6} lg={3} key={p.id}>
-                <div className="card-neo rounded-20 h-100 overflow-hidden">
-                  <div className="position-relative featured-media overflow-hidden">
+                <div className="card-neo rounded-4 h-100 overflow-hidden">
+                  <Link
+                    to={`/product/${p.id}`}
+                    className="position-relative featured-media overflow-hidden d-block"
+                    aria-label={`Open ${p.name}`}
+                  >
                     <img src={p.image_url} alt={p.name} />
+
                     {p.hot && (
                       <span className="position-absolute top-0 end-0 m-3 chip tag-hot fw-semibold z-2">
                         HOT
@@ -205,10 +210,17 @@ export default function Homepage() {
                         In Stock
                       </span>
                     )}
-                  </div>
+                  </Link>
 
                   <div className="d-flex flex-column p-4">
-                    <h5 className="mb-1">{p.name}</h5>
+                    <h5 className="mb-1">
+                      <Link
+                        to={`/product/${p.id}`}
+                        className="text-decoration-none link-title"
+                      >
+                        {p.name}
+                      </Link>
+                    </h5>
                     <p className="small text-white-50 mb-3">{p.description}</p>
 
                     <div className="d-flex align-items-baseline gap-2 mb-3">
@@ -269,7 +281,7 @@ export default function Homepage() {
                   bsPrefix="neo"
                   className="text-decoration-none"
                 >
-                  <div className="p-4 rounded-20 card-neo text-center h-100">
+                  <div className="p-4 rounded-4 card-neo text-center h-100">
                     <div className="icon-pill mx-auto mb-3 fs-4">{c.icon}</div>
                     <div className="text-light fw-semibold">{c.name}</div>
                   </div>
@@ -302,7 +314,7 @@ export default function Homepage() {
               },
             ].map((f) => (
               <Col xs={12} md={6} lg={4} key={f.title}>
-                <div className="p-4 rounded-20 card-neo h-100">
+                <div className="p-4 rounded-4 card-neo h-100">
                   <div className="d-flex align-items-center gap-3 mb-2">
                     <div className="icon-pill fs-5">{f.icon}</div>
                     <h5 className="mb-0">{f.title}</h5>
