@@ -1,14 +1,6 @@
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { FaStarHalfAlt } from "react-icons/fa";
 
-// 1 1 1 1 1
-// 1 1 .5 0 0
-// 0 0 0 0 0
-
-//  [FaStar,FaStar,FaStar,FaStar,FaStar]
-//  [FaStar,FaStar,FaStarHalf,FaRegStar,FaReStar]
-// [ FaRegStar,FaRegStar,FaRegStar, FaRegStar,FaReStar]
-
 const maxRating = 5;
 export const Stars = ({ stars = 0, totalReviews }) => {
   const halfStar = !Number.isInteger(stars);
