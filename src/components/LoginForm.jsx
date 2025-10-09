@@ -58,12 +58,12 @@ const LoginForm = () => {
     }
   };
 
-  const { user } = useSelector((store) => store.userStore);
+  const { customer } = useSelector((store) => store.customerStore);
   let previousLocation = location.state?.from?.pathname || "/dashboard";
 
   useEffect(() => {
-    user?._id && navigate(previousLocation);
-  }, [user?._id]);
+    customer?._id && navigate(previousLocation);
+  }, [customer?._id]);
 
   return (
     <Form onSubmit={handleOnSubmit}>
@@ -74,7 +74,7 @@ const LoginForm = () => {
       <Button
         variant="primary"
         type="submit"
-        className="mb-2 pt-2 w-25"
+        className="mb-2 pt-2 w-25 mx-auto d-block "
         disabled={loading}
       >
         {loading ? "Logging in..." : "Login"}
