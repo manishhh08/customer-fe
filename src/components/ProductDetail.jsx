@@ -1,5 +1,5 @@
 import React from "react";
-import product from "../assets/product.webp";
+import product from "../assets/product.png";
 import { Button, Col, Row, Tab, Tabs } from "react-bootstrap";
 import { RiStarSLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
