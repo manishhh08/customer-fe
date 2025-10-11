@@ -1,5 +1,5 @@
 import React from "react";
-import product from "../assets/product.png";
+// import product from "../assets/product.png";
 import { Button, Col, Row, Tab, Tabs } from "react-bootstrap";
 import { RiStarSLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
@@ -17,13 +17,13 @@ const ProductDetail = () => {
       <Row className="g-4 align-items-center">
         {/* Adding the product image here */}
         <Col md={6} className="d-flex  justify-content-center">
-          <div style={{ maxWidth: "450px", width: "100%", height: "0%" }}>
+          {/* <div style={{ maxWidth: "450px", width: "100%", height: "0%" }}>
             <img
               src={product}
               alt="Product"
               className="img-fluid rounded shadow"
             />
-          </div>
+          </div> */}
         </Col>
         <Col md={6}>
           <div className="d-flex flex-column justify-content-center  align-items-start h-100">
