@@ -4,7 +4,7 @@ import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
 import Auth from "../../auth/Auth";
 
-const MainLayout = () => {
+const PublicLayout = () => {
   return (
     <>
       {/* <Auth> */}
@@ -18,4 +18,4 @@ const MainLayout = () => {
   );
 };
 
-export default MainLayout;
+export default PublicLayout;

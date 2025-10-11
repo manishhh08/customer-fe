@@ -11,15 +11,13 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const { customer } = useSelector((store) => store.customerStore);
 
   const [loading, setLoading] = useState(false);
 
-  const { form, handleOnChange, setForm } = useForm({
-    email: "",
-    password: "",
-  });
+  const { form, handleOnChange } = useForm({ email: "", password: "" });
 
-  let inputFields = [
+  const inputFields = [
     {
       id: "email",
       label: "Email",
@@ -28,7 +26,6 @@ const LoginForm = () => {
       placeholder: "Enter your email",
       value: form.email,
     },
-
     {
       id: "password",
       label: "Password",
@@ -45,12 +42,7 @@ const LoginForm = () => {
 
     try {
       const data = await dispatch(loginCustomerAction(form));
-      console.log("response:", data);
       toast[data.status](data.message);
-
-      if (data.status === "success") {
-        navigate("/dashboard");
-      }
     } catch (error) {
       toast.error("Something went wrong! Please try again.");
     } finally {
@@ -58,23 +50,22 @@ const LoginForm = () => {
     }
   };
 
-  const { customer } = useSelector((store) => store.customerStore);
-  let previousLocation = location.state?.from?.pathname || "/dashboard";
-
+  const redirectTo = location.state?.from || "/dashboard";
   useEffect(() => {
-    customer?._id && navigate(previousLocation);
-  }, [customer?._id]);
+    if (customer?._id) {
+      navigate(redirectTo, { replace: true });
+    }
+  }, [customer?._id, redirectTo, navigate]);
 
   return (
     <Form onSubmit={handleOnSubmit}>
-      {inputFields.map((item, index) => {
-        return <CustomInput key={index} {...item} onChange={handleOnChange} />;
-      })}
-
+      {inputFields.map((item, index) => (
+        <CustomInput key={index} {...item} onChange={handleOnChange} />
+      ))}
       <Button
         variant="primary"
         type="submit"
-        className="mb-2 pt-2 w-25 mx-auto d-block "
+        className="mb-2 pt-2 w-25 mx-auto d-block"
         disabled={loading}
       >
         {loading ? "Logging in..." : "Login"}

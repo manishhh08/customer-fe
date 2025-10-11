@@ -1,30 +1,55 @@
-import { Route, Routes } from "react-router-dom";
-import "./App.css";
-import MainLayout from "./components/layout/MainLayout";
-import Homepage from "./pages/Homepage/Homepage";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import AuthPage from "./pages/AuthPage";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import "./App.css";
+import Auth from "./auth/Auth";
+import PublicLayout from "./components/layout/PublicLayout";
+import PrivateLayout from "./components/layout/PrivateLayout";
+import Homepage from "./pages/Homepage/Homepage";
+import AuthPage from "./pages/AuthPage";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import { getCustomerDetail } from "./features/customer/customerAction";
 import "react-toastify/dist/ReactToastify.css";
-
-import ProductDetail from "./components/ProductDetail";
 import Cart from "./components/Cart";
+import ProductDetail from "./components/ProductDetail";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCustomerDetail());
+  }, [dispatch]);
+
   return (
     <>
-      <div className="wrapper">
-        <Routes>
-          <Route path="/" element={<MainLayout />}>
-            <Route index element={<Homepage />} />
-            <Route path="auth" element={<AuthPage />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="product" element={<ProductDetail />} />
-            <Route path="cart" element={<Cart />} />
-          </Route>
-        </Routes>
-        <ToastContainer position="top-right" theme="light" />
-      </div>
+      <Routes>
+        <Route path="/" element={<PublicLayout />}>
+          <Route index element={<Homepage />} />
+          <Route path="auth" element={<AuthPage />} />
+          <Route path="cart" element={<Cart />} />
+        </Route>
+
+        <Route
+          element={
+            <Auth>
+              <PrivateLayout />
+            </Auth>
+          }
+        >
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="product" element={<ProductDetail />} />
+        </Route>
+      </Routes>
+
+      <ToastContainer
+        position="top-right"
+        theme="light"
+        autoClose={2000}
+        closeOnClick
+        newestOnTop
+        draggable
+      />
     </>
   );
 }
