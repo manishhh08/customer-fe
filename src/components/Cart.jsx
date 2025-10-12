@@ -9,10 +9,13 @@ import {
   removeFromCart,
   updateQuantity,
 } from "../features/cart/cartSlice";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const { items: cartItems } = useSelector((state) => state.cartStore);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Dummy data for now
@@ -62,7 +65,7 @@ const Cart = () => {
   const total = subtotal + tax;
 
   const handleCheckout = () => {
-    toast.success("Proceeding to checkout...");
+    navigate("/checkout");
   };
 
   if (cartItems.length === 0) {

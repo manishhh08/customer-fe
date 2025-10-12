@@ -13,6 +13,7 @@ import { getCustomerDetail } from "./features/customer/customerAction";
 import "react-toastify/dist/ReactToastify.css";
 import Cart from "./components/Cart";
 import ProductDetail from "./components/ProductDetail";
+import Checkout from "./components/Checkout";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ function App() {
           <Route index element={<Homepage />} />
           <Route path="auth" element={<AuthPage />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="checkout" element={<Checkout />} />
         </Route>
 
         <Route
