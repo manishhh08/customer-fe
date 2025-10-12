@@ -10,7 +10,7 @@ const Auth = ({ children }) => {
 
   if (loading) return <div>Fetching your details...</div>;
 
-  if (!customer && !isLoggingOut) {
+  if (!customer?._id && !isLoggingOut) {
     toast.info("Please log in to continue", { toastId: "auth-toast" });
 
     return <Navigate to="/auth" replace state={{ from: location.pathname }} />;
