@@ -4,12 +4,16 @@ import { toast } from "react-toastify";
 
 const Auth = ({ children }) => {
   const location = useLocation();
-  const { customer, loading } = useSelector((store) => store.customerStore);
+  const { customer, loading, isLoggingOut } = useSelector(
+    (store) => store.customerStore
+  );
+  console.log(111111, location);
 
   if (loading) return <div>Fetching your details...</div>;
 
-  if (!customer || !customer._id) {
+  if (!customer && !isLoggingOut) {
     toast.info("Please log in to continue", { toastId: "auth-toast" });
+
     return <Navigate to="/auth" replace state={{ from: location.pathname }} />;
   }
 

@@ -4,6 +4,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import brandName from "../../assets/logo.png";
 import { logoutAction } from "../../features/customer/customerAction";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -12,7 +13,7 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(logoutAction());
-    navigate("/", { replace: true, state: {} });
+    toast.success("Logout successful", { toastId: "logout-toast" });
   };
 
   return (

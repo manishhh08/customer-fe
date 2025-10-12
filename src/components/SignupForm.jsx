@@ -36,6 +36,7 @@ const SignupForm = () => {
     setLoading(true);
     try {
       let data = await createCustomer(form);
+      console.log(1111, data);
       if (data.status) {
         toast[data.status](data.message);
         navigate("/auth?tab=login");

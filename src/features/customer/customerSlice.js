@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   customer: null,
   loading: true,
+  isLoggingOut: false,
 };
 
 const customerSlice = createSlice({
@@ -11,10 +12,12 @@ const customerSlice = createSlice({
     setCustomer: (state, actions) => {
       state.customer = actions.payload;
       state.loading = false;
+      state.isLoggingOut = false;
     },
     logoutCustomer: (state) => {
       state.customer = null;
       state.loading = false;
+      state.isLoggingOut = true;
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
