@@ -3,7 +3,7 @@ import product from "../assets/product.webp";
 import { Button, Col, Row, Tab, Tabs } from "react-bootstrap";
 import { RiStarSLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
-
+import logo from "../assets/logo.png";
 const ProductDetail = () => {
   const stars = 5;
   {
@@ -12,9 +12,9 @@ const ProductDetail = () => {
   return (
     // py : padding on the y axis
     <div className="container py-5 mt-5">
-      <h3 className="display-4  text-center"> Product Landing</h3>
+      <h3 className="display-4  text-center "> Product Landing</h3>
 
-      <Row className="g-4 align-items-center">
+      <Row className="g-4 align-items-center mt-5">
         {/* Adding the product image here */}
         <Col md={6} className="d-flex  justify-content-center">
           <div style={{ maxWidth: "450px", width: "100%", height: "0%" }}>
@@ -46,9 +46,11 @@ const ProductDetail = () => {
             </div>
 
             {/* Button aligned naturally under content */}
-            <Button as={Link} to="/cart" style={{ width: "200px" }}>
-              Add to Cart
-            </Button>
+            <div className="btn-neo">
+              <Button as={Link} to="/cart" style={{ width: "200px" }}>
+                Add to Cart
+              </Button>
+            </div>
           </div>
         </Col>
       </Row>
