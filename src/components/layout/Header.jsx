@@ -1,4 +1,4 @@
-import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import { Badge, Button, Container, Nav, Navbar } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import brandName from "../../assets/logo.png";
@@ -9,6 +9,10 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { customer } = useSelector((store) => store.customerStore);
+
+  const cartCount = useSelector((state) =>
+    state.cartStore.items.reduce((sum, item) => sum + item.quantity, 0)
+  );
 
   const handleLogout = () => {
     dispatch(logoutAction());
@@ -52,8 +56,17 @@ const Header = () => {
               >
                 Login
               </Button>
-              <Nav.Link as={Link} to="/cart">
-                <FaShoppingCart />
+              <Nav.Link as={Link} to="/cart" className="position-relative">
+                <FaShoppingCart size={20} />
+                {cartCount > 0 && (
+                  <Badge
+                    bg="danger"
+                    pill
+                    className="position-absolute top-0 start-100 translate-middle"
+                  >
+                    {cartCount}
+                  </Badge>
+                )}
               </Nav.Link>
             </>
           )}

@@ -15,7 +15,7 @@ export const registerCustomerAction = (form) => async (dispatch) => {
   try {
     const data = await createCustomer(form);
     if (data.status === "success") {
-      //dispatch(getAllUserAction());
+      // dispatch(getAllUserAction());
       toast[data.status](data.message);
       return data;
     } else {
