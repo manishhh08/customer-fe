@@ -29,3 +29,12 @@ export const refreshTokenApi = () => {
     isRefresh: true,
   });
 };
+
+//get customer detail
+export const fetchCustomerDetail = async () => {
+  return apiProcessor({
+    method: "get",
+    url: `${apiUrl}/customer`,
+    isPrivate: true,
+  });
+};
