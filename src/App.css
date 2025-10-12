@@ -173,6 +173,15 @@
   color: #ffffff;
 }
 
+.parent-category {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.parent-category:hover {
+  transform: scale(1.05);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
 @supports not (aspect-ratio: 1) {
   .featured-media {
     height: 240px;
