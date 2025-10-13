@@ -41,8 +41,8 @@ const ProductDetail = () => {
 
             <Col md={6}>
               <div className="d-flex flex-column justify-content-center align-items-start h-100">
-                <h2 className="mb-2">Gadget Name</h2>
-                <p className="mb-3">Gadget Desc</p>
+                <h2 className="mb-2">{product.name || "Gadget"}</h2>
+                <p className="mb-3">{product.description}</p>
 
                 {/* Interactive Stars */}
                 <div className="mb-3">

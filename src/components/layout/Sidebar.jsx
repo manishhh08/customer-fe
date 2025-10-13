@@ -3,7 +3,13 @@ import { Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 
-const SideBar = ({ isOpen, toggleSidebar, isMobile, categories }) => {
+const SideBar = ({
+  isOpen,
+  toggleSidebar,
+  isMobile,
+  categories,
+  headerHeight = 70,
+}) => {
   const [expandedCategory, setExpandedCategory] = useState(null);
 
   const handleToggle = (id) => {
@@ -14,7 +20,7 @@ const SideBar = ({ isOpen, toggleSidebar, isMobile, categories }) => {
     <>
       {isMobile && isOpen && (
         <div
-          className="position-fixed top-0 start-0 w-100 h-100"
+          className="position-sticky top-70 start-0 w-100 h-100"
           style={{ backgroundColor: "rgba(0,0,0,0.4)", zIndex: 1049 }}
           onClick={toggleSidebar}
         />
@@ -23,7 +29,8 @@ const SideBar = ({ isOpen, toggleSidebar, isMobile, categories }) => {
       <div
         className="hero-wrap position-fixed d-flex flex-column"
         style={{
-          top: 69,
+          top: 70,
+          height: "100vh",
           left: 0,
           bottom: 0,
           width: isOpen ? "250px" : "0px",

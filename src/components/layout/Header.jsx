@@ -40,6 +40,7 @@ const Header = ({ toggleSidebar, isMobile }) => {
       bg="dark"
       variant="dark"
       className="py-2"
+      fixed="top"
       style={{
         height: "70px",
         minHeight: "70px",

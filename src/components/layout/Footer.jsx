@@ -5,7 +5,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-dark text-light border-top border-secondary">
-      <div className="container py-5">
+      <div className="container py-4">
         <div className="row gy-4">
           {/* Brand + blurb */}
           <div className="col-12 col-md-4">
@@ -141,7 +141,7 @@ const Footer = () => {
         <hr className="border-secondary my-4" />
 
         {/* Bottom strip */}
-        <div className="row align-items-center gy-3">
+        <div className="row align-items-center gy-2">
           <div className="col-12 col-md-12 text-center">
             <ul className="list-inline mb-0 small">
               <li className="list-inline-item">
@@ -168,14 +168,14 @@ const Footer = () => {
                 </a>
               </li>
             </ul>
-            <div className="text-secondary small mt-2">
+            <div className="text-secondary small mt-1">
               © {year} ShopMate Pty Ltd. All rights reserved.
             </div>
           </div>
         </div>
 
         {/* Back to top */}
-        <div className="text-center mt-4">
+        <div className="text-center mt-1">
           <a
             href="#"
             className="btn btn-outline-secondary btn-sm"
