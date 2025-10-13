@@ -1,37 +1,61 @@
-import { FaRegStar, FaStar } from "react-icons/fa";
-import { FaStarHalfAlt } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
 
-const maxRating = 5;
-export const Stars = ({ stars = 0, totalReviews }) => {
-  const halfStar = !Number.isInteger(stars);
+const maxRating = 5; //Defining the maximum rating
 
-  const fullRating = Math.floor(stars);
+export const Stars = ({
+  stars = 0,
+  totalReviews,
+  // To make the toggle interactive
+  editable = false,
+  // callback for parent component
+  onChange = () => {},
+}) => {
+  const [hover, setHover] = useState(0);
+  const [currentRating, setCurrentRating] = useState(stars);
 
+  // show hover state if interactive, otherwise show given stars
+  const displayRating = editable ? hover || currentRating : stars;
+
+  const halfStar = !Number.isInteger(displayRating);
+  const fullRating = Math.floor(displayRating);
   const emptyRating = maxRating - fullRating - (halfStar ? 1 : 0);
-  // 5 - (3) - 1
 
-  if (stars > maxRating) {
-    return "Invalid ratings";
-  }
+  const handleClick = (value) => {
+    if (!editable) return;
+    setCurrentRating(value);
+    onChange(value); // send value to parent
+  };
 
-  const showStars = [];
-  for (let i = 0; i < fullRating; i++) {
-    showStars.push(<FaStar className="text-warning  " />);
-  }
-  halfStar &&
-    showStars.push(<FaStarHalfAlt className="text-warning text-secondary  " />);
+  const starsArray = [];
 
-  if (emptyRating) {
-    for (let i = 0; i < emptyRating; i++) {
-      showStars.push(<FaRegStar />);
-    }
+  for (let i = 0; i < maxRating; i++) {
+    const value = i + 1;
+    starsArray.push(
+      <span
+        key={value}
+        onClick={() => handleClick(value)}
+        onMouseEnter={() => editable && setHover(value)}
+        onMouseLeave={() => editable && setHover(0)}
+        style={{
+          cursor: editable ? "pointer" : "default",
+          transition: "transform 0.2s ease",
+        }}
+      >
+        {displayRating >= value ? (
+          <FaStar className="text-warning" />
+        ) : (
+          <FaRegStar className="text-secondary" />
+        )}
+      </span>
+    );
   }
 
   return (
-    <div className="fs-3">
-      {showStars}
-      {totalReviews && (
-        <span>
+    <div className="fs-3 d-flex align-items-center gap-1">
+      {starsArray}
+      {totalReviews && !editable && (
+        <span className="fs-6 ms-2 text-white-50">
           ({stars.toFixed(1)}/{totalReviews})
         </span>
       )}
