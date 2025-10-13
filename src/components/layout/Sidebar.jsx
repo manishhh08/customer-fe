@@ -23,7 +23,7 @@ const SideBar = ({ isOpen, toggleSidebar, isMobile, categories }) => {
       <div
         className="hero-wrap position-fixed d-flex flex-column"
         style={{
-          top: 56,
+          top: 69,
           left: 0,
           bottom: 0,
           width: isOpen ? "250px" : "0px",
