@@ -278,7 +278,7 @@ export default function Homepage() {
               <Col xs={6} md={4} lg={3} key={c.name}>
                 <Link
                   to="/products"
-                  // bsPrefix="neo"
+                  bsPrefix="neo"
                   className="text-decoration-none"
                 >
                   <div className="p-4 rounded-4 card-neo text-center h-100">

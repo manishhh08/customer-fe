@@ -11,9 +11,8 @@ import AuthPage from "./pages/AuthPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import { getCustomerDetail } from "./features/customer/customerAction";
 import "react-toastify/dist/ReactToastify.css";
-import Cart from "./components/Cart";
-import ProductDetail from "./components/ProductDetail";
-import Checkout from "./components/Checkout";
+import Cart from "./pages/Cart";
+import ProductDetail from "./pages/ProductDetail";
 import { fetchAllCategoriesAction } from "./features/category/categoryAction";
 
 function App() {
@@ -34,7 +33,7 @@ function App() {
           <Route index element={<Homepage />} />
           <Route path="auth" element={<AuthPage />} />
           <Route path="cart" element={<Cart />} />
-          <Route path="checkout" element={<Checkout />} />
+          {/* <Route path="checkout" element={<Checkout />} /> */}
         </Route>
 
         <Route
