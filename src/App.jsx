@@ -13,12 +13,18 @@ import { getCustomerDetail } from "./features/customer/customerAction";
 import "react-toastify/dist/ReactToastify.css";
 import Cart from "./components/Cart";
 import ProductDetail from "./components/ProductDetail";
+import Checkout from "./components/Checkout";
+import { fetchAllCategoriesAction } from "./features/category/categoryAction";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getCustomerDetail());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchAllCategoriesAction());
   }, [dispatch]);
 
   return (
@@ -28,6 +34,7 @@ function App() {
           <Route index element={<Homepage />} />
           <Route path="auth" element={<AuthPage />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="checkout" element={<Checkout />} />
         </Route>
 
         <Route
