@@ -16,15 +16,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const Header = ({ toggleSidebar }) => {
+const Header = ({ toggleSidebar, isMobile }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { customer } = useSelector((store) => store.customerStore);
-
- 
-
   const { items } = useSelector((state) => state.cartStore);
   const [tempCart, setTempCart] = useState(0);
+
   useEffect(() => {
     const sum = items.reduce((sum, item) => sum + item.quantity, 0);
     setTempCart(sum);
@@ -32,35 +30,46 @@ const Header = ({ toggleSidebar }) => {
 
   const handleLogout = () => {
     dispatch(logoutAction());
-    toast.success("Logout succesful");
+    toast.success("Logout successful");
     navigate("/", { replace: true, state: {} });
-
   };
 
   return (
-    <Navbar expand="lg" bg="dark" variant="dark" className="py-2">
+    <Navbar
+      expand="lg"
+      bg="dark"
+      variant="dark"
+      className="py-2"
+      style={{
+        height: "70px",
+        minHeight: "70px",
+      }}
+    >
       <Container
         fluid
         className="d-flex justify-content-between align-items-center mx-3"
       >
-
-        <Navbar.Brand as={Link} to="/" className="m-0 p-0">
-          <img
-            src="/assets/favicon.ico"
-            alt="Brand Logo"
-            style={{ height: "40px" }}
-          />
-        </Navbar.Brand>
-
-        <div className="d-flex align-items-center gap-4">
+        {/* LEFT: Hamburger + Brand */}
+        <div className="d-flex align-items-center gap-3">
           <Button
             variant="link"
             className="text-white p-0"
             onClick={toggleSidebar}
+            style={{ lineHeight: 0 }}
           >
             <FaBars size={22} />
           </Button>
 
+          <Navbar.Brand as={Link} to="/" className="m-0 p-0">
+            <img
+              src="/assets/favicon.ico"
+              alt="Brand Logo"
+              style={{ height: "40px" }}
+            />
+          </Navbar.Brand>
+        </div>
+
+        {/* RIGHT: Navigation */}
         <Nav className="d-flex gap-3 align-items-center">
           <Nav.Link as={Link} to="/">
             Home
@@ -68,49 +77,55 @@ const Header = ({ toggleSidebar }) => {
 
           {customer && customer._id ? (
             <>
-              <Nav.Link as={Link} to="/dashboard">
-                Dashboard
-              </Nav.Link>
-           
-              <Button variant="primary" size="sm" onClick={handleLogout}>
-                Logout
-              </Button>
+              {/* Show Dashboard outside dropdown on desktop only */}
+              {!isMobile && (
+                <Nav.Link as={Link} to="/dashboard">
+                  Dashboard
+                </Nav.Link>
+              )}
+
+              {/* Cart Icon with Counter */}
               <Nav.Link as={Link} to="/cart" className="position-relative">
                 <FaShoppingCart size={20} />
-                <Badge
-                  bg="danger"
-                  pill
-                  className="position-absolute top-0 start-100 translate-middle"
-                >
-                  {tempCart}
-                </Badge>
+                {tempCart > 0 && (
+                  <Badge
+                    bg="danger"
+                    pill
+                    className="position-absolute top-0 start-100 translate-middle"
+                  >
+                    {tempCart}
+                  </Badge>
+                )}
+              </Nav.Link>
 
-
+              {/* User Dropdown */}
               <Dropdown align="end">
                 <Dropdown.Toggle variant="link" className="text-white p-0">
                   <FaUserCircle size={22} />
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu align="end" variant="dark">
+                  {/* Move Dashboard here on mobile */}
+                  {isMobile && (
+                    <Dropdown.Item as={Link} to="/dashboard">
+                      Dashboard
+                    </Dropdown.Item>
+                  )}
                   <Dropdown.Item as={Link} to="/account">
                     <FaUserGear /> Manage Account
                   </Dropdown.Item>
                   <Dropdown.Item as={Link} to="/orders">
                     <MdHistory /> Order History
                   </Dropdown.Item>
-
                   <Dropdown.Item onClick={handleLogout}>
                     <TbLogout color="red" /> Logout
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
-
-              <Nav.Link as={Link} to="/cart">
-                <FaShoppingCart size={20} />
-              </Nav.Link>
             </>
           ) : (
             <>
+              {/* Login Button */}
               <Button
                 as={Link}
                 to="/auth?tab=login"
@@ -119,15 +134,19 @@ const Header = ({ toggleSidebar }) => {
               >
                 Login
               </Button>
+
+              {/* Cart for guest */}
               <Nav.Link as={Link} to="/cart" className="position-relative">
                 <FaShoppingCart size={20} />
-                <Badge
-                  bg="danger"
-                  pill
-                  className="position-absolute top-0 start-100 translate-middle"
-                >
-                  {tempCart}
-                </Badge>
+                {tempCart > 0 && (
+                  <Badge
+                    bg="danger"
+                    pill
+                    className="position-absolute top-0 start-100 translate-middle"
+                  >
+                    {tempCart}
+                  </Badge>
+                )}
               </Nav.Link>
             </>
           )}
