@@ -21,6 +21,10 @@ function App() {
     dispatch(getCustomerDetail());
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(fetchAllCategoriesAction());
+  }, [dispatch]);
+
   return (
     <>
       <Routes>
@@ -28,6 +32,7 @@ function App() {
           <Route index element={<Homepage />} />
           <Route path="auth" element={<AuthPage />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="checkout" element={<Checkout />} />
         </Route>
 
         <Route

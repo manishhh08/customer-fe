@@ -9,13 +9,13 @@ import {
   fetchCustomerDetail,
   loginCustomer,
 } from "./customerAPI";
-import { setCustomer, setLoading } from "./customerSlice";
+import { logoutCustomer, setCustomer, setLoading } from "./customerSlice";
 
 export const registerCustomerAction = (form) => async (dispatch) => {
   try {
     const data = await createCustomer(form);
     if (data.status === "success") {
-      //dispatch(getAllUserAction());
+      // dispatch(getAllUserAction());
       toast[data.status](data.message);
       return data;
     } else {
@@ -66,7 +66,7 @@ export const getCustomerDetail = () => async (dispatch) => {
 };
 
 export const logoutAction = () => (dispatch) => {
-  dispatch(setCustomer({}));
+  dispatch(logoutCustomer());
   deleteAccessToken();
   deleteRefreshToken();
 };
