@@ -50,7 +50,11 @@ const LoginForm = () => {
     }
   };
 
-  const redirectTo = location.state?.from || "/dashboard";
+  const redirectTo =
+    location.state?.from ||
+    new URLSearchParams(location.search).get("redirect") ||
+    "/dashboard";
+
   useEffect(() => {
     if (customer?._id) {
       navigate(redirectTo, { replace: true });

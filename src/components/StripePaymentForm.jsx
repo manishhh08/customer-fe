@@ -33,6 +33,7 @@ const StripePaymentForm = ({ total, onPaymentSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!stripe || !elements || !clientSecret) return;
 
     setLoading(true);
@@ -62,8 +63,8 @@ const StripePaymentForm = ({ total, onPaymentSuccess }) => {
       <CardElement options={{ hidePostalCode: true }} />
       <Button
         type="submit"
-        bsPrefix="neo"
-        className="w-100 btn-neo rounded-4"
+        bsPrefix="as"
+        className="w-100 mt-5 rounded-4 btn-neo"
         disabled={!stripe || loading}
       >
         {loading ? "Processing..." : "Pay Now"}
