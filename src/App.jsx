@@ -11,8 +11,8 @@ import AuthPage from "./pages/AuthPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import { getCustomerDetail } from "./features/customer/customerAction";
 import "react-toastify/dist/ReactToastify.css";
-import Cart from "./components/Cart";
-import ProductDetail from "./components/ProductDetail";
+import Cart from "./pages/Cart";
+import ProductDetail from "./pages/ProductDetail";
 
 function App() {
   const dispatch = useDispatch();
