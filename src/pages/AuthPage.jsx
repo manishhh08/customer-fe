@@ -12,7 +12,7 @@ const AuthPage = () => {
     const searchParams = new URLSearchParams(location.search);
     const tab = searchParams.get("tab") || "login";
     setActiveTab(tab);
-  }, [location.search]);
+  }, [location]);
 
   return (
     <Container className="d-flex justify-content-center align-items-center min-vh-100">

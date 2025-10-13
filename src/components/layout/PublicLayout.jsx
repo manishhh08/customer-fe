@@ -1,21 +1,7 @@
-import React from "react";
-import Header from "./Header";
-import Footer from "./Footer";
-import { Outlet } from "react-router-dom";
-import Auth from "../../auth/Auth";
+import LayoutWithSidebar from "./LayoutWithSidebar";
 
 const PublicLayout = () => {
-  return (
-    <>
-      {/* <Auth> */}
-      <Header />
-      <main className="min-vh-100">
-        <Outlet />
-      </main>
-      <Footer />
-      {/* </Auth> */}
-    </>
-  );
+  return <LayoutWithSidebar />;
 };
 
 export default PublicLayout;
