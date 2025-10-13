@@ -25,7 +25,7 @@ const Header = () => {
   const handleLogout = () => {
     dispatch(logoutAction());
     toast.success("Logout succesful");
-    // navigate("/", { replace: true, state: {} });
+    navigate("/", { replace: true, state: {} });
   };
 
   return (
