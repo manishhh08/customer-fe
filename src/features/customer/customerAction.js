@@ -9,7 +9,7 @@ import {
   fetchCustomerDetail,
   loginCustomer,
 } from "./customerAPI";
-import { setCustomer, setLoading } from "./customerSlice";
+import { logoutCustomer, setCustomer, setLoading } from "./customerSlice";
 
 export const registerCustomerAction = (form) => async (dispatch) => {
   try {
@@ -66,7 +66,7 @@ export const getCustomerDetail = () => async (dispatch) => {
 };
 
 export const logoutAction = () => (dispatch) => {
-  dispatch(setCustomer({}));
+  dispatch(logoutCustomer());
   deleteAccessToken();
   deleteRefreshToken();
 };
