@@ -15,7 +15,7 @@ const LayoutWithSidebar = () => {
     (store) => store.categoryStore
   );
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
-
+  const layoutShift = isSidebarOpen && !isMobile ? "250px" : "0px";
   useEffect(() => {
     dispatch(fetchAllCategoriesAction());
   }, [dispatch]);
@@ -51,8 +51,8 @@ const LayoutWithSidebar = () => {
         >
           <Outlet />
         </main>
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 };

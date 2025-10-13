@@ -18,11 +18,11 @@ const SideBar = ({
 
   return (
     <>
-      {/* Removed the div as it did not seem to make any difference in the layout */}
       <div
         className="hero-wrap position-fixed d-flex flex-column"
         style={{
-          top: 69,
+          top: 70,
+          height: isMobile ? "100vh" : "calc(100vh - 70px)",
           left: 0,
           bottom: 0,
           width: isOpen ? "250px" : "0px",
