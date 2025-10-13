@@ -62,7 +62,8 @@ const StripePaymentForm = ({ total, onPaymentSuccess }) => {
       <CardElement options={{ hidePostalCode: true }} />
       <Button
         type="submit"
-        className="w-100 mt-3 rounded-4"
+        bsPrefix="neo"
+        className="w-100 btn-neo rounded-4"
         disabled={!stripe || loading}
       >
         {loading ? "Processing..." : "Pay Now"}
