@@ -149,8 +149,8 @@ const Cart = () => {
                 <span>${total.toFixed(2)}</span>
               </div>
               <Button
-                variant="primary"
-                className="w-100"
+                bsPrefix="neo"
+                className="w-100 btn-neo rounded-4"
                 onClick={handleCheckout}
               >
                 Proceed to Checkout

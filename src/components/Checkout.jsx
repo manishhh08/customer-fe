@@ -6,10 +6,15 @@ import { toast } from "react-toastify";
 import { setPurchases } from "../features/purchase/purchaseSlice";
 import { clearCart } from "../features/cart/cartSlice";
 import { useState } from "react";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import StripePaymentForm from "./StripePaymentForm";
 
 const Checkout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
   const { items: cartItems } = useSelector((state) => state.cartStore);
 
   const [form, setForm] = useState({
@@ -74,58 +79,70 @@ const Checkout = () => {
           <Card className="shadow-sm mb-4">
             <Card.Body>
               <h4 className="mb-4">Billing Details</h4>
-              <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Full Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="name"
-                    value={form.name}
-                    onChange={handleChange}
-                    placeholder="Enter your full name"
+
+              <Form.Group className="mb-3">
+                <Form.Label>Full Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  placeholder="Enter your full name"
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="you@example.com"
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Address</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  name="address"
+                  value={form.address}
+                  onChange={handleChange}
+                  rows={3}
+                  placeholder="Enter your shipping address"
+                />
+              </Form.Group>
+
+              {/* payment method */}
+              <Form.Group className="mb-3">
+                <Form.Label>Payment Method</Form.Label>
+                <Form.Select
+                  name="paymentMethod"
+                  value={form.paymentMethod}
+                  onChange={handleChange}
+                >
+                  <option value="credit">Credit Card</option>
+                  <option value="paypal">PayPal</option>
+                  <option value="cash">Cash on Delivery</option>
+                </Form.Select>
+              </Form.Group>
+              {form.paymentMethod === "credit" && (
+                <Elements stripe={stripePromise}>
+                  <StripePaymentForm
+                    total={total}
+                    onPaymentSuccess={handleSubmit}
                   />
-                </Form.Group>
+                </Elements>
+              )}
 
-                <Form.Group className="mb-3">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control
-                    type="email"
-                    name="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    placeholder="you@example.com"
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label>Address</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    name="address"
-                    value={form.address}
-                    onChange={handleChange}
-                    rows={3}
-                    placeholder="Enter your shipping address"
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label>Payment Method</Form.Label>
-                  <Form.Select
-                    name="paymentMethod"
-                    value={form.paymentMethod}
-                    onChange={handleChange}
-                  >
-                    <option value="credit">Credit Card</option>
-                    <option value="paypal">PayPal</option>
-                    <option value="cash">Cash on Delivery</option>
-                  </Form.Select>
-                </Form.Group>
-
-                <Button type="submit" variant="primary" className="w-100 mt-3">
+              {form.paymentMethod !== "credit" && (
+                <Button
+                  type="submit"
+                  bsPrefix="neo"
+                  className="w-100 btn-neo rounded-4"
+                >
                   Confirm Order
                 </Button>
-              </Form>
+              )}
             </Card.Body>
           </Card>
         </Col>
