@@ -7,7 +7,7 @@ import { Stars } from "../components/stars/Stars";
 
 const ProductDetail = () => {
   const { products } = useSelector((store) => store.productStore);
-  const [myRating, setMyRating] = useState(0); // ✅ useState works now
+  const [myRating, setMyRating] = useState(0);
 
   return (
     <div className="bg-dark text-light">
