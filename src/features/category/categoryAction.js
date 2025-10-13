@@ -1,5 +1,10 @@
 import { fetchAllCategories } from "./categoryAPI";
-import { setCategories, setLoading, setError } from "./categorySlice";
+import {
+  setCategories,
+  setLoading,
+  setError,
+  setSubCategories,
+} from "./categorySlice";
 
 export const fetchAllCategoriesAction = () => async (dispatch) => {
   try {
@@ -9,6 +14,7 @@ export const fetchAllCategoriesAction = () => async (dispatch) => {
 
     if (response.status === "success") {
       dispatch(setCategories(response.categories));
+      dispatch(setSubCategories(response.subCategories));
     } else {
       dispatch(setError(response.message || "Unable to fetch categories"));
     }

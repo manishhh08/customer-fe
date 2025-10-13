@@ -11,8 +11,9 @@ const LayoutWithSidebar = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 992);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
 
-  const { categories } = useSelector((store) => store.categoryStore);
-
+  const { categories, subCategories } = useSelector(
+    (store) => store.categoryStore
+  );
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
   const layoutShift = isSidebarOpen && !isMobile ? "250px" : "0px";
   useEffect(() => {
@@ -33,20 +34,21 @@ const LayoutWithSidebar = () => {
   return (
     <>
       <Header toggleSidebar={toggleSidebar} />
-      <SideBar
-        isOpen={isSidebarOpen}
-        toggleSidebar={toggleSidebar}
-        isMobile={isMobile}
-        categories={categories}
-      />
-      <div
-        className="d-flex content-wrapper flex-column min-vh-100"
-        style={{
-          marginLeft: layoutShift,
-          transition: "margin-left 0.3s ease",
-        }}
-      >
-        <main className="flex-grow-1">
+      <div className="d-flex">
+        <SideBar
+          isOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+          isMobile={isMobile}
+          categories={categories}
+          subcategories={subCategories}
+        />
+        <main
+          className="flex-grow-1 min-vh-100"
+          style={{
+            marginLeft: isSidebarOpen && !isMobile ? "250px" : "0px",
+            transition: "margin-left 0.3s ease",
+          }}
+        >
           <Outlet />
         </main>
         <Footer />

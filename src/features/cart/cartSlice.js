@@ -6,12 +6,6 @@ const initialState = {
   error: null,
 };
 
-// --- Future API integration (optional)
-// export const fetchCartItems = createAsyncThunk("cart/fetchCartItems", async () => {
-//   const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/v1/cart`);
-//   return data.items;
-// });
-
 const cartSlice = createSlice({
   name: "cart",
   initialState,
