@@ -14,54 +14,59 @@ import {
   BsCart,
 } from "react-icons/bs";
 
-// Mock data – replace with your Supabase fetch
-const mockFeatured = [
-  {
-    id: "1",
-    name: "ProPhone X1",
-    description:
-      "Latest flagship smartphone with AI camera and 5G connectivity",
-    price: 999.99,
-    compareAt: 1299.99,
-    image_url:
-      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1600&auto=format&fit=crop",
-    hot: true,
-    inStock: true,
-  },
-  {
-    id: "2",
-    name: "UltraBook Pro 15",
-    description: "Powerful laptop with M-series chip and stunning display",
-    price: 1899.99,
-    compareAt: 2499.99,
-    image_url:
-      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1600&auto=format&fit=crop",
-    hot: true,
-    inStock: true,
-  },
-  {
-    id: "3",
-    name: "AirSound Pro",
-    description: "Premium wireless earbuds with active noise cancellation",
-    price: 249.99,
-    compareAt: 299.99,
-    image_url:
-      "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=1600&auto=format&fit=crop",
-    hot: true,
-    inStock: true,
-  },
-  {
-    id: "4",
-    name: "FitWatch Series 9",
-    description: "Advanced fitness tracker with health monitoring",
-    price: 399.99,
-    compareAt: 519.99,
-    image_url:
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1600&q=80",
-    hot: true,
-    inStock: true,
-  },
-];
+import {
+  fetchActiveProductsAction,
+  fetchAllProductsAction,
+} from "../../features/product/productAction";
+
+// // Mock data – replace with your Supabase fetch
+// const mockFeatured = [
+//   {
+//     id: "1",
+//     name: "ProPhone X1",
+//     description:
+//       "Latest flagship smartphone with AI camera and 5G connectivity",
+//     price: 999.99,
+//     compareAt: 1299.99,
+//     image_url:
+//       "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1600&auto=format&fit=crop",
+//     hot: true,
+//     inStock: true,
+//   },
+//   {
+//     id: "2",
+//     name: "UltraBook Pro 15",
+//     description: "Powerful laptop with M-series chip and stunning display",
+//     price: 1899.99,
+//     compareAt: 2499.99,
+//     image_url:
+//       "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1600&auto=format&fit=crop",
+//     hot: true,
+//     inStock: true,
+//   },
+//   {
+//     id: "3",
+//     name: "AirSound Pro",
+//     description: "Premium wireless earbuds with active noise cancellation",
+//     price: 249.99,
+//     compareAt: 299.99,
+//     image_url:
+//       "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=1600&auto=format&fit=crop",
+//     hot: true,
+//     inStock: true,
+//   },
+//   {
+//     id: "4",
+//     name: "FitWatch Series 9",
+//     description: "Advanced fitness tracker with health monitoring",
+//     price: 399.99,
+//     compareAt: 519.99,
+//     image_url:
+//       "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1600&q=80",
+//     hot: true,
+//     inStock: true,
+//   },
+// ];
 
 const categories = [
   { name: "Smartphones", icon: <BsPhone /> },
@@ -75,8 +80,39 @@ export default function Homepage() {
   const [featured, setFeatured] = useState([]);
 
   useEffect(() => {
-    // TODO: To be replace with our data: setFeatured(data)
-    setFeatured(mockFeatured);
+    (async () => {
+      try {
+        // Try server-side filter first (if backend supports ?status=active)
+        const res = await fetchActiveProductsAction();
+        let items = res?.data?.data || [];
+
+        // Fallback: client-side filter for legacy backends
+        if (!items.length) {
+          const all = await fetchAllProductsAction();
+          items = (all?.data?.data || []).filter((p) => p?.status === "active");
+        }
+
+        // Normalize a few possible field name differences
+        const normalized = items.map((p) => ({
+          id: p._id || p.id,
+          name: p.name,
+          description: p.description || "",
+          price: Number(p.price || 0),
+          compareAt: p.compareAt || p.compare_at || null,
+          image_url:
+            p.image_url ||
+            p.imageUrl ||
+            (Array.isArray(p.images) ? p.images[0] : ""),
+          inStock:
+            typeof p.stock === "number" ? p.stock > 0 : Boolean(p.inStock),
+        }));
+
+        setFeatured(normalized);
+      } catch (e) {
+        console.error("Failed to load products", e);
+        setFeatured([]);
+      }
+    })();
   }, []);
 
   const handleAddToCart = (p) => {
