@@ -20,7 +20,7 @@ const SideBar = ({
     <>
       {isMobile && isOpen && (
         <div
-          className="position-sticky top-70 start-0 w-100 h-100"
+          className="position-fixed top-70 start-0 w-100 h-100"
           style={{ backgroundColor: "rgba(0,0,0,0.4)", zIndex: 1049 }}
           onClick={toggleSidebar}
         />
@@ -30,7 +30,7 @@ const SideBar = ({
         className="hero-wrap position-fixed d-flex flex-column"
         style={{
           top: 70,
-          height: "100vh",
+          height: isMobile ? "100vh" : "calc(100vh - 70px)",
           left: 0,
           bottom: 0,
           width: isOpen ? "250px" : "0px",
