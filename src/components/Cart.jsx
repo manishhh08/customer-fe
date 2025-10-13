@@ -1,4 +1,3 @@
-// src/pages/Cart.jsx
 import { useEffect } from "react";
 import { Button, Card, Row, Col, Container, Image } from "react-bootstrap";
 import { Plus, Minus, Trash2, ShoppingCart } from "lucide-react";
