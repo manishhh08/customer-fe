@@ -11,8 +11,9 @@ const LayoutWithSidebar = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 992);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
 
-  const { categories } = useSelector((store) => store.categoryStore);
-
+  const { categories, subCategories } = useSelector(
+    (store) => store.categoryStore
+  );
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
 
   useEffect(() => {
@@ -39,6 +40,7 @@ const LayoutWithSidebar = () => {
           toggleSidebar={toggleSidebar}
           isMobile={isMobile}
           categories={categories}
+          subcategories={subCategories}
         />
         <main
           className="flex-grow-1 min-vh-100"
