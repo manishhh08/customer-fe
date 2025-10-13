@@ -13,12 +13,14 @@ import { getCustomerDetail } from "./features/customer/customerAction";
 import "react-toastify/dist/ReactToastify.css";
 import Cart from "./components/Cart";
 import ProductDetail from "./components/ProductDetail";
+import { fetchAllProductsAction } from "./features/product/productAction";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getCustomerDetail());
+    dispatch(fetchAllProductsAction());
   }, [dispatch]);
 
   return (

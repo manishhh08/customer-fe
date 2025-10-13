@@ -13,11 +13,7 @@ import {
   BsArrowRight,
   BsCart,
 } from "react-icons/bs";
-
-import {
-  fetchActiveProductsAction,
-  fetchAllProductsAction,
-} from "../../features/product/productAction";
+import { useSelector } from "react-redux";
 
 // // Mock data – replace with your Supabase fetch
 // const mockFeatured = [
@@ -78,42 +74,9 @@ const categories = [
 
 export default function Homepage() {
   const [featured, setFeatured] = useState([]);
+  const { products } = useSelector((state) => state.productStore);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        // Try server-side filter first (if backend supports ?status=active)
-        const res = await fetchActiveProductsAction();
-        let items = res?.data?.data || [];
-
-        // Fallback: client-side filter for legacy backends
-        if (!items.length) {
-          const all = await fetchAllProductsAction();
-          items = (all?.data?.data || []).filter((p) => p?.status === "active");
-        }
-
-        // Normalize a few possible field name differences
-        const normalized = items.map((p) => ({
-          id: p._id || p.id,
-          name: p.name,
-          description: p.description || "",
-          price: Number(p.price || 0),
-          compareAt: p.compareAt || p.compare_at || null,
-          image_url:
-            p.image_url ||
-            p.imageUrl ||
-            (Array.isArray(p.images) ? p.images[0] : ""),
-          inStock:
-            typeof p.stock === "number" ? p.stock > 0 : Boolean(p.inStock),
-        }));
-
-        setFeatured(normalized);
-      } catch (e) {
-        console.error("Failed to load products", e);
-        setFeatured([]);
-      }
-    })();
-  }, []);
+  useEffect(() => {}, []);
 
   const handleAddToCart = (p) => {
     // TODO: wire to our cart
@@ -226,15 +189,21 @@ export default function Homepage() {
           </div>
 
           <Row className="g-4">
-            {featured.map((p) => (
+            {products.map((p) => (
               <Col xs={12} md={6} lg={3} key={p.id}>
                 <div className="card-neo rounded-4 h-100 overflow-hidden">
                   <Link
-                    to={`/product/${p.id}`}
+                    to={`/product/${p._id}`}
                     className="position-relative featured-media overflow-hidden d-block"
                     aria-label={`Open ${p.name}`}
                   >
-                    <img src={p.image_url} alt={p.name} />
+                    <img
+                      src={
+                        p.images ||
+                        "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1600&auto=format&fit=crop"
+                      }
+                      alt={p.name}
+                    />
 
                     {p.hot && (
                       <span className="position-absolute top-0 end-0 m-3 chip tag-hot fw-semibold z-2">
@@ -251,7 +220,7 @@ export default function Homepage() {
                   <div className="d-flex flex-column p-4">
                     <h5 className="mb-1">
                       <Link
-                        to={`/product/${p.id}`}
+                        to={`/product/${p._id}`}
                         className="text-decoration-none link-title"
                       >
                         {p.name}
@@ -261,9 +230,9 @@ export default function Homepage() {
 
                     <div className="d-flex align-items-baseline gap-2 mb-3">
                       <div className="h4 m-0">${p.price.toFixed(2)}</div>
-                      {p.compareAt && (
+                      {p.comparePrice && (
                         <del className="text-white-50">
-                          ${p.compareAt.toFixed(2)}
+                          ${p.comparePrice.toFixed(2)}
                         </del>
                       )}
                     </div>
