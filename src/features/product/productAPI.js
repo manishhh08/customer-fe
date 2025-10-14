@@ -10,10 +10,3 @@ export const fetchAllProducts = async () => {
     });
 };
 
-//fetch active products
-export const fetchActiveProducts = async () => {
-    return apiProcessor({
-        method: "get",
-        url: `${apiUrl}/products?status=active`,
-    });
-};
