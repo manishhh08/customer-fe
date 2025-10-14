@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import {
   BsLightningCharge,
@@ -13,58 +13,57 @@ import {
   BsArrowRight,
   BsCart,
 } from "react-icons/bs";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../../features/cart/cartSlice";
-import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllProductsAction } from "../../features/product/productAction";
 
-// Mock data – replace with your Supabase fetch
-const mockFeatured = [
-  {
-    id: "1",
-    name: "ProPhone X1",
-    description:
-      "Latest flagship smartphone with AI camera and 5G connectivity",
-    price: 999.99,
-    compareAt: 1299.99,
-    image_url:
-      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1600&auto=format&fit=crop",
-    hot: true,
-    inStock: true,
-  },
-  {
-    id: "2",
-    name: "UltraBook Pro 15",
-    description: "Powerful laptop with M-series chip and stunning display",
-    price: 1899.99,
-    compareAt: 2499.99,
-    image_url:
-      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1600&auto=format&fit=crop",
-    hot: true,
-    inStock: true,
-  },
-  {
-    id: "3",
-    name: "AirSound Pro",
-    description: "Premium wireless earbuds with active noise cancellation",
-    price: 249.99,
-    compareAt: 299.99,
-    image_url:
-      "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=1600&auto=format&fit=crop",
-    hot: true,
-    inStock: true,
-  },
-  {
-    id: "4",
-    name: "FitWatch Series 9",
-    description: "Advanced fitness tracker with health monitoring",
-    price: 399.99,
-    compareAt: 519.99,
-    image_url:
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1600&q=80",
-    hot: true,
-    inStock: true,
-  },
-];
+// // Mock data – replace with your Supabase fetch
+// const mockFeatured = [
+//   {
+//     id: "1",
+//     name: "ProPhone X1",
+//     description:
+//       "Latest flagship smartphone with AI camera and 5G connectivity",
+//     price: 999.99,
+//     compareAt: 1299.99,
+//     image_url:
+//       "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1600&auto=format&fit=crop",
+//     hot: true,
+//     inStock: true,
+//   },
+//   {
+//     id: "2",
+//     name: "UltraBook Pro 15",
+//     description: "Powerful laptop with M-series chip and stunning display",
+//     price: 1899.99,
+//     compareAt: 2499.99,
+//     image_url:
+//       "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1600&auto=format&fit=crop",
+//     hot: true,
+//     inStock: true,
+//   },
+//   {
+//     id: "3",
+//     name: "AirSound Pro",
+//     description: "Premium wireless earbuds with active noise cancellation",
+//     price: 249.99,
+//     compareAt: 299.99,
+//     image_url:
+//       "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=1600&auto=format&fit=crop",
+//     hot: true,
+//     inStock: true,
+//   },
+//   {
+//     id: "4",
+//     name: "FitWatch Series 9",
+//     description: "Advanced fitness tracker with health monitoring",
+//     price: 399.99,
+//     compareAt: 519.99,
+//     image_url:
+//       "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1600&q=80",
+//     hot: true,
+//     inStock: true,
+//   },
+// ];
 
 const categories = [
   { name: "Smartphones", icon: <BsPhone /> },
@@ -75,34 +74,34 @@ const categories = [
 ];
 
 export default function Homepage() {
-  const [featured, setFeatured] = useState([]);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [featured, setFeatured] = useState([]);
+  const { products } = useSelector((store) => store.productStore);
 
   useEffect(() => {
-    // TODO: To be replace with our data: setFeatured(data)
-    setFeatured(mockFeatured);
-  }, []);
+    dispatch(fetchAllProductsAction());
+  }, [dispatch]);
 
   const handleAddToCart = (p) => {
-    const productToAdd = {
-      id: p.id,
-      name: p.name,
-      img: p.image_url,
-      // img: p.image[0],
-      price: p.price,
-    };
-
-    dispatch(addToCart(productToAdd));
-
-    toast.success(` Item added to cart!`, {
-      theme: "dark", // makes the toast dark
-      position: "top-right", // optional
-      autoClose: 3000, // optional
-    });
-    // navigate("/cart");
+    // TODO: wire to our cart
+    console.log("Add to cart", p.id);
   };
+  //  const productToAdd = {
+  //     id: p.id,
+  //     name: p.name,
+  //     img: p.image_url,
+  //     // img: p.image[0],
+  //     price: p.price,
+  //   };
 
+  //   dispatch(addToCart(productToAdd));
+
+  //   toast.success(` Item added to cart!`, {
+  //     theme: "dark", // makes the toast dark
+  //     position: "top-right", // optional
+  //     autoClose: 3000, // optional
+  //   });
+  //   // navigate("/cart");
   return (
     <div className="bg-dark text-light">
       {/* HERO */}
@@ -209,7 +208,7 @@ export default function Homepage() {
           </div>
 
           <Row className="g-4">
-            {featured.map((p) => (
+            {products?.slice(0, 4).map((p) => (
               <Col xs={12} md={6} lg={3} key={p.id}>
                 <div className="card-neo rounded-4 h-100 overflow-hidden">
                   <Link
@@ -217,14 +216,19 @@ export default function Homepage() {
                     className="position-relative featured-media overflow-hidden d-block"
                     aria-label={`Open ${p.name}`}
                   >
-                    <img src={p.image_url} alt={p.name} />
+                    <img
+                      src={
+                        p.images ||
+                        "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1600&auto=format&fit=crop"
+                      }
+                      alt={p.name}
+                    />
 
-                    {p.hot && (
-                      <span className="position-absolute top-0 end-0 m-3 chip tag-hot fw-semibold z-2">
-                        HOT
-                      </span>
-                    )}
-                    {p.inStock && (
+                    <span className="position-absolute top-0 end-0 m-3 chip tag-hot fw-semibold z-2">
+                      HOT
+                    </span>
+
+                    {p.stock && (
                       <span className="position-absolute bottom-0 start-0 m-3 chip tag-stock z-2">
                         In Stock
                       </span>
@@ -234,7 +238,7 @@ export default function Homepage() {
                   <div className="d-flex flex-column p-4">
                     <h5 className="mb-1">
                       <Link
-                        to={`/product/${p.id}`}
+                        to={`/product/${p._id}`}
                         className="text-decoration-none link-title"
                       >
                         {p.name}
@@ -244,9 +248,9 @@ export default function Homepage() {
 
                     <div className="d-flex align-items-baseline gap-2 mb-3">
                       <div className="h4 m-0">${p.price.toFixed(2)}</div>
-                      {p.compareAt && (
+                      {p.comparePrice && (
                         <del className="text-white-50">
-                          ${p.compareAt.toFixed(2)}
+                          ${p.comparePrice.toFixed(2)}
                         </del>
                       )}
                     </div>
@@ -296,8 +300,13 @@ export default function Homepage() {
             {categories.map((c) => (
               <Col xs={6} md={4} lg={3} key={c.name}>
                 <Link
+<<<<<<< HEAD
                   to={`/category/${c.name.toLowerCase()}`}
                   bsPrefix="neo"
+=======
+                  to="/products"
+                  bsprefix="neo"
+>>>>>>> 86258f795417b3fd3d5e3fff3aba176d855eb084
                   className="text-decoration-none"
                 >
                   <div className="p-4 rounded-4 card-neo text-center h-100">
