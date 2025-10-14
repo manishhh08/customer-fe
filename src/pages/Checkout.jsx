@@ -8,7 +8,7 @@ import { clearCart } from "../features/cart/cartSlice";
 import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import StripePaymentForm from "./StripePaymentForm";
+import StripePaymentForm from "../components/StripePaymentForm";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
