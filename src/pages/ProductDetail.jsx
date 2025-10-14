@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import product from "../assets/product.webp";
+// import product from "../assets/product.webp";
 import { Button, Col, Row, Tab, Tabs, Container } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Stars } from "../components/stars/Stars";
 import { BsArrowLeft } from "react-icons/bs";
 
 const ProductDetail = () => {
-  const { products } = useSelector((store) => store.productStore);
+  const { product } = useSelector((store) => store.productStore);
   const [myRating, setMyRating] = useState(0);
 
   return (

@@ -7,7 +7,6 @@ const Auth = ({ children }) => {
   const { customer, loading, isLogginOut } = useSelector(
     (store) => store.customerStore
   );
-  console.log("666", isLogginOut);
   if (loading) return <div>Fetching your details...</div>;
 
   if (!customer?._id && !isLogginOut) {
