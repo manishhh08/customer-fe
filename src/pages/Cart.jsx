@@ -153,13 +153,24 @@ const Cart = () => {
                 <span>Total</span>
                 <span>${total.toFixed(2)}</span>
               </div>
-              <Button
-                bsPrefix="neo"
-                className="w-100 btn-neo rounded-4"
-                onClick={handleCheckout}
-              >
-                Proceed to Checkout
-              </Button>
+
+              {customer && customer._id ? (
+                <Button
+                  bsPrefix="neo"
+                  className="w-100 btn-neo rounded-4"
+                  onClick={handleCheckout}
+                >
+                  Proceed to Checkout
+                </Button>
+              ) : (
+                <Button
+                  bsPrefix="neo"
+                  className="w-100 btn-neo rounded-4"
+                  onClick={handleCheckout}
+                >
+                  Login to Checkout
+                </Button>
+              )}
             </Card.Body>
           </Card>
         </Col>
