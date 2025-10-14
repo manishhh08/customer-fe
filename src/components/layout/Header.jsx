@@ -12,11 +12,12 @@ import { TbLogout } from "react-icons/tb";
 import { MdHistory } from "react-icons/md";
 import { FaUserGear } from "react-icons/fa6";
 import { logoutAction } from "../../features/customer/customerAction";
+import logo from "../../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const Header = ({ toggleSidebar, isMobile }) => {
+const Header = ({ toggleSidebar }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { customer } = useSelector((store) => store.customerStore);
@@ -35,22 +36,11 @@ const Header = ({ toggleSidebar, isMobile }) => {
   };
 
   return (
-    <Navbar
-      expand="lg"
-      bg="dark"
-      variant="dark"
-      className="py-2"
-      fixed="top"
-      style={{
-        height: "70px",
-        minHeight: "70px",
-      }}
-    >
+    <Navbar expand="lg" bg="dark" variant="dark" fixed="top" className="py-3">
       <Container
         fluid
         className="d-flex justify-content-between align-items-center mx-3"
       >
-        {/* LEFT: Hamburger + Brand */}
         <div className="d-flex align-items-center gap-3">
           <Button
             variant="link"
@@ -60,32 +50,19 @@ const Header = ({ toggleSidebar, isMobile }) => {
           >
             <FaBars size={22} />
           </Button>
-
           <Navbar.Brand as={Link} to="/" className="m-0 p-0">
-            <img
-              src="/assets/favicon.ico"
-              alt="Brand Logo"
-              style={{ height: "40px" }}
-            />
+            <img src={logo} alt="Brand Logo" style={{ height: "40px" }} />
           </Navbar.Brand>
         </div>
 
-        {/* RIGHT: Navigation */}
         <Nav className="d-flex gap-3 align-items-center">
-          <Nav.Link as={Link} to="/">
-            Home
-          </Nav.Link>
-
           {customer && customer._id ? (
             <>
-              {/* Show Dashboard outside dropdown on desktop only */}
-              {!isMobile && (
-                <Nav.Link as={Link} to="/dashboard">
-                  Dashboard
-                </Nav.Link>
-              )}
+              {/* Dashboard link outside dropdown */}
+              <Nav.Link as={Link} to="/dashboard">
+                Dashboard
+              </Nav.Link>
 
-              {/* Cart Icon with Counter */}
               <Nav.Link as={Link} to="/cart" className="position-relative">
                 <FaShoppingCart size={20} />
                 {tempCart > 0 && (
@@ -99,19 +76,13 @@ const Header = ({ toggleSidebar, isMobile }) => {
                 )}
               </Nav.Link>
 
-              {/* User Dropdown */}
               <Dropdown align="end">
                 <Dropdown.Toggle variant="link" className="text-white p-0">
                   <FaUserCircle size={22} />
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu align="end" variant="dark">
-                  {/* Move Dashboard here on mobile */}
-                  {isMobile && (
-                    <Dropdown.Item as={Link} to="/dashboard">
-                      Dashboard
-                    </Dropdown.Item>
-                  )}
+                  <Dropdown.Header>Welcome, {customer?.fname}</Dropdown.Header>
                   <Dropdown.Item as={Link} to="/account">
                     <FaUserGear /> Manage Account
                   </Dropdown.Item>
@@ -126,7 +97,6 @@ const Header = ({ toggleSidebar, isMobile }) => {
             </>
           ) : (
             <>
-              {/* Login Button */}
               <Button
                 as={Link}
                 to="/auth?tab=login"
@@ -136,7 +106,6 @@ const Header = ({ toggleSidebar, isMobile }) => {
                 Login
               </Button>
 
-              {/* Cart for guest */}
               <Nav.Link as={Link} to="/cart" className="position-relative">
                 <FaShoppingCart size={20} />
                 {tempCart > 0 && (

@@ -2,7 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 
 const Category = () => {
-  const { categoryName } = useParams(); //Shows the sub-category, replaces the useParams with the sub-categories: Laptop, Wearables etc. etc.
+  const { slug } = useParams(); //Shows the sub-category, replaces the useParams with the sub-categories: Laptop, Wearables etc. etc.
 
   const filteredProducts = allProducts.filter(
     (product) => product.category.toLowerCase() === categoryName.toLowerCase()
