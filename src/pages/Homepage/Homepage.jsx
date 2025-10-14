@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link, Navigate } from "react-router-dom";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import {
   BsLightningCharge,
@@ -13,6 +13,9 @@ import {
   BsArrowRight,
   BsCart,
 } from "react-icons/bs";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../features/cart/cartSlice";
+import { toast } from "react-toastify";
 
 // Mock data – replace with your Supabase fetch
 const mockFeatured = [
@@ -73,6 +76,8 @@ const categories = [
 
 export default function Homepage() {
   const [featured, setFeatured] = useState([]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // TODO: To be replace with our data: setFeatured(data)
@@ -80,8 +85,17 @@ export default function Homepage() {
   }, []);
 
   const handleAddToCart = (p) => {
-    // TODO: wire to our cart
-    console.log("Add to cart", p.id);
+    const productToAdd = {
+      id: p.id,
+      name: p.name,
+      img: p.image_url,
+      // img: p.image[0],
+      price: p.price,
+    };
+
+    dispatch(addToCart(productToAdd));
+    toast.success(`${p.name} added to cart!`);
+    // navigate("/cart");
   };
 
   return (
