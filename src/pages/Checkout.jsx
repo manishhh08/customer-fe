@@ -6,17 +6,23 @@ import { toast } from "react-toastify";
 import { setPurchases } from "../features/purchase/purchaseSlice";
 import { clearCart } from "../features/cart/cartSlice";
 import { useState } from "react";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import StripePaymentForm from "../components/StripePaymentForm";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const Checkout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [paymentMethod, setPaymentMethod] = useState("creditCard");
+
   const { items: cartItems } = useSelector((state) => state.cartStore);
 
   const [form, setForm] = useState({
     name: "",
     email: "",
     address: "",
-    paymentMethod: "credit",
   });
 
   const subtotal = cartItems.reduce(
@@ -31,15 +37,9 @@ const Checkout = () => {
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-    if (!form.name || !form.email || !form.address) {
-      toast.error("Please fill in all fields");
-      return;
-    }
-
-    // Save to purchases slice
+  const handleOrderSuccess = () => {
     dispatch(
       setPurchases({
         customer: form,
@@ -48,12 +48,22 @@ const Checkout = () => {
         date: new Date().toISOString(),
       })
     );
-
-    // Clear the cart
     dispatch(clearCart());
-
     toast.success("Order placed successfully!");
     navigate("/thank-you");
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!form.name || !form.email || !form.address) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+    if (!validateEmail(form.email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    handleOrderSuccess();
   };
 
   if (cartItems.length === 0) {
@@ -67,14 +77,16 @@ const Checkout = () => {
 
   return (
     <Container className="py-5">
-      <h1 className="fw-bold mb-4">Checkout</h1>
       <Row>
         {/* Billing Details */}
-        <Col lg={8}>
+        <Col lg={7}>
           <Card className="shadow-sm mb-4">
+            <Card.Header as="h5" className="btn-neo text-white">
+              Customer Details
+            </Card.Header>
             <Card.Body>
-              <h4 className="mb-4">Billing Details</h4>
               <Form onSubmit={handleSubmit}>
+                {/* Customer Info */}
                 <Form.Group className="mb-3">
                   <Form.Label>Full Name</Form.Label>
                   <Form.Control
@@ -83,6 +95,7 @@ const Checkout = () => {
                     value={form.name}
                     onChange={handleChange}
                     placeholder="Enter your full name"
+                    required
                   />
                 </Form.Group>
 
@@ -94,44 +107,82 @@ const Checkout = () => {
                     value={form.email}
                     onChange={handleChange}
                     placeholder="you@example.com"
+                    required
                   />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
                   <Form.Label>Address</Form.Label>
                   <Form.Control
-                    as="textarea"
+                    type="text"
                     name="address"
                     value={form.address}
                     onChange={handleChange}
-                    rows={3}
                     placeholder="Enter your shipping address"
+                    required
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3">
-                  <Form.Label>Payment Method</Form.Label>
-                  <Form.Select
-                    name="paymentMethod"
-                    value={form.paymentMethod}
-                    onChange={handleChange}
-                  >
-                    <option value="credit">Credit Card</option>
-                    <option value="paypal">PayPal</option>
-                    <option value="cash">Cash on Delivery</option>
-                  </Form.Select>
-                </Form.Group>
-
-                <Button type="submit" variant="primary" className="w-100 mt-3">
-                  Confirm Order
-                </Button>
+                {/* Payment Method */}
+                <h5 className="mt-4 mb-3">Payment Method</h5>
+                <Form.Check
+                  type="radio"
+                  label="Credit Card"
+                  name="paymentMethod"
+                  id="creditCard"
+                  value="creditCard"
+                  checked={paymentMethod === "creditCard"}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                  className="mb-2"
+                />
+                <Form.Check
+                  type="radio"
+                  label="PayPal"
+                  name="paymentMethod"
+                  id="paypal"
+                  value="paypal"
+                  checked={paymentMethod === "paypal"}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                  className="mb-2"
+                />
+                <Form.Check
+                  type="radio"
+                  label="Cash on Delivery"
+                  name="paymentMethod"
+                  id="cod"
+                  value="cod"
+                  checked={paymentMethod === "cod"}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                />
               </Form>
+              {/* Render Stripe if credit card selected */}
+              {paymentMethod === "creditCard" && (
+                <div className="mt-4">
+                  <Elements stripe={stripePromise}>
+                    <StripePaymentForm
+                      total={total}
+                      onPaymentSuccess={handleOrderSuccess}
+                    />
+                  </Elements>
+                </div>
+              )}
+
+              {/* Other payment methods */}
+              {paymentMethod !== "creditCard" && (
+                <Button
+                  type="submit"
+                  bsPrefix="as"
+                  className="w-100 mt-5 rounded-4 btn-neo"
+                >
+                  Pay Now
+                </Button>
+              )}
             </Card.Body>
           </Card>
         </Col>
 
         {/* Order Summary */}
-        <Col lg={4}>
+        <Col lg={5}>
           <Card className="shadow-sm sticky-top" style={{ top: "2rem" }}>
             <Card.Body>
               <h4 className="mb-4">Order Summary</h4>

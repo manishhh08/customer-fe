@@ -14,8 +14,9 @@ import "react-toastify/dist/ReactToastify.css";
 import Cart from "./pages/Cart";
 import ProductDetail from "./pages/ProductDetail";
 import { fetchAllCategoriesAction } from "./features/category/categoryAction";
-import Checkout from "./components/Checkout";
-import "react-toastify/dist/ReactToastify.css";
+import Checkout from "./pages/Checkout";
+import ThankYou from "./pages/ThankYou";
+// import { fetchAllCategoriesAction } from "./features/product/productAction.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -24,9 +25,9 @@ function App() {
     dispatch(getCustomerDetail());
   }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(fetchAllCategoriesAction());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchAllCategoriesAction());
+  // }, [dispatch]);
 
   return (
     <>
@@ -35,7 +36,6 @@ function App() {
           <Route index element={<Homepage />} />
           <Route path="auth" element={<AuthPage />} />
           <Route path="cart" element={<Cart />} />
-          <Route path="checkout" element={<Checkout />} />
         </Route>
 
         <Route
@@ -47,6 +47,8 @@ function App() {
         >
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="product" element={<ProductDetail />} />
+          <Route path="checkout" element={<Checkout />} />
+          <Route path="thank-you" element={<ThankYou />} />
         </Route>
       </Routes>
 

@@ -6,7 +6,6 @@ const SideBar = ({ categories, subcategories, isOpen, closeSidebar }) => {
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const sidebarRef = useRef();
 
-  // Close sidebar when clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
@@ -24,7 +23,7 @@ const SideBar = ({ categories, subcategories, isOpen, closeSidebar }) => {
       className="position-fixed top-0 h-100 bg-dark text-light"
       style={{
         width: "250px",
-        left: isOpen ? "0" : "-250px", // shift offscreen when closed
+        left: isOpen ? "0" : "-250px",
         transition: "left 0.25s ease",
         overflowX: "visible",
         zIndex: 1050,
@@ -44,7 +43,6 @@ const SideBar = ({ categories, subcategories, isOpen, closeSidebar }) => {
               style={{ cursor: "pointer" }}
             >
               <div className="d-flex align-items-center justify-content-between">
-                {/* Parent Category Link */}
                 <Link
                   to={`/category/${cat.slug}`}
                   className="text-decoration-none text-light flex-grow-1"
@@ -55,7 +53,6 @@ const SideBar = ({ categories, subcategories, isOpen, closeSidebar }) => {
                 {hasSub && <FaChevronRight style={{ flexShrink: 0 }} />}
               </div>
 
-              {/* Submenu */}
               {hasSub && (
                 <ul
                   style={{
@@ -87,7 +84,7 @@ const SideBar = ({ categories, subcategories, isOpen, closeSidebar }) => {
                       style={{ listStyle: "none" }}
                     >
                       <Link
-                        to={`/subcategory/${sub.slug}`}
+                        to={`/category/${cat.slug}/${sub.slug}`}
                         className="text-decoration-none text-light"
                       >
                         {sub.name}
