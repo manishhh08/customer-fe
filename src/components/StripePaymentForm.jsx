@@ -12,7 +12,7 @@ const StripePaymentForm = ({ total, onPaymentSuccess }) => {
 
   useEffect(() => {
     // Create payment intent when component mounts
-    const createPaymentIntent = async () => {
+    const paymentIntent = async () => {
       try {
         const { data } = await axios.post(
           `${
@@ -24,11 +24,12 @@ const StripePaymentForm = ({ total, onPaymentSuccess }) => {
           }
         );
         setClientSecret(data.clientSecret);
+        console.log(data.clientSecret);
       } catch (err) {
         toast.error("Failed to initialize payment");
       }
     };
-    createPaymentIntent();
+    paymentIntent();
   }, [total]);
 
   const handleSubmit = async (e) => {

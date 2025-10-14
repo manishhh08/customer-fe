@@ -53,7 +53,7 @@ const Checkout = () => {
     navigate("/thank-you");
   };
 
-  const handleManualSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.address) {
       toast.error("Please fill in all fields");
@@ -85,7 +85,7 @@ const Checkout = () => {
               Customer Details
             </Card.Header>
             <Card.Body>
-              <Form onSubmit={handleManualSubmit}>
+              <Form onSubmit={handleSubmit}>
                 {/* Customer Info */}
                 <Form.Group className="mb-3">
                   <Form.Label>Full Name</Form.Label>
@@ -154,30 +154,29 @@ const Checkout = () => {
                   checked={paymentMethod === "cod"}
                   onChange={(e) => setPaymentMethod(e.target.value)}
                 />
-
-                {/* Render Stripe if credit card selected */}
-                {paymentMethod === "creditCard" && (
-                  <div className="mt-4">
-                    <Elements stripe={stripePromise}>
-                      <StripePaymentForm
-                        total={total}
-                        onPaymentSuccess={handleOrderSuccess}
-                      />
-                    </Elements>
-                  </div>
-                )}
-
-                {/* Other payment methods */}
-                {paymentMethod !== "creditCard" && (
-                  <Button
-                    type="submit"
-                    bsPrefix="as"
-                    className="w-100 mt-5 rounded-4 btn-neo"
-                  >
-                    Pay Now
-                  </Button>
-                )}
               </Form>
+              {/* Render Stripe if credit card selected */}
+              {paymentMethod === "creditCard" && (
+                <div className="mt-4">
+                  <Elements stripe={stripePromise}>
+                    <StripePaymentForm
+                      total={total}
+                      onPaymentSuccess={handleOrderSuccess}
+                    />
+                  </Elements>
+                </div>
+              )}
+
+              {/* Other payment methods */}
+              {paymentMethod !== "creditCard" && (
+                <Button
+                  type="submit"
+                  bsPrefix="as"
+                  className="w-100 mt-5 rounded-4 btn-neo"
+                >
+                  Pay Now
+                </Button>
+              )}
             </Card.Body>
           </Card>
         </Col>

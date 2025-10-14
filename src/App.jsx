@@ -14,7 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Cart from "./pages/Cart";
 import ProductDetail from "./pages/ProductDetail";
 import Checkout from "./components/Checkout";
-import CheckoutForm from "./pages/RandomPage";
+
 // import { fetchAllCategoriesAction } from "./features/product/productAction.js";
 
 function App() {
@@ -36,7 +36,6 @@ function App() {
           <Route path="auth" element={<AuthPage />} />
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
-          <Route path="random" element={<CheckoutForm />} />
         </Route>
 
         <Route
