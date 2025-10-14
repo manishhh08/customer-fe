@@ -16,12 +16,14 @@ import ProductDetail from "./pages/ProductDetail";
 import { fetchAllCategoriesAction } from "./features/category/categoryAction";
 import Checkout from "./pages/Checkout";
 import ThankYou from "./pages/ThankYou";
+// import { fetchAllCategoriesAction } from "./features/product/productAction.js";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getCustomerDetail());
+    // dispatch(fetchAllProductsAction());
   }, [dispatch]);
 
   useEffect(() => {
