@@ -76,8 +76,6 @@ export default function Homepage() {
   const [featured, setFeatured] = useState([]);
   const { products } = useSelector((state) => state.productStore);
 
-  useEffect(() => {}, []);
-
   const handleAddToCart = (p) => {
     // TODO: wire to our cart
     console.log("Add to cart", p.id);
