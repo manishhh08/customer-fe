@@ -89,12 +89,13 @@ export default function Homepage() {
       id: p.id,
       name: p.name,
       img: p.image_url,
+      // img: p.image[0],
       price: p.price,
     };
 
     dispatch(addToCart(productToAdd));
     toast.success(`${p.name} added to cart!`);
-    navigate("/cart");
+    // navigate("/cart");
   };
 
   return (
