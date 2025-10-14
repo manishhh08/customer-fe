@@ -38,7 +38,7 @@
 .btn-neo {
   border: 0;
   padding: 0.5rem 1rem;
-  background-image: linear-gradient(
+  background: linear-gradient(
     90deg,
     var(--neo-start),
     var(--neo-mid),
