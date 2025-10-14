@@ -65,7 +65,7 @@ const LayoutWithSidebar = () => {
       <Header toggleSidebar={toggleSidebar} />
 
       {/* Content Row */}
-      <div className="d-flex flex-grow-1" style={{ marginTop: "70px" }}>
+      <div className="d-flex flex-grow-1" style={{ marginTop: "72px" }}>
         {/* Sidebar */}
         <SideBar
           isOpen={isSidebarOpen}

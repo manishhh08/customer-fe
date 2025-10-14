@@ -36,7 +36,7 @@ const Header = ({ toggleSidebar }) => {
   };
 
   return (
-    <Navbar expand="lg" bg="dark" variant="dark" fixed="top" className="pt-3">
+    <Navbar expand="lg" bg="dark" variant="dark" fixed="top" className="py-3">
       <Container
         fluid
         className="d-flex justify-content-between align-items-center mx-3"
