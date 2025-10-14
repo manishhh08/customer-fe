@@ -16,6 +16,7 @@ import ProductDetail from "./pages/ProductDetail";
 import { fetchAllCategoriesAction } from "./features/category/categoryAction";
 import Checkout from "./components/Checkout";
 import "react-toastify/dist/ReactToastify.css";
+import Category from "./pages/Category/Category";
 
 function App() {
   const dispatch = useDispatch();
@@ -34,6 +35,10 @@ function App() {
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<Homepage />} />
           <Route path="auth" element={<AuthPage />} />
+
+          {/* Instead of creating multiple static routes (listing each routes), creating a dynamic route which handles all the categories */}
+          <Route path="category/:categoryName" element={<Category />} />
+
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
         </Route>

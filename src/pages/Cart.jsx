@@ -53,7 +53,7 @@ const Cart = () => {
 
   const handleRemove = (id) => {
     dispatch(removeFromCart(id));
-    toast.info("Item removed from cart");
+    toast.info("Item removed from cart", {});
   };
 
   const subtotal = cartItems.reduce(

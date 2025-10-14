@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import product from "../assets/product.webp";
 import { Button, Col, Row, Tab, Tabs, Container } from "react-bootstrap";
 import { useSelector } from "react-redux";
@@ -8,7 +8,14 @@ import { BsArrowLeft } from "react-icons/bs";
 const ProductDetail = () => {
   const { products } = useSelector((store) => store.productStore);
   const [myRating, setMyRating] = useState(0);
-
+  const { slug } = useParams();
+  const [product, setProducts] = useState({});
+  useEffect(() => {
+    const foundProducts = products.find((product) => {
+      product.slug === slug;
+    });
+    setProducts(foundProducts);
+  }, [products]);
   return (
     <div className="bg-dark text-light w-100">
       <section className="hero-wrap py-5 py-md-6">
@@ -41,7 +48,7 @@ const ProductDetail = () => {
 
             <Col md={6}>
               <div className="d-flex flex-column justify-content-center align-items-start h-100">
-                <h2 className="mb-2">{product.name || "Gadget"}</h2>
+                <h2 className="mb-2">{product.name}</h2>
                 <p className="mb-3">{product.description}</p>
 
                 {/* Interactive Stars */}

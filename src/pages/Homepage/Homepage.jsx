@@ -94,7 +94,12 @@ export default function Homepage() {
     };
 
     dispatch(addToCart(productToAdd));
-    toast.success(`${p.name} added to cart!`);
+
+    toast.success(` Item added to cart!`, {
+      theme: "dark", // makes the toast dark
+      position: "top-right", // optional
+      autoClose: 3000, // optional
+    });
     // navigate("/cart");
   };
 
@@ -208,7 +213,7 @@ export default function Homepage() {
               <Col xs={12} md={6} lg={3} key={p.id}>
                 <div className="card-neo rounded-4 h-100 overflow-hidden">
                   <Link
-                    to={`/product/${p.id}`}
+                    to={`/product/${p.slug}`}
                     className="position-relative featured-media overflow-hidden d-block"
                     aria-label={`Open ${p.name}`}
                   >
@@ -291,7 +296,7 @@ export default function Homepage() {
             {categories.map((c) => (
               <Col xs={6} md={4} lg={3} key={c.name}>
                 <Link
-                  to="/products"
+                  to={`/category/${c.name.toLowerCase()}`}
                   bsPrefix="neo"
                   className="text-decoration-none"
                 >
