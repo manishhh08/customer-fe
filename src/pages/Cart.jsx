@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 const Cart = () => {
   const dispatch = useDispatch();
   const { items: cartItems } = useSelector((state) => state.cartStore);
+  const { customer } = useSelector((state) => state.customerStore);
 
   const navigate = useNavigate();
 
@@ -64,6 +65,11 @@ const Cart = () => {
   const total = subtotal + tax;
 
   const handleCheckout = () => {
+    if (!customer) {
+      toast.info("Please login to continue to checkout");
+      navigate("/auth?redirect=/checkout");
+      return;
+    }
     navigate("/checkout");
   };
 
@@ -148,8 +154,8 @@ const Cart = () => {
                 <span>${total.toFixed(2)}</span>
               </div>
               <Button
-                variant="primary"
-                className="w-100"
+                bsPrefix="neo"
+                className="w-100 btn-neo rounded-4"
                 onClick={handleCheckout}
               >
                 Proceed to Checkout

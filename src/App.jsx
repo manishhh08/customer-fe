@@ -13,9 +13,10 @@ import { getCustomerDetail } from "./features/customer/customerAction";
 import "react-toastify/dist/ReactToastify.css";
 import Cart from "./pages/Cart";
 import ProductDetail from "./pages/ProductDetail";
-import { fetchAllCategoriesAction } from "./features/category/categoryAction";
 import Checkout from "./pages/Checkout";
 import ThankYou from "./pages/ThankYou";
+
+// import { fetchAllCategoriesAction } from "./features/product/productAction.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -24,9 +25,9 @@ function App() {
     dispatch(getCustomerDetail());
   }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(fetchAllCategoriesAction());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchAllCategoriesAction());
+  // }, [dispatch]);
 
   return (
     <>
