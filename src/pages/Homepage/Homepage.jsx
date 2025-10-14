@@ -87,6 +87,23 @@ export default function Homepage() {
     console.log("Add to cart", p.id);
   };
 
+  const getCreatedAt = (p) => {
+    if (p?.createdAt) return new Date(p.createdAt);
+    if (p?._id) {
+      const ts = parseInt(String(p._id).substring(0, 8), 16) * 1000;
+      return new Date(ts);
+    }
+    return null;
+  };
+
+  const isNew = (p, days = 14) => {
+    const d = getCreatedAt(p);
+    if (!d) return false;
+    const now = Date.now();
+    const ageDays = (now - d.getTime()) / (1000 * 60 * 60 * 24);
+    return ageDays <= days;
+  };
+
   return (
     <div className="bg-dark text-light">
       {/* HERO */}
@@ -174,12 +191,7 @@ export default function Homepage() {
       </section>
 
       {/* FEATURED */}
-      <section
-        className="py-5"
-        style={{
-          background: "linear-gradient(180deg, var(--neo-d1), var(--neo-d2))",
-        }}
-      >
+      <section className="py-5" style={{ background: "var(--neo-d1)" }}>
         <Container>
           <div className="text-center mb-4">
             <span className="chip mb-2 d-inline-block">
@@ -266,13 +278,140 @@ export default function Homepage() {
         </Container>
       </section>
 
+      {/* NEW ARRIVALS */}
+      <section className="py-5" style={{ background: "var(--neo-d1)" }}>
+        <Container>
+          <div className="text-center mb-4">
+            <span className="chip mb-2 d-inline-block">Just In</span>
+            <h2 className="display-6 fw-bold">New Arrivals</h2>
+            <p className="text-white-50">Fresh drops you’ll love</p>
+          </div>
+          <Row className="g-4">
+            {products?.slice(0, 4).map((p) => (
+              <Col xs={12} sm={6} lg={3} key={p._id}>
+                <div className="card-neo rounded-4 h-100 overflow-hidden">
+                  <Link
+                    to={`/product/${p._id}`}
+                    className="position-relative featured-media overflow-hidden d-block media-wrap"
+                  >
+                    <img src={p.images} alt={p.name} className="img-fluid" />
+                    {isNew(p, 14) && (
+                      <span className="position-absolute top-0 end-0 m-3 chip tag-arrival fw-semibold z-2">
+                        New Arrival
+                      </span>
+                    )}
+                  </Link>
+                  <div className="p-3">
+                    <h6 className="mb-1">
+                      <Link
+                        to={`/product/${p._id}`}
+                        className="link-title text-decoration-none"
+                      >
+                        {p.name}
+                      </Link>
+                    </h6>
+                    <div className="h6 m-0">${Number(p.price).toFixed(2)}</div>
+                  </div>
+                </div>
+              </Col>
+            ))}
+          </Row>
+        </Container>
+      </section>
+
+      {/* BEST SELLERS */}
+      <section className="py-5" style={{ background: "var(--neo-d1)" }}>
+        <Container>
+          <div className="text-center mb-4">
+            <h2 className="display-6 fw-bold">Best Sellers</h2>
+            <p className="text-white-50">Customer favorites right now</p>
+          </div>
+          <Row className="g-4">
+            {(products || []).slice(0, 4).map((p) => (
+              <Col xs={12} md={6} lg={3} key={p._id}>
+                <div className="card-neo rounded-4 h-100 overflow-hidden">
+                  <Link
+                    to={`/product/${p._id}`}
+                    className="position-relative featured-media overflow-hidden d-block"
+                    aria-label={`Open ${p.name}`}
+                  >
+                    <img
+                      src={
+                        p.images ||
+                        "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1600&auto=format&fit=crop"
+                      }
+                      alt={p.name}
+                    />
+                    <span className="position-absolute top-0 end-0 m-3 chip tag-best fw-semibold z-2">
+                      Best Seller
+                    </span>
+                  </Link>
+
+                  <div className="d-flex flex-column p-4">
+                    <h5 className="mb-1">
+                      <Link
+                        to={`/product/${p._id}`}
+                        className="text-decoration-none link-title"
+                      >
+                        {p.name}
+                      </Link>
+                    </h5>
+                    <p className="small text-white-50 mb-3">{p.description}</p>
+
+                    <div className="d-flex align-items-baseline gap-2 mb-3">
+                      <div className="h4 m-0">${p.price.toFixed(2)}</div>
+                    </div>
+
+                    <Button
+                      onClick={() => handleAddToCart(p)}
+                      bsPrefix="neo"
+                      className="btn-neo rounded-4 w-100 d-inline-flex align-items-center justify-content-center gap-2 mt-auto"
+                    >
+                      <BsCart /> Add to Cart
+                    </Button>
+                  </div>
+                </div>
+              </Col>
+            ))}
+          </Row>
+        </Container>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="py-5" style={{ background: "var(--neo-d1)" }}>
+        <Container>
+          <h2 className="display-6 fw-bold text-center mb-4">
+            What Customers Say
+          </h2>
+          <Row className="g-4">
+            {[
+              {
+                name: "Alex P.",
+                text: "Super fast delivery and great quality.",
+              },
+              {
+                name: "Jamie L.",
+                text: "Love the UI and the deals each week!",
+              },
+              {
+                name: "Priya K.",
+                text: "Support was quick to help me choose.",
+              },
+            ].map((t) => (
+              <Col xs={12} md={4} key={t.name}>
+                <div className="p-4 rounded-4 card-neo h-100">
+                  <div className="mb-2">★★★★★</div>
+                  <p className="mb-2 text-white-50">{t.text}</p>
+                  <div className="small text-neo fw-semibold">{t.name}</div>
+                </div>
+              </Col>
+            ))}
+          </Row>
+        </Container>
+      </section>
+
       {/* CATEGORIES */}
-      <section
-        className="py-5"
-        style={{
-          background: "linear-gradient(180deg, var(--neo-d2), var(--neo-d1))",
-        }}
-      >
+      <section className="py-5" style={{ background: "var(--neo-d1)" }}>
         <Container>
           <div className="text-center mb-4">
             <h2 className="display-6 fw-bold">Shop by Category</h2>
