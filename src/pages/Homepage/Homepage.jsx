@@ -13,7 +13,8 @@ import {
   BsArrowRight,
   BsCart,
 } from "react-icons/bs";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllProductsAction } from "../../features/product/productAction";
 
 // // Mock data – replace with your Supabase fetch
 // const mockFeatured = [
@@ -73,8 +74,13 @@ const categories = [
 ];
 
 export default function Homepage() {
+  const dispatch = useDispatch();
   const [featured, setFeatured] = useState([]);
-  const { products } = useSelector((state) => state.productStore);
+  const { products } = useSelector((store) => store.productStore);
+
+  useEffect(() => {
+    dispatch(fetchAllProductsAction());
+  }, [dispatch]);
 
   const handleAddToCart = (p) => {
     // TODO: wire to our cart
@@ -187,7 +193,7 @@ export default function Homepage() {
           </div>
 
           <Row className="g-4">
-            {products.map((p) => (
+            {products?.slice(0, 4).map((p) => (
               <Col xs={12} md={6} lg={3} key={p.id}>
                 <div className="card-neo rounded-4 h-100 overflow-hidden">
                   <Link
@@ -203,12 +209,11 @@ export default function Homepage() {
                       alt={p.name}
                     />
 
-                    {p.hot && (
-                      <span className="position-absolute top-0 end-0 m-3 chip tag-hot fw-semibold z-2">
-                        HOT
-                      </span>
-                    )}
-                    {p.inStock && (
+                    <span className="position-absolute top-0 end-0 m-3 chip tag-hot fw-semibold z-2">
+                      HOT
+                    </span>
+
+                    {p.stock && (
                       <span className="position-absolute bottom-0 start-0 m-3 chip tag-stock z-2">
                         In Stock
                       </span>

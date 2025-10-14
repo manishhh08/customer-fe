@@ -1,11 +1,10 @@
-import { fetchActiveProducts, fetchAllProducts } from "./productAPI";
+import { fetchAllProducts } from "./productAPI";
 import { setProducts } from "./productSlice";
 
 
 export const fetchAllProductsAction = () => async (dispatch) => {
     try {
-        const response = await fetchActiveProducts();
-        console.log("Fetched products:", response);
+        const response = await fetchAllProducts();
         if (response.status === "success") {
             dispatch(setProducts(response.products));
         }
