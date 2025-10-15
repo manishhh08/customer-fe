@@ -18,7 +18,6 @@ import { fetchAllCategoriesAction } from "./features/category/categoryAction";
 import Category from "./pages/Category/Category";
 import Checkout from "./pages/Checkout";
 import ThankYou from "./pages/ThankYou";
-// import { fetchAllCategoriesAction } from "./features/product/productAction.js";
 
 function App() {
   const dispatch = useDispatch();
