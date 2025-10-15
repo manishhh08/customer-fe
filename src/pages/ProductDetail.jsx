@@ -1,20 +1,26 @@
 import React, { useEffect, useState } from "react";
 import product from "../assets/product.webp";
 import { Button, Col, Row, Tab, Tabs, Container } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Stars } from "../components/stars/Stars";
 import { BsArrowLeft } from "react-icons/bs";
+import { useParams } from "react-router-dom";
+import { fetchAllProductsAction } from "../features/product/productAction";
 
 const ProductDetail = () => {
   const { products } = useSelector((store) => store.productStore);
   const [myRating, setMyRating] = useState(0);
   const { slug } = useParams();
-  const [product, setProducts] = useState({});
+  const [product, setProduct] = useState({});
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    const foundProducts = products.find((product) => {
-      product.slug === slug;
-    });
-    setProducts(foundProducts);
+    dispatch(fetchAllProductsAction());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const foundProduct = products.find((product) => product.slug === slug);
+    setProduct(foundProduct);
   }, [products]);
   return (
     <div className="bg-dark text-light w-100">
@@ -30,16 +36,16 @@ const ProductDetail = () => {
           </Button>
 
           {/* Page Title */}
-          <h3 className="display-4 text-center fw-bold lh-tight mb-5">
+          {/* <h3 className="display-4 text-center fw-bold lh-tight mb-5">
             Product Landing
-          </h3>
+          </h3> */}
 
           {/* Product Section */}
           <Row className="g-4 align-items-center">
             <Col md={6} className="d-flex justify-content-center">
               <div style={{ maxWidth: "450px", width: "100%" }}>
                 <img
-                  src={product}
+                  src={product?.images}
                   alt="Product"
                   className="img-fluid rounded shadow"
                 />
@@ -48,8 +54,8 @@ const ProductDetail = () => {
 
             <Col md={6}>
               <div className="d-flex flex-column justify-content-center align-items-start h-100">
-                <h2 className="mb-2">{product.name}</h2>
-                <p className="mb-3">{product.description}</p>
+                <h2 className="mb-2">{product?.name}</h2>
+                <p className="mb-3">{product?.description}</p>
 
                 {/* Interactive Stars */}
                 <div className="mb-3">
