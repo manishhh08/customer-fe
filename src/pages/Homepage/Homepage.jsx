@@ -209,7 +209,7 @@ export default function Homepage() {
               <Col xs={12} md={6} lg={3} key={p.id}>
                 <div className="card-neo rounded-4 h-100 overflow-hidden">
                   <Link
-                    to={`/product/${p._id}`}
+                    to={`/product/${p.slug}`}
                     className="position-relative featured-media overflow-hidden d-block"
                     aria-label={`Open ${p.name}`}
                   >

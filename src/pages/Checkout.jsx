@@ -39,18 +39,32 @@ const Checkout = () => {
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
+  // const handleOrderSuccess = () => {
+  //   dispatch(
+  //     setPurchases({
+  //       customer: form,
+  //       orderItems: cartItems,
+  //       total,
+  //       date: new Date().toISOString(),
+  //     })
+  //   );
+  //   dispatch(clearCart());
+  //   toast.success("Order placed successfully!");
+  //   navigate("/thank-you");
+  // };
   const handleOrderSuccess = () => {
-    dispatch(
-      setPurchases({
-        customer: form,
-        orderItems: cartItems,
-        total,
-        date: new Date().toISOString(),
-      })
-    );
+    const orderData = {
+      customer: form,
+      orderItems: cartItems,
+      total,
+      date: new Date().toISOString(),
+    };
+
+    dispatch(setPurchases(orderData));
     dispatch(clearCart());
     toast.success("Order placed successfully!");
-    navigate("/thank-you");
+
+    navigate("/thank-you", { state: { order: orderData } });
   };
 
   const handleSubmit = (e) => {
