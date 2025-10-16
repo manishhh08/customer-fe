@@ -35,11 +35,6 @@ const ProductDetail = () => {
             <BsArrowLeft className="me-2" /> Back to Products
           </Button>
 
-          {/* Page Title */}
-          {/* <h3 className="display-4 text-center fw-bold lh-tight mb-5">
-            Product Landing
-          </h3> */}
-
           {/* Product Section */}
           <Row className="g-4 align-items-center">
             <Col md={6} className="d-flex justify-content-center">
