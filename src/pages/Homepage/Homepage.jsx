@@ -28,8 +28,7 @@ export default function Homepage() {
   }, [dispatch]);
 
   const handleAddToCart = (p) => {
-    // TODO: wire to our cart
-    console.log("Add to cart", p.id);
+    dispatch(addToCart(p));
   };
 
   const getCreatedAt = (p) => {

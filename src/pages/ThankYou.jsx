@@ -79,10 +79,15 @@ const ThankYou = () => {
                   key={index}
                   className="d-flex justify-content-between mb-2 border-bottom pb-1"
                 >
-                  <span>
+                  <span
+                    className="text-truncate me-2"
+                    style={{ maxWidth: "70%" }}
+                  >
                     {item.name} × {item.quantity}
                   </span>
-                  <span>${(item.price * item.quantity).toFixed(2)}</span>
+                  <span className="flex-shrink-0">
+                    ${(item.price * item.quantity).toFixed(2)}
+                  </span>
                 </div>
               ))}
             </div>
@@ -91,7 +96,7 @@ const ThankYou = () => {
 
         <Button
           onClick={() => navigate("/")}
-          className="btn-neo rounded-4 px-4 py-2 w-50 mx-auto"
+          className="btn-neo rounded-4 px-4 py-2 w-25 mx-auto"
         >
           Go to Homepage
         </Button>

@@ -1,11 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const savedCart = JSON.parse(localStorage.getItem("cartItems")) || [];
+const loadCartFromStorage = () => {
+  try {
+    const stored = localStorage.getItem("cartItems");
+    if (!stored || stored === "undefined" || stored === "null") {
+      return [];
+    }
+    return JSON.parse(stored);
+  } catch (error) {
+    console.error("Error parsing cartItems from localStorage:", error);
+    localStorage.removeItem("cartItems");
+    return [];
+  }
+};
 
 const initialState = {
-  items: savedCart,
-  loading: false,
-  error: null,
+  items: loadCartFromStorage(),
 };
 
 const cartSlice = createSlice({
@@ -18,7 +28,7 @@ const cartSlice = createSlice({
     },
     addToCart: (state, action) => {
       const item = action.payload;
-      const existingItem = state.items.find((i) => i.id === item.id);
+      const existingItem = state.items.find((i) => i._id === item._id);
 
       if (existingItem) {
         existingItem.quantity += 1;
@@ -28,12 +38,12 @@ const cartSlice = createSlice({
       localStorage.setItem("cartItems", JSON.stringify(state.items));
     },
     removeFromCart: (state, action) => {
-      state.items = state.items.filter((i) => i.id !== action.payload);
+      state.items = state.items.filter((i) => i._id !== action.payload);
       localStorage.setItem("cartItems", JSON.stringify(state.items));
     },
     updateQuantity: (state, action) => {
       const { id, change } = action.payload;
-      const item = state.items.find((i) => i.id === id);
+      const item = state.items.find((i) => i._id === id);
       if (item) {
         item.quantity = Math.max(1, item.quantity + change);
       }
@@ -41,7 +51,7 @@ const cartSlice = createSlice({
     },
     clearCart: (state) => {
       state.items = [];
-      localStorage.setItem("cartItems", JSON.stringify(state.items));
+      localStorage.removeItem("cartItems");
     },
   },
 });
