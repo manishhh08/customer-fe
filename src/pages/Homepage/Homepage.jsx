@@ -15,69 +15,14 @@ import {
 } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllProductsAction } from "../../features/product/productAction";
-
-// // Mock data – replace with your Supabase fetch
-// const mockFeatured = [
-//   {
-//     id: "1",
-//     name: "ProPhone X1",
-//     description:
-//       "Latest flagship smartphone with AI camera and 5G connectivity",
-//     price: 999.99,
-//     compareAt: 1299.99,
-//     image_url:
-//       "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1600&auto=format&fit=crop",
-//     hot: true,
-//     inStock: true,
-//   },
-//   {
-//     id: "2",
-//     name: "UltraBook Pro 15",
-//     description: "Powerful laptop with M-series chip and stunning display",
-//     price: 1899.99,
-//     compareAt: 2499.99,
-//     image_url:
-//       "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1600&auto=format&fit=crop",
-//     hot: true,
-//     inStock: true,
-//   },
-//   {
-//     id: "3",
-//     name: "AirSound Pro",
-//     description: "Premium wireless earbuds with active noise cancellation",
-//     price: 249.99,
-//     compareAt: 299.99,
-//     image_url:
-//       "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=1600&auto=format&fit=crop",
-//     hot: true,
-//     inStock: true,
-//   },
-//   {
-//     id: "4",
-//     name: "FitWatch Series 9",
-//     description: "Advanced fitness tracker with health monitoring",
-//     price: 399.99,
-//     compareAt: 519.99,
-//     image_url:
-//       "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1600&q=80",
-//     hot: true,
-//     inStock: true,
-//   },
-// ];
-
-const categories = [
-  { name: "Smartphones", icon: <BsPhone /> },
-  { name: "Laptops", icon: <BsLaptop /> },
-  // { name: "Audio", icon: <BsHeadphones /> },
-  { name: "Wearables", icon: <BsSmartwatch /> },
-  { name: "Accessories", icon: <BsBoxSeam /> },
-];
+import { addToCart } from "../../features/cart/cartSlice";
+import { toast } from "react-toastify";
 
 export default function Homepage() {
   const dispatch = useDispatch();
   const [featured, setFeatured] = useState([]);
   const { products } = useSelector((store) => store.productStore);
-
+  const { categories } = useSelector((store) => store.categoryStore);
   useEffect(() => {
     dispatch(fetchAllProductsAction());
   }, [dispatch]);
@@ -206,7 +151,7 @@ export default function Homepage() {
 
           <Row className="g-4">
             {products?.slice(0, 4).map((p) => (
-              <Col xs={12} md={6} lg={3} key={p.id}>
+              <Col xs={12} md={6} lg={3} key={p._id}>
                 <div className="card-neo rounded-4 h-100 overflow-hidden">
                   <Link
                     to={`/product/${p.slug}`}
@@ -421,10 +366,12 @@ export default function Homepage() {
           </div>
 
           <Row className="g-3 g-md-4">
-            {categories.map((c) => (
+            {categories?.map((c) => (
               <Col xs={6} md={4} lg={3} key={c.name}>
                 <Link
-                  to="/products"
+                  // to={`/category/${c.name.toLowerCase()}`}
+                  // bsPrefix="neo"
+                  to={`/category/${c.slug}`}
                   bsprefix="neo"
                   className="text-decoration-none"
                 >
