@@ -27,9 +27,9 @@ function App() {
     // dispatch(fetchAllProductsAction());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   dispatch(fetchAllCategoriesAction());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchAllCategoriesAction());
+  }, [dispatch]);
 
   return (
     <>

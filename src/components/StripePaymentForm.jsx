@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import {
+  useStripe,
+  useElements,
+  CardElement,
+  PaymentElement,
+} from "@stripe/react-stripe-js";
 import { Button } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
