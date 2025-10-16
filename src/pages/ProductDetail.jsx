@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-// import product from "../assets/product.webp";
+import product from "../assets/product.webp";
 import { Button, Col, Row, Tab, Tabs, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Stars } from "../components/stars/Stars";
