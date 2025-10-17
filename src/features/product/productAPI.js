@@ -7,6 +7,12 @@ export const fetchAllProducts = async () => {
   return apiProcessor({
     method: "get",
     url: `${apiUrl}/products`,
-    isPrivate: true,
+  });
+};
+
+export const getFeaturedProductsApi = async () => {
+  return apiProcessor({
+    method: "get",
+    url: `${apiUrl}/products/featured-products`,
   });
 };
