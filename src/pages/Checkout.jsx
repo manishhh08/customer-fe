@@ -202,7 +202,7 @@ const Checkout = () => {
               <h4 className="mb-4">Order Summary</h4>
               {cartItems.map((item) => (
                 <div
-                  key={item.id}
+                  key={item._id || item.slug}
                   className="d-flex justify-content-between mb-2"
                 >
                   <span>

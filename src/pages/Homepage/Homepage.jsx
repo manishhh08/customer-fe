@@ -133,6 +133,7 @@ export default function Homepage() {
       {/* FEATURED */}
       <section className="py-5" style={{ background: "var(--neo-d1)" }}>
         <CustomFeaturedArea
+          handleAddToCart={handleAddToCart}
           majorTitle="Hot Deals This Week"
           minorTitle="Featured Collection"
           titleDescription="Handpicked selection of the most popular and trending tech
@@ -144,6 +145,7 @@ export default function Homepage() {
       {/* NEW ARRIVALS */}
       <section className="py-5" style={{ background: "var(--neo-d1)" }}>
         <CustomFeaturedArea
+          handleAddToCart={handleAddToCart}
           majorTitle="New Arrivals"
           minorTitle="Just In"
           titleDescription="Fresh drops you’ll love"
@@ -154,6 +156,7 @@ export default function Homepage() {
       {/* BEST SELLERS */}
       <section className="py-5" style={{ background: "var(--neo-d1)" }}>
         <CustomFeaturedArea
+          handleAddToCart={handleAddToCart}
           majorTitle="Best Sellers"
           minorTitle="Our best selling products"
           titleDescription="Customer favorited right now"
