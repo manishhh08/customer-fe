@@ -11,6 +11,14 @@ export const createCustomer = async (obj) => {
   });
 };
 
+export const verifyEmailAPi = async (token, email) => {
+  return apiProcessor({
+    method: "POST",
+    url: `${apiUrl}/auth/verify`,
+    data: { token, email },
+  });
+};
+
 // login customer
 export const loginCustomer = async (obj) => {
   return apiProcessor({

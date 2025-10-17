@@ -1,20 +1,15 @@
-import { useEffect } from "react";
 import { Button, Card, Row, Col, Container, Image } from "react-bootstrap";
 import { Plus, Minus, Trash2, ShoppingCart } from "lucide-react";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  setCartItems,
-  removeFromCart,
-  updateQuantity,
-} from "../features/cart/cartSlice";
+import { removeFromCart, updateQuantity } from "../features/cart/cartSlice";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const { items: cartItems } = useSelector((state) => state.cartStore);
   const { customer } = useSelector((state) => state.customerStore);
-
   const navigate = useNavigate();
   const handleQuantity = (id, change) => {
     dispatch(updateQuantity({ id, change }));
@@ -22,7 +17,7 @@ const Cart = () => {
 
   const handleRemove = (id) => {
     dispatch(removeFromCart(id));
-    toast.info("Item removed from cart", {});
+    toast.info("Item removed from cart");
   };
 
   const subtotal = cartItems.reduce(
@@ -57,11 +52,11 @@ const Cart = () => {
       <Row>
         <Col lg={8}>
           {cartItems.map((item) => (
-            <Card key={item.id} className="mb-3 shadow-sm">
+            <Card key={item._id} className="mb-3 shadow-sm">
               <Card.Body>
                 <Row className="align-items-center">
                   <Col xs={3} md={2}>
-                    <Image src={item.img} alt={item.name} fluid rounded />
+                    <Image src={item.images} alt={item.name} fluid rounded />
                   </Col>
 
                   <Col xs={9} md={6}>
@@ -72,7 +67,7 @@ const Cart = () => {
                       <Button
                         variant="outline-secondary"
                         size="sm"
-                        onClick={() => handleQuantity(item.id, -1)}
+                        onClick={() => handleQuantity(item._id, -1)}
                       >
                         <Minus size={14} />
                       </Button>
@@ -80,7 +75,7 @@ const Cart = () => {
                       <Button
                         variant="outline-secondary"
                         size="sm"
-                        onClick={() => handleQuantity(item.id, 1)}
+                        onClick={() => handleQuantity(item._id, 1)}
                       >
                         <Plus size={14} />
                       </Button>
@@ -88,7 +83,7 @@ const Cart = () => {
                         variant="outline-danger"
                         size="sm"
                         className="ms-auto"
-                        onClick={() => handleRemove(item.id)}
+                        onClick={() => handleRemove(item._id)}
                       >
                         <Trash2 size={14} />
                       </Button>
@@ -122,23 +117,15 @@ const Cart = () => {
                 <span>${total.toFixed(2)}</span>
               </div>
 
-              {customer && customer._id ? (
-                <Button
-                  bsPrefix="neo"
-                  className="w-100 btn-neo rounded-4"
-                  onClick={handleCheckout}
-                >
-                  Proceed to Checkout
-                </Button>
-              ) : (
-                <Button
-                  bsPrefix="neo"
-                  className="w-100 btn-neo rounded-4"
-                  onClick={handleCheckout}
-                >
-                  Login to Checkout
-                </Button>
-              )}
+              <Button
+                bsPrefix="neo"
+                className="w-100 btn-neo rounded-4"
+                onClick={handleCheckout}
+              >
+                {customer && customer._id
+                  ? "Proceed to Checkout"
+                  : "Login to Checkout"}
+              </Button>
             </Card.Body>
           </Card>
         </Col>

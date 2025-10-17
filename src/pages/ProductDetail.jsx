@@ -6,6 +6,7 @@ import { Stars } from "../components/stars/Stars";
 import { BsArrowLeft } from "react-icons/bs";
 import { useParams } from "react-router-dom";
 import { fetchAllProductsAction } from "../features/product/productAction";
+import { addToCart } from "../features/cart/cartSlice";
 
 const ProductDetail = () => {
   const { products } = useSelector((store) => store.productStore);
@@ -22,6 +23,10 @@ const ProductDetail = () => {
     const foundProduct = products.find((product) => product.slug === slug);
     setProduct(foundProduct);
   }, [products]);
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
+  };
   return (
     <div className="bg-dark text-light w-100">
       <section className="hero-wrap py-5 py-md-6">
@@ -85,9 +90,11 @@ const ProductDetail = () => {
 
                 {/* Add to Cart */}
                 <Button
+                  type="submit"
                   size="lg"
                   bsPrefix="neo"
                   className="btn-neo rounded-4 px-4 d-inline-flex align-items-center mt-4"
+                  onClick={() => handleAddToCart(product)}
                 >
                   Add to Cart
                 </Button>
