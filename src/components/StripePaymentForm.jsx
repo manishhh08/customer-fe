@@ -1,14 +1,24 @@
 import { useEffect, useState } from "react";
-import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import {
+  useStripe,
+  useElements,
+  CardElement,
+  PaymentElement,
+} from "@stripe/react-stripe-js";
 import { Button } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { createNewOrderAction } from "../features/purchase/purchaseAction";
+import { clearCart } from "../features/cart/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const StripePaymentForm = ({ total, onPaymentSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
+  const { customer } = useSelector((store) => store.customerStore);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // Create payment intent when component mounts
@@ -35,27 +45,65 @@ const StripePaymentForm = ({ total, onPaymentSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!customer?._id) {
+      toast.error("Please login to place an order");
+      setLoading(false);
+      return;
+    }
     if (!stripe || !elements || !clientSecret) return;
 
     setLoading(true);
     const cardElement = elements.getElement(CardElement);
 
-    const { paymentIntent, error } = await stripe.confirmCardPayment(
-      clientSecret,
-      {
-        payment_method: {
-          card: cardElement,
-        },
+    try {
+      const { paymentIntent, error } = await stripe.confirmCardPayment(
+        clientSecret,
+        {
+          payment_method: { card: cardElement },
+        }
+      );
+
+      if (error) {
+        toast.error(error.message);
+        setLoading(false);
+        return;
       }
-    );
 
-    setLoading(false);
+      if (paymentIntent.status === "succeeded") {
+        toast.success("Payment successful!");
 
-    if (error) {
-      toast.error(error.message);
-    } else if (paymentIntent.status === "succeeded") {
-      toast.success("Payment successful!");
-      onPaymentSuccess(); // Trigger your checkout confirmation logic
+        const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+        if (cartItems.length === 0) {
+          toast.info("Cart is empty");
+          setLoading(false);
+          return;
+        }
+
+        const orderObject = {
+          customerId: customer._id,
+          items: cartItems.map((item) => ({
+            productId: item._id,
+            productName: item.name,
+            quantity: item.quantity,
+            price: item.price,
+          })),
+          total: total,
+          currency: "AUD",
+          paymentIntentId: paymentIntent.id,
+        };
+
+        await dispatch(createNewOrderAction(orderObject));
+
+        dispatch(clearCart());
+        localStorage.removeItem("cartItems");
+
+        onPaymentSuccess();
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Order creation failed");
+    } finally {
+      setLoading(false);
     }
   };
 

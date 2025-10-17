@@ -14,6 +14,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Cart from "./pages/Cart";
 import ProductDetail from "./pages/ProductDetail";
 import { fetchAllCategoriesAction } from "./features/category/categoryAction";
+
+import Category from "./pages/Category/Category";
 import Checkout from "./pages/Checkout";
 import ThankYou from "./pages/ThankYou";
 import Verify from "./pages/Verify/Verify";
@@ -26,16 +28,21 @@ function App() {
     // dispatch(fetchAllProductsAction());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   dispatch(fetchAllCategoriesAction());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchAllCategoriesAction());
+  }, [dispatch]);
 
   return (
     <>
       <Routes>
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<Homepage />} />
+          <Route path="product/:slug" element={<ProductDetail />} />
           <Route path="auth" element={<AuthPage />} />
+
+          {/* Instead of creating multiple static routes (listing each routes), creating a dynamic route which handles all the categories */}
+          <Route path="category/:slug" element={<Category />} />
+
           <Route path="cart" element={<Cart />} />
           <Route path="verify" element={<Verify />} />
         </Route>
@@ -48,7 +55,7 @@ function App() {
           }
         >
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="product" element={<ProductDetail />} />
+
           <Route path="checkout" element={<Checkout />} />
           <Route path="thank-you" element={<ThankYou />} />
         </Route>
