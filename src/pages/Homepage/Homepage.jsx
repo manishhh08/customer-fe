@@ -28,6 +28,18 @@ export default function Homepage() {
   }, [dispatch]);
 
   const handleAddToCart = (p) => {
+    // Sending the properly shaped object
+    const cartItem = {
+      id: p._id,
+      name: onabort.name,
+      price: p.price,
+      quantity: 1,
+      image:
+        Array.isArray(p.images) && p.images.length > 0
+          ? p.images[0]
+          : p.images || "https://via.placeholder.com/200",
+    };
+
     dispatch(addToCart(p));
   };
 
