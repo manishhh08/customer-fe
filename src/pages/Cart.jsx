@@ -1,51 +1,16 @@
-import { useEffect } from "react";
 import { Button, Card, Row, Col, Container, Image } from "react-bootstrap";
 import { Plus, Minus, Trash2, ShoppingCart } from "lucide-react";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  setCartItems,
-  removeFromCart,
-  updateQuantity,
-} from "../features/cart/cartSlice";
+import { removeFromCart, updateQuantity } from "../features/cart/cartSlice";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const { items: cartItems } = useSelector((state) => state.cartStore);
-
+  const { customer } = useSelector((state) => state.customerStore);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Dummy data for now
-    const dummyData = [
-      {
-        id: 1,
-        name: "Wireless Headphones",
-        price: 89.99,
-        quantity: 1,
-        image:
-          "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&h=200&fit=crop",
-      },
-      {
-        id: 2,
-        name: "Smart Watch",
-        price: 249.99,
-        quantity: 1,
-        image:
-          "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&h=200&fit=crop",
-      },
-      {
-        id: 3,
-        name: "Phone Case",
-        price: 19.99,
-        quantity: 2,
-        image:
-          "https://images.unsplash.com/photo-1556656793-08538906a9f8?w=200&h=200&fit=crop",
-      },
-    ];
-    dispatch(setCartItems(dummyData));
-  }, [dispatch]);
 
   const handleQuantity = (id, change) => {
     dispatch(updateQuantity({ id, change }));
@@ -64,6 +29,11 @@ const Cart = () => {
   const total = subtotal + tax;
 
   const handleCheckout = () => {
+    if (!customer) {
+      toast.info("Please login to continue to checkout");
+      navigate("/auth?redirect=/checkout");
+      return;
+    }
     navigate("/checkout");
   };
 
@@ -83,11 +53,11 @@ const Cart = () => {
       <Row>
         <Col lg={8}>
           {cartItems.map((item) => (
-            <Card key={item.id} className="mb-3 shadow-sm">
+            <Card key={item._id} className="mb-3 shadow-sm">
               <Card.Body>
                 <Row className="align-items-center">
                   <Col xs={3} md={2}>
-                    <Image src={item.image} alt={item.name} fluid rounded />
+                    <Image src={item.images} alt={item.name} fluid rounded />
                   </Col>
 
                   <Col xs={9} md={6}>
@@ -98,7 +68,7 @@ const Cart = () => {
                       <Button
                         variant="outline-secondary"
                         size="sm"
-                        onClick={() => handleQuantity(item.id, -1)}
+                        onClick={() => handleQuantity(item._id, -1)}
                       >
                         <Minus size={14} />
                       </Button>
@@ -106,7 +76,7 @@ const Cart = () => {
                       <Button
                         variant="outline-secondary"
                         size="sm"
-                        onClick={() => handleQuantity(item.id, 1)}
+                        onClick={() => handleQuantity(item._id, 1)}
                       >
                         <Plus size={14} />
                       </Button>
@@ -114,7 +84,7 @@ const Cart = () => {
                         variant="outline-danger"
                         size="sm"
                         className="ms-auto"
-                        onClick={() => handleRemove(item.id)}
+                        onClick={() => handleRemove(item._id)}
                       >
                         <Trash2 size={14} />
                       </Button>
@@ -147,12 +117,15 @@ const Cart = () => {
                 <span>Total</span>
                 <span>${total.toFixed(2)}</span>
               </div>
+
               <Button
-                variant="primary"
-                className="w-100"
+                bsPrefix="neo"
+                className="w-100 btn-neo rounded-4"
                 onClick={handleCheckout}
               >
-                Proceed to Checkout
+                {customer && customer._id
+                  ? "Proceed to Checkout"
+                  : "Login to Checkout"}
               </Button>
             </Card.Body>
           </Card>

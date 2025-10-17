@@ -8,6 +8,7 @@ import {
   createCustomer,
   fetchCustomerDetail,
   loginCustomer,
+  verifyEmailAPi,
 } from "./customerAPI";
 import { logoutCustomer, setCustomer, setLoading } from "./customerSlice";
 
@@ -29,6 +30,12 @@ export const registerCustomerAction = (form) => async (dispatch) => {
       message: error?.message || "Something went wrong",
     };
   }
+};
+
+export const verifyEmailAction = async (token, email) => {
+  const result = await verifyEmailAPi(token, email);
+  console.log(3223, result);
+  return { status: result.status, message: result.message };
 };
 
 export const loginCustomerAction = (form) => async (dispatch) => {

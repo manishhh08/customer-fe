@@ -5,83 +5,43 @@ import {
   BsLightningCharge,
   BsShieldCheck,
   BsTruck,
-  BsPhone,
-  BsLaptop,
-  BsHeadphones,
-  BsSmartwatch,
-  BsBoxSeam,
   BsArrowRight,
   BsCart,
 } from "react-icons/bs";
-
-// Mock data – replace with your Supabase fetch
-const mockFeatured = [
-  {
-    id: "1",
-    name: "ProPhone X1",
-    description:
-      "Latest flagship smartphone with AI camera and 5G connectivity",
-    price: 999.99,
-    compareAt: 1299.99,
-    image_url:
-      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1600&auto=format&fit=crop",
-    hot: true,
-    inStock: true,
-  },
-  {
-    id: "2",
-    name: "UltraBook Pro 15",
-    description: "Powerful laptop with M-series chip and stunning display",
-    price: 1899.99,
-    compareAt: 2499.99,
-    image_url:
-      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1600&auto=format&fit=crop",
-    hot: true,
-    inStock: true,
-  },
-  {
-    id: "3",
-    name: "AirSound Pro",
-    description: "Premium wireless earbuds with active noise cancellation",
-    price: 249.99,
-    compareAt: 299.99,
-    image_url:
-      "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=1600&auto=format&fit=crop",
-    hot: true,
-    inStock: true,
-  },
-  {
-    id: "4",
-    name: "FitWatch Series 9",
-    description: "Advanced fitness tracker with health monitoring",
-    price: 399.99,
-    compareAt: 519.99,
-    image_url:
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1600&q=80",
-    hot: true,
-    inStock: true,
-  },
-];
-
-const categories = [
-  { name: "Smartphones", icon: <BsPhone /> },
-  { name: "Laptops", icon: <BsLaptop /> },
-  // { name: "Audio", icon: <BsHeadphones /> },
-  { name: "Wearables", icon: <BsSmartwatch /> },
-  { name: "Accessories", icon: <BsBoxSeam /> },
-];
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllProductsAction } from "../../features/product/productAction";
+import { addToCart } from "../../features/cart/cartSlice";
+import { toast } from "react-toastify";
+import CustomFeaturedArea from "../../components/customCard/CustomFeaturedArea";
 
 export default function Homepage() {
+  const dispatch = useDispatch();
   const [featured, setFeatured] = useState([]);
-
+  const { products } = useSelector((store) => store.productStore);
+  const { categories } = useSelector((store) => store.categoryStore);
   useEffect(() => {
-    // TODO: To be replace with our data: setFeatured(data)
-    setFeatured(mockFeatured);
-  }, []);
+    dispatch(fetchAllProductsAction());
+  }, [dispatch]);
 
   const handleAddToCart = (p) => {
-    // TODO: wire to our cart
-    console.log("Add to cart", p.id);
+    dispatch(addToCart(p));
+  };
+
+  const getCreatedAt = (p) => {
+    if (p?.createdAt) return new Date(p.createdAt);
+    if (p?._id) {
+      const ts = parseInt(String(p._id).substring(0, 8), 16) * 1000;
+      return new Date(ts);
+    }
+    return null;
+  };
+
+  const isNew = (p, days = 14) => {
+    const d = getCreatedAt(p);
+    if (!d) return false;
+    const now = Date.now();
+    const ageDays = (now - d.getTime()) / (1000 * 60 * 60 * 24);
+    return ageDays <= days;
   };
 
   return (
@@ -171,100 +131,71 @@ export default function Homepage() {
       </section>
 
       {/* FEATURED */}
-      <section
-        className="py-5"
-        style={{
-          background: "linear-gradient(180deg, var(--neo-d1), var(--neo-d2))",
-        }}
-      >
+      <section className="py-5" style={{ background: "var(--neo-d1)" }}>
+        <CustomFeaturedArea
+          majorTitle="Hot Deals This Week"
+          minorTitle="Featured Collection"
+          titleDescription="Handpicked selection of the most popular and trending tech
+              products"
+          products={products}
+        />
+      </section>
+
+      {/* NEW ARRIVALS */}
+      <section className="py-5" style={{ background: "var(--neo-d1)" }}>
+        <CustomFeaturedArea
+          majorTitle="New Arrivals"
+          minorTitle="Just In"
+          titleDescription="Fresh drops you’ll love"
+          products={products}
+        />
+      </section>
+
+      {/* BEST SELLERS */}
+      <section className="py-5" style={{ background: "var(--neo-d1)" }}>
+        <CustomFeaturedArea
+          majorTitle="Best Sellers"
+          minorTitle="Our best selling products"
+          titleDescription="Customer favorited right now"
+          products={products}
+        />
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="py-5" style={{ background: "var(--neo-d1)" }}>
         <Container>
-          <div className="text-center mb-4">
-            <span className="chip mb-2 d-inline-block">
-              Featured Collection
-            </span>
-            <h2 className="display-6 fw-bold">Hot Deals This Week</h2>
-            <p className="text-white-50">
-              Handpicked selection of the most popular and trending tech
-              products
-            </p>
-          </div>
-
+          <h2 className="display-6 fw-bold text-center mb-4">
+            What Customers Say
+          </h2>
           <Row className="g-4">
-            {featured.map((p) => (
-              <Col xs={12} md={6} lg={3} key={p.id}>
-                <div className="card-neo rounded-4 h-100 overflow-hidden">
-                  <Link
-                    to={`/product/${p.id}`}
-                    className="position-relative featured-media overflow-hidden d-block"
-                    aria-label={`Open ${p.name}`}
-                  >
-                    <img src={p.image_url} alt={p.name} />
-
-                    {p.hot && (
-                      <span className="position-absolute top-0 end-0 m-3 chip tag-hot fw-semibold z-2">
-                        HOT
-                      </span>
-                    )}
-                    {p.inStock && (
-                      <span className="position-absolute bottom-0 start-0 m-3 chip tag-stock z-2">
-                        In Stock
-                      </span>
-                    )}
-                  </Link>
-
-                  <div className="d-flex flex-column p-4">
-                    <h5 className="mb-1">
-                      <Link
-                        to={`/product/${p.id}`}
-                        className="text-decoration-none link-title"
-                      >
-                        {p.name}
-                      </Link>
-                    </h5>
-                    <p className="small text-white-50 mb-3">{p.description}</p>
-
-                    <div className="d-flex align-items-baseline gap-2 mb-3">
-                      <div className="h4 m-0">${p.price.toFixed(2)}</div>
-                      {p.compareAt && (
-                        <del className="text-white-50">
-                          ${p.compareAt.toFixed(2)}
-                        </del>
-                      )}
-                    </div>
-
-                    <Button
-                      onClick={() => handleAddToCart(p)}
-                      bsPrefix="neo"
-                      className="btn-neo rounded-4 w-100 d-inline-flex align-items-center justify-content-center gap-2 mt-auto"
-                    >
-                      <BsCart /> Add to Cart
-                    </Button>
-                  </div>
+            {[
+              {
+                name: "Alex P.",
+                text: "Super fast delivery and great quality.",
+              },
+              {
+                name: "Jamie L.",
+                text: "Love the UI and the deals each week!",
+              },
+              {
+                name: "Priya K.",
+                text: "Support was quick to help me choose.",
+              },
+            ].map((t) => (
+              <Col xs={12} md={4} key={t.name}>
+                <div className="p-4 rounded-4 card-neo h-100">
+                  <div className="mb-2">★★★★★</div>
+                  <p className="mb-2 text-white-50">{t.text}</p>
+                  <div className="small text-neo fw-semibold">{t.name}</div>
                 </div>
               </Col>
             ))}
           </Row>
-
-          <div className="text-center mt-4">
-            <Link to="/products">
-              <Button
-                bsPrefix="neo"
-                className="btn-ghost rounded-4 px-4 d-inline-flex align-items-center gap-2"
-              >
-                View All Products <BsArrowRight />
-              </Button>
-            </Link>
-          </div>
         </Container>
       </section>
 
       {/* CATEGORIES */}
-      <section
-        className="py-5"
-        style={{
-          background: "linear-gradient(180deg, var(--neo-d2), var(--neo-d1))",
-        }}
-      >
+      <section className="py-5" style={{ background: "var(--neo-d1)" }}>
         <Container>
           <div className="text-center mb-4">
             <h2 className="display-6 fw-bold">Shop by Category</h2>
@@ -274,11 +205,13 @@ export default function Homepage() {
           </div>
 
           <Row className="g-3 g-md-4">
-            {categories.map((c) => (
+            {categories?.map((c) => (
               <Col xs={6} md={4} lg={3} key={c.name}>
                 <Link
-                  to="/products"
-                  bsPrefix="neo"
+                  // to={`/category/${c.name.toLowerCase()}`}
+                  // bsPrefix="neo"
+                  to={`/category/${c.slug}`}
+                  bsprefix="neo"
                   className="text-decoration-none"
                 >
                   <div className="p-4 rounded-4 card-neo text-center h-100">

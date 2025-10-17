@@ -38,7 +38,7 @@
 .btn-neo {
   border: 0;
   padding: 0.5rem 1rem;
-  background-image: linear-gradient(
+  background: linear-gradient(
     90deg,
     var(--neo-start),
     var(--neo-mid),
@@ -109,9 +109,11 @@
 
 .chip {
   font-size: 0.75rem;
+  line-height: 1;
   border-radius: 999px;
   padding: 0.25rem 1rem;
   background: rgba(255, 255, 255, 0.08);
+  text-shadow: none;
 }
 
 .tag-hot {
@@ -125,7 +127,21 @@
   border-color: rgba(255, 255, 255, 0.28);
   box-shadow: 0 4px 14px rgba(255, 62, 165, 0.35),
     inset 0 0 0 1px rgba(255, 255, 255, 0.18);
-  font-weight: 700;
+}
+
+.tag-best {
+  background: linear-gradient(180deg, #ffc107, #ffb300);
+  color: #332400;
+  box-shadow: 0 8px 20px rgba(255, 193, 7, 0.35),
+    0 1px 0 rgba(0, 0, 0, 0.12) inset;
+}
+
+.tag-arrival {
+  background: linear-gradient(180deg, #00a389, #00897b);
+  color: #ffffff;
+  border: 0;
+  box-shadow: 0 8px 20px rgba(0, 163, 137, 0.35),
+    0 1px 0 rgba(0, 0, 0, 0.12) inset;
 }
 
 .tag-stock {
@@ -139,8 +155,6 @@
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25),
     inset 0 0 0 1px rgba(255, 255, 255, 0.12);
   color: #b3ffd9;
-  font-weight: 600;
-  letter-spacing: 0.2px;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
 }
 
@@ -156,6 +170,24 @@
 
 .featured-media {
   aspect-ratio: 4 / 3;
+}
+
+.media-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.media-wrap img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .featured-media > img {

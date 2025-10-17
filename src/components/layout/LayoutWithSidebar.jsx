@@ -65,7 +65,7 @@ const LayoutWithSidebar = () => {
       <Header toggleSidebar={toggleSidebar} />
 
       {/* Content Row */}
-      <div className="d-flex flex-grow-1" style={{ marginTop: "70px" }}>
+      <div className="d-flex flex-grow-1" style={{ marginTop: "72px" }}>
         {/* Sidebar */}
         <SideBar
           isOpen={isSidebarOpen}
@@ -104,29 +104,17 @@ const LayoutWithSidebar = () => {
       </div>
 
       {/* Footer */}
-      <footer
-        style={{
-          marginLeft: shiftMargin,
-          transition: "margin-left 0.3s ease, opacity 0.3s ease",
-          opacity: isSidebarOpen ? 0.8 : 1,
-          pointerEvents: isSidebarOpen ? "none" : "auto",
-          userSelect: isSidebarOpen ? "none" : "auto",
-        }}
-      >
-        <Footer />
-      </footer>
+      <Footer />
 
       {/* Scroll to top button */}
       <button
         onClick={handleScrollTop}
-        className="position-fixed rounded-circle border-0 shadow"
+        className="position-fixed rounded-circle border-0 shadow btn-neo"
         style={{
           bottom: "30px",
           right: "30px",
           width: "45px",
           height: "45px",
-          backgroundColor: "#007bff",
-          color: "white",
           cursor: "pointer",
           zIndex: 1100,
           opacity: showScrollTop ? 1 : 0,
