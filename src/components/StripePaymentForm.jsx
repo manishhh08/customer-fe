@@ -92,7 +92,7 @@ const StripePaymentForm = ({ total, onPaymentSuccess }) => {
           paymentIntentId: paymentIntent.id,
         };
 
-        await dispatch(createNewOrderAction(orderObject));
+        dispatch(createNewOrderAction(orderObject));
 
         dispatch(clearCart());
         localStorage.removeItem("cartItems");
