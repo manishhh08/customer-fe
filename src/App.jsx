@@ -16,6 +16,7 @@ import ProductDetail from "./pages/ProductDetail";
 import { fetchAllCategoriesAction } from "./features/category/categoryAction";
 import Checkout from "./pages/Checkout";
 import ThankYou from "./pages/ThankYou";
+import Verify from "./pages/Verify/Verify";
 
 function App() {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ function App() {
           <Route index element={<Homepage />} />
           <Route path="auth" element={<AuthPage />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="verify" element={<Verify />} />
         </Route>
 
         <Route
