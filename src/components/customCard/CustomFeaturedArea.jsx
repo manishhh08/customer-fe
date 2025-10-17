@@ -8,6 +8,7 @@ const CustomFeaturedArea = ({
   minorTitle,
   titleDescription,
   products,
+  handleAddToCart,
 }) => {
   return (
     <Container>
@@ -20,7 +21,7 @@ const CustomFeaturedArea = ({
       <Row className="g-4">
         {products?.slice(0, 4).map((p) => (
           <Col xs={12} md={6} lg={3} key={p._id}>
-            <CustomCard product={p} />
+            <CustomCard product={p} handleAddToCart={handleAddToCart} />
             {/* <div className="card-neo rounded-4 h-100 overflow-hidden">
               <Link
                 to={`/product/${p.slug}`}

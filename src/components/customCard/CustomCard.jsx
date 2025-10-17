@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { BsCart } from "react-icons/bs";
 import { Button } from "react-bootstrap";
 
-const CustomCard = ({ product }) => {
+const CustomCard = ({ product, handleAddToCart }) => {
   return (
     <div className="card-neo rounded-4 h-100 overflow-hidden">
       <Link
