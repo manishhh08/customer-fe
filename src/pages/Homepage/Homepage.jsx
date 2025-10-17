@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllProductsAction } from "../../features/product/productAction";
 import { addToCart } from "../../features/cart/cartSlice";
 import { toast } from "react-toastify";
-import CustomCard from "../../components/customCard/CustomCard";
+import CustomFeaturedArea from "../../components/customCard/CustomFeaturedArea";
 
 export default function Homepage() {
   const dispatch = useDispatch();
@@ -132,7 +132,7 @@ export default function Homepage() {
 
       {/* FEATURED */}
       <section className="py-5" style={{ background: "var(--neo-d1)" }}>
-        <CustomCard
+        <CustomFeaturedArea
           majorTitle="Hot Deals This Week"
           minorTitle="Featured Collection"
           titleDescription="Handpicked selection of the most popular and trending tech
@@ -143,7 +143,7 @@ export default function Homepage() {
 
       {/* NEW ARRIVALS */}
       <section className="py-5" style={{ background: "var(--neo-d1)" }}>
-        <CustomCard
+        <CustomFeaturedArea
           majorTitle="New Arrivals"
           minorTitle="Just In"
           titleDescription="Fresh drops you’ll love"
@@ -153,7 +153,7 @@ export default function Homepage() {
 
       {/* BEST SELLERS */}
       <section className="py-5" style={{ background: "var(--neo-d1)" }}>
-        <CustomCard
+        <CustomFeaturedArea
           majorTitle="Best Sellers"
           minorTitle="Our best selling products"
           titleDescription="Customer favorited right now"
