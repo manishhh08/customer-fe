@@ -6,26 +6,27 @@ import {
   BsShieldCheck,
   BsTruck,
   BsArrowRight,
-  BsCart,
 } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllProductsAction } from "../../features/product/productAction";
-import { addToCart } from "../../features/cart/cartSlice";
-import { toast } from "react-toastify";
+import {
+  fetchAllProductsAction,
+  fetchFeaturedProductsAction,
+} from "../../features/product/productAction";
 import CustomFeaturedArea from "../../components/customCard/CustomFeaturedArea";
 
 export default function Homepage() {
   const dispatch = useDispatch();
-  const [featured, setFeatured] = useState([]);
+  const [featured, setFeatured] = useState({});
   const { products } = useSelector((store) => store.productStore);
   const { categories } = useSelector((store) => store.categoryStore);
   useEffect(() => {
     dispatch(fetchAllProductsAction());
+    const getFeaturedProdcuts = async () => {
+      const result = await fetchFeaturedProductsAction();
+      if (result) setFeatured(result);
+    };
+    getFeaturedProdcuts();
   }, [dispatch]);
-
-  const handleAddToCart = (p) => {
-    dispatch(addToCart(p));
-  };
 
   const getCreatedAt = (p) => {
     if (p?.createdAt) return new Date(p.createdAt);
@@ -34,14 +35,6 @@ export default function Homepage() {
       return new Date(ts);
     }
     return null;
-  };
-
-  const isNew = (p, days = 14) => {
-    const d = getCreatedAt(p);
-    if (!d) return false;
-    const now = Date.now();
-    const ageDays = (now - d.getTime()) / (1000 * 60 * 60 * 24);
-    return ageDays <= days;
   };
 
   return (
@@ -133,7 +126,6 @@ export default function Homepage() {
       {/* FEATURED */}
       <section className="py-5" style={{ background: "var(--neo-d1)" }}>
         <CustomFeaturedArea
-          handleAddToCart={handleAddToCart}
           majorTitle="Hot Deals This Week"
           minorTitle="Featured Collection"
           titleDescription="Handpicked selection of the most popular and trending tech
@@ -145,22 +137,20 @@ export default function Homepage() {
       {/* NEW ARRIVALS */}
       <section className="py-5" style={{ background: "var(--neo-d1)" }}>
         <CustomFeaturedArea
-          handleAddToCart={handleAddToCart}
           majorTitle="New Arrivals"
           minorTitle="Just In"
           titleDescription="Fresh drops you’ll love"
-          products={products}
+          products={featured.recentlyAddedProducts}
         />
       </section>
 
       {/* BEST SELLERS */}
       <section className="py-5" style={{ background: "var(--neo-d1)" }}>
         <CustomFeaturedArea
-          handleAddToCart={handleAddToCart}
           majorTitle="Best Sellers"
           minorTitle="Our best selling products"
           titleDescription="Customer favorited right now"
-          products={products}
+          products={featured.bestSellerProducts}
         />
       </section>
 

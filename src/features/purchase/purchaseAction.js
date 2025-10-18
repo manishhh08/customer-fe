@@ -6,6 +6,7 @@ export const createNewOrderAction = (orderObject) => async (dispatch) => {
     const data = await createNewOrder(orderObject);
     if (data.status === "success") {
       toast[data.status](data.message);
+      fetchFeaturedProductsAction();
       return data;
     }
   } catch (err) {

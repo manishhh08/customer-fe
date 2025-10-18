@@ -2,8 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { BsCart } from "react-icons/bs";
 import { Button } from "react-bootstrap";
+import { addToCart } from "../../features/cart/cartSlice";
+import { useDispatch } from "react-redux";
 
-const CustomCard = ({ product, handleAddToCart }) => {
+const CustomCard = ({ product }) => {
+  const dispatch = useDispatch();
   return (
     <div className="card-neo rounded-4 h-100 overflow-hidden">
       <Link
@@ -51,7 +54,7 @@ const CustomCard = ({ product, handleAddToCart }) => {
         </div>
 
         <Button
-          onClick={() => handleAddToCart(product)}
+          onClick={() => dispatch(addToCart(product))}
           bsPrefix="neo"
           className="btn-neo rounded-4 w-100 d-inline-flex align-items-center justify-content-center gap-2 mt-auto"
         >
