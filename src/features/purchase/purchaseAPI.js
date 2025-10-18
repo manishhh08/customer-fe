@@ -9,3 +9,11 @@ export const createNewOrder = async (orderObject) => {
     isPrivate: true,
   });
 };
+
+export const retrieveAllOrder = async (customerId) => {
+  return apiProcessor({
+    method: "get",
+    url: `${apiUrl}/orders?id=${customerId}`,
+    isPrivate: true,
+  });
+};
