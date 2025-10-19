@@ -5,7 +5,7 @@ import { Button } from "react-bootstrap";
 import { addToCart } from "../../features/cart/cartSlice";
 import { useDispatch } from "react-redux";
 
-const CustomCard = ({ product }) => {
+const CustomCard = ({ product, tagLabel, tagClass }) => {
   const dispatch = useDispatch();
   return (
     <div className="card-neo rounded-4 h-100 overflow-hidden">
@@ -22,8 +22,10 @@ const CustomCard = ({ product }) => {
           alt={product.name}
         />
 
-        <span className="position-absolute top-0 end-0 m-3 chip tag-hot fw-semibold z-2">
-          HOT
+        <span
+          className={`position-absolute top-0 end-0 m-3 chip ${tagClass} fw-semibold z-2`}
+        >
+          {tagLabel}
         </span>
 
         {product.stock && (
@@ -45,11 +47,16 @@ const CustomCard = ({ product }) => {
         <p className="small text-white-50 mb-3">
           Average Rating: {product.averageRating}
         </p>
+        <p className="small text-white-50 mb-3 line-clamp-2">
+          {product.description}
+        </p>
 
         <div className="d-flex align-items-baseline gap-2 mb-3">
           <div className="h4 m-0">${product.price.toFixed(2)}</div>
           {product.comparePrice && (
-            <del className="text-white-50">${p.comparePrice.toFixed(2)}</del>
+            <del className="text-white-50">
+              ${product.comparePrice.toFixed(2)}
+            </del>
           )}
         </div>
 

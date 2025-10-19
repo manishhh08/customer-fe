@@ -9,8 +9,8 @@ export const CustomInput = ({
   ...rest
 }) => {
   return (
-    <Form.Group className="mb-3 d-flex flex-column">
-      <Form.Label className="fw-bold text-start">{label}</Form.Label>
+    <Form.Group className="mb-4 d-flex flex-column">
+      <Form.Label className="fw-bold text-start text-white">{label}</Form.Label>
 
       {type === "select" ? (
         <Form.Select value={value} onChange={onChange} {...rest}>

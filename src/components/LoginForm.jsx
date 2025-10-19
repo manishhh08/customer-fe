@@ -67,9 +67,9 @@ const LoginForm = () => {
         <CustomInput key={index} {...item} onChange={handleOnChange} />
       ))}
       <Button
-        variant="primary"
+        bsPrefix="neo"
         type="submit"
-        className="mb-2 pt-2 w-25 mx-auto d-block"
+        className="btn-neo rounded-4 mb-2 pt-2 w-100 d-block"
         disabled={loading}
       >
         {loading ? "Logging in..." : "Login"}
