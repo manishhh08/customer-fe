@@ -235,7 +235,8 @@ export default function Homepage() {
           </div>
 
           <Row className="g-3 g-md-4">
-            {categories?.map((c) => (
+            {/* Used the slice method to show only four categories */}
+            {categories?.slice(0, 4).map((c) => (
               <Col xs={6} md={4} lg={3} key={c.name}>
                 <Link
                   // to={`/category/${c.name.toLowerCase()}`}
@@ -251,6 +252,17 @@ export default function Homepage() {
                 </Link>
               </Col>
             ))}
+            {categories.length > 4 && (
+              <div className="text-center mt-3">
+                <Button
+                  size="lg"
+                  bsPrefix="neo"
+                  className="btn-ghost rounded-4 px-4"
+                >
+                  View All Categories
+                </Button>
+              </div>
+            )}
           </Row>
         </Container>
       </section>
