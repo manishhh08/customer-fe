@@ -44,6 +44,16 @@ export default function Homepage() {
     return ageDays <= days;
   };
 
+  const newArrivalsAll = products
+    .filter((p) => isNew(p, 14))
+    .sort((a, b) => getCreatedAt(b) - getCreatedAt(a));
+
+  const newArrivals = (
+    newArrivalsAll.length
+      ? newArrivalsAll
+      : [...(products || [])].sort((a, b) => getCreatedAt(b) - getCreatedAt(a))
+  ).slice(0, 4);
+
   return (
     <div className="bg-dark text-light">
       {/* HERO */}
@@ -139,6 +149,8 @@ export default function Homepage() {
           titleDescription="Handpicked selection of the most popular and trending tech
               products"
           products={products}
+          tagLabel="HOT"
+          tagClass="tag-hot"
         />
       </section>
 
@@ -149,7 +161,9 @@ export default function Homepage() {
           majorTitle="New Arrivals"
           minorTitle="Just In"
           titleDescription="Fresh drops you’ll love"
-          products={products}
+          products={newArrivals}
+          tagLabel="New Arrival"
+          tagClass="tag-arrival"
         />
       </section>
 
@@ -161,15 +175,24 @@ export default function Homepage() {
           minorTitle="Our best selling products"
           titleDescription="Customer favorited right now"
           products={products}
+          tagLabel="Best Seller"
+          tagClass="tag-best-seller"
         />
       </section>
 
       {/* TESTIMONIALS */}
       <section className="py-5" style={{ background: "var(--neo-d1)" }}>
         <Container>
-          <h2 className="display-6 fw-bold text-center mb-4">
-            What Customers Say
-          </h2>
+          <div className="text-center mb-4">
+            <h2 className="display-6 fw-bold text-center mb-4">
+              What Customers Say
+            </h2>
+            <hr className="my-3 mx-auto" style={{ width: "5rem" }} />
+            <p className="text-white-50">
+              Hear from our satisfied customers who love our products and
+              service
+            </p>
+          </div>
           <Row className="g-4">
             {[
               {
@@ -202,6 +225,7 @@ export default function Homepage() {
         <Container>
           <div className="text-center mb-4">
             <h2 className="display-6 fw-bold">Shop by Category</h2>
+            <hr className="my-3 mx-auto" style={{ width: "5rem" }} />
             <p className="text-white-50">
               Find exactly what you're looking for
             </p>

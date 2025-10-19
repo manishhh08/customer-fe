@@ -52,7 +52,9 @@ const SignupForm = () => {
       <Row>
         <Col>
           <Form.Group className="mb-3 d-flex flex-column" controlId="fname">
-            <Form.Label className="fw-bold text-start">First Name</Form.Label>
+            <Form.Label className="fw-bold text-start text-white">
+              First Name
+            </Form.Label>
             <Form.Control
               type="text"
               name="fname"
@@ -64,7 +66,9 @@ const SignupForm = () => {
         </Col>
         <Col>
           <Form.Group className="mb-3 d-flex flex-column" controlId="lname">
-            <Form.Label className="fw-bold text-start">Last Name</Form.Label>
+            <Form.Label className="fw-bold text-start text-white">
+              Last Name
+            </Form.Label>
             <Form.Control
               type="text"
               name="lname"
@@ -78,7 +82,7 @@ const SignupForm = () => {
 
       {/* Email */}
       <Form.Group className="mb-3 d-flex flex-column" controlId="signup-email">
-        <Form.Label className="fw-bold text-start">Email</Form.Label>
+        <Form.Label className="fw-bold text-start text-white">Email</Form.Label>
         <Form.Control
           type="email"
           name="email"
@@ -87,9 +91,12 @@ const SignupForm = () => {
           onChange={handleOnChange}
         />
       </Form.Group>
+
       {/* phone field */}
       <Form.Group className="mb-3 d-flex flex-column" controlId="phone">
-        <Form.Label className="fw-bold text-start">Phone Number</Form.Label>
+        <Form.Label className="fw-bold text-start text-white">
+          Phone Number
+        </Form.Label>
         <Form.Control
           type="text"
           name="phone"
@@ -98,6 +105,7 @@ const SignupForm = () => {
           onChange={handleOnChange}
         />
       </Form.Group>
+
       {/* Password */}
       <Form.Group
         className="mb-3 d-flex flex-column"
@@ -124,8 +132,10 @@ const SignupForm = () => {
       </Form.Group>
 
       {/* Confirm Password */}
-      <Form.Group className="mb-3 d-flex flex-column" controlId="cpassword">
-        <Form.Label className="fw-bold text-start">Confirm Password</Form.Label>
+      <Form.Group className="mb-4 d-flex flex-column" controlId="cpassword">
+        <Form.Label className="fw-bold text-start text-white">
+          Confirm Password
+        </Form.Label>
 
         <InputGroup>
           <Form.Control
@@ -146,9 +156,9 @@ const SignupForm = () => {
       </Form.Group>
 
       <Button
-        variant="primary"
+        bsPrefix="neo"
         type="submit"
-        className="mb-2 pt-2 w-100"
+        className="btn-neo rounded-4 mb-2 pt-2 w-100"
         disabled={loading}
       >
         {loading ? "Signing up...." : "Sign Up"}

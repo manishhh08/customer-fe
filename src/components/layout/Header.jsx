@@ -16,6 +16,7 @@ import logo from "../../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import HeaderSearch from "../HeaderSearch";
 
 const Header = ({ toggleSidebar }) => {
   const dispatch = useDispatch();
@@ -53,6 +54,10 @@ const Header = ({ toggleSidebar }) => {
           <Navbar.Brand as={Link} to="/" className="m-0 p-0">
             <img src={logo} alt="Brand Logo" style={{ height: "40px" }} />
           </Navbar.Brand>
+        </div>
+
+        <div className="d-none d-md-block mx-3">
+          <HeaderSearch />
         </div>
 
         <Nav className="d-flex gap-3 align-items-center">

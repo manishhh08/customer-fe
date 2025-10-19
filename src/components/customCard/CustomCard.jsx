@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { BsCart } from "react-icons/bs";
 import { Button } from "react-bootstrap";
 
-const CustomCard = ({ product, handleAddToCart }) => {
+const CustomCard = ({ product, handleAddToCart, tagLabel, tagClass }) => {
   return (
     <div className="card-neo rounded-4 h-100 overflow-hidden">
       <Link
@@ -19,8 +19,10 @@ const CustomCard = ({ product, handleAddToCart }) => {
           alt={product.name}
         />
 
-        <span className="position-absolute top-0 end-0 m-3 chip tag-hot fw-semibold z-2">
-          HOT
+        <span
+          className={`position-absolute top-0 end-0 m-3 chip ${tagClass} fw-semibold z-2`}
+        >
+          {tagLabel}
         </span>
 
         {product.stock && (
@@ -42,11 +44,16 @@ const CustomCard = ({ product, handleAddToCart }) => {
         <p className="small text-white-50 mb-3">
           Average Rating: {product.averageRating}
         </p>
+        <p className="small text-white-50 mb-3 line-clamp-2">
+          {product.description}
+        </p>
 
         <div className="d-flex align-items-baseline gap-2 mb-3">
           <div className="h4 m-0">${product.price.toFixed(2)}</div>
           {product.comparePrice && (
-            <del className="text-white-50">${p.comparePrice.toFixed(2)}</del>
+            <del className="text-white-50">
+              ${product.comparePrice.toFixed(2)}
+            </del>
           )}
         </div>
 
