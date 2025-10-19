@@ -9,7 +9,7 @@ import {
   Container,
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { retrieveAllOrder } from "../features/purchase/purchaseAPI";
+import { retrieveAllOrder } from "../features/order/orderAPI";
 
 const Order = () => {
   const { customer } = useSelector((store) => store.customerStore);

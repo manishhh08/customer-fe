@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { setPurchases } from "../features/purchase/purchaseSlice";
+import { setOrders } from "../features/order/orderSlice";
 import { clearCart } from "../features/cart/cartSlice";
 import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
@@ -47,7 +47,7 @@ const Checkout = () => {
       date: new Date().toISOString(),
     };
 
-    dispatch(setPurchases(orderData));
+    dispatch(setOrders(orderData));
     dispatch(clearCart());
 
     navigate("/thank-you", { state: { order: orderData } });

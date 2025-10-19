@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { createNewOrder } from "./purchaseAPI";
+import { createNewOrder } from "./orderAPI";
 
 export const createNewOrderAction = (orderObject) => async (dispatch) => {
   try {
