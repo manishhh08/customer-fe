@@ -8,19 +8,28 @@ const CustomFeaturedArea = ({
   minorTitle,
   titleDescription,
   products,
+  handleAddToCart,
+  tagLabel,
+  tagClass,
 }) => {
   return (
     <Container>
       <div className="text-center mb-4">
         <span className="chip mb-2 d-inline-block">{minorTitle}</span>
         <h2 className="display-6 fw-bold">{majorTitle}</h2>
+        <hr className="my-3 mx-auto" style={{ width: "5rem" }} />
         <p className="text-white-50">{titleDescription}</p>
       </div>
 
       <Row className="g-4">
         {products?.slice(0, 4).map((p) => (
           <Col xs={12} md={6} lg={3} key={p._id}>
-            <CustomCard product={p} />
+            <CustomCard
+              product={p}
+              handleAddToCart={handleAddToCart}
+              tagLabel={tagLabel}
+              tagClass={tagClass}
+            />
             {/* <div className="card-neo rounded-4 h-100 overflow-hidden">
               <Link
                 to={`/product/${p.slug}`}

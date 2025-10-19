@@ -8,7 +8,7 @@ import {
 import { Button } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { createNewOrderAction } from "../features/purchase/purchaseAction";
+import { createNewOrderAction } from "../features/order/orderAction";
 import { clearCart } from "../features/cart/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -92,7 +92,7 @@ const StripePaymentForm = ({ total, onPaymentSuccess }) => {
           paymentIntentId: paymentIntent.id,
         };
 
-        await dispatch(createNewOrderAction(orderObject));
+        dispatch(createNewOrderAction(orderObject));
 
         dispatch(clearCart());
         localStorage.removeItem("cartItems");

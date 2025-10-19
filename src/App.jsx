@@ -19,6 +19,7 @@ import Category from "./pages/Category/Category";
 import Checkout from "./pages/Checkout";
 import ThankYou from "./pages/ThankYou";
 import Verify from "./pages/Verify/Verify";
+import Order from "./pages/Order";
 
 function App() {
   const dispatch = useDispatch();
@@ -55,7 +56,7 @@ function App() {
           }
         >
           <Route path="dashboard" element={<Dashboard />} />
-
+          <Route path="orders" element={<Order />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="thank-you" element={<ThankYou />} />
         </Route>

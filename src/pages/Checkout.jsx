@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { setPurchases } from "../features/purchase/purchaseSlice";
+import { setOrders } from "../features/order/orderSlice";
 import { clearCart } from "../features/cart/cartSlice";
 import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
@@ -39,19 +39,6 @@ const Checkout = () => {
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  // const handleOrderSuccess = () => {
-  //   dispatch(
-  //     setPurchases({
-  //       customer: form,
-  //       orderItems: cartItems,
-  //       total,
-  //       date: new Date().toISOString(),
-  //     })
-  //   );
-  //   dispatch(clearCart());
-  //   toast.success("Order placed successfully!");
-  //   navigate("/thank-you");
-  // };
   const handleOrderSuccess = () => {
     const orderData = {
       customer: form,
@@ -60,9 +47,8 @@ const Checkout = () => {
       date: new Date().toISOString(),
     };
 
-    dispatch(setPurchases(orderData));
+    dispatch(setOrders(orderData));
     dispatch(clearCart());
-    toast.success("Order placed successfully!");
 
     navigate("/thank-you", { state: { order: orderData } });
   };
@@ -202,7 +188,7 @@ const Checkout = () => {
               <h4 className="mb-4">Order Summary</h4>
               {cartItems.map((item) => (
                 <div
-                  key={item.id}
+                  key={item._id || item.slug}
                   className="d-flex justify-content-between mb-2"
                 >
                   <span>
