@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Accordion,
   Card,
@@ -10,6 +10,8 @@ import {
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { retrieveAllOrder } from "../features/order/orderAPI";
+import { BsCartX } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const Order = () => {
   const { customer } = useSelector((store) => store.customerStore);
@@ -65,8 +67,27 @@ const Order = () => {
 
   if (error) return <Alert variant="danger">{error}</Alert>;
 
-  if (orders.length === 0)
-    return <p className="text-center mt-5">No orders found.</p>;
+  if (orders.length === 0) {
+    return (
+      <div
+        className="d-flex flex-column justify-content-center align-items-center text-center"
+        style={{ minHeight: "80vh" }}
+      >
+        <BsCartX size={80} className="text-muted mb-3" />
+        <h3 className="text-secondary fw-light mb-2">No orders found</h3>
+        <p className="text-muted mb-4">
+          Looks like you haven’t placed any orders yet.
+        </p>
+        <Link
+          to="/products"
+          variant="primary"
+          className="rounded-pill px-4 py-2 shadow-sm"
+        >
+          Shop Now
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <Container className="container py-5">
