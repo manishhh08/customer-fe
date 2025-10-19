@@ -26,12 +26,12 @@ const Order = () => {
 
   const getStatusVariant = (status) => {
     switch (status) {
-      case "delivered":
+      case "Delivered":
         return "success";
-      case "in-transit":
-        return "info";
-      case "processing":
+      case "Shipped":
         return "warning";
+      case "Order received":
+        return "primary";
       default:
         return "secondary";
     }
@@ -80,8 +80,7 @@ const Order = () => {
         </p>
         <Link
           to="/products"
-          variant="primary"
-          className="rounded-pill px-4 py-2 shadow-sm"
+          className="rounded-pill px-4 py-2 shadow-sm btn btn-primary"
         >
           Shop Now
         </Link>
@@ -90,11 +89,23 @@ const Order = () => {
   }
 
   return (
-    <Container className="container py-5">
+    <Container className="py-5 position-relative">
       <h2 className="mb-4">Order History</h2>
       <Accordion activeKey={activeKey}>
         {orders.map((order, index) => (
-          <Card key={order._id} className="mb-3 shadow-sm border-0">
+          <Card
+            key={order._id}
+            className="mb-3 shadow-sm border-0 position-relative"
+          >
+            {/* Badge positioned absolutely so it won't inherit Accordion.Header button styles */}
+            <Badge
+              bg={getStatusVariant(order.status)}
+              className="text-capitalize position-absolute top-0 end-0 m-3"
+              style={{ zIndex: 10 }}
+            >
+              {order.status}
+            </Badge>
+
             <Accordion.Item eventKey={index.toString()}>
               <Accordion.Header
                 onClick={() => toggleAccordion(index.toString())}
@@ -104,14 +115,8 @@ const Order = () => {
                     <strong>Order #{order._id.slice(-6)}</strong> —{" "}
                     {new Date(order.createdAt).toLocaleDateString()}
                   </div>
-                  <div>
+                  <div className="d-flex align-items-center gap-2">
                     <strong>${order.total?.toFixed(2)}</strong>
-                    <Badge
-                      bg={getStatusVariant(order.status)}
-                      className="me-2 text-capitalize"
-                    >
-                      {order.status}
-                    </Badge>
                   </div>
                 </div>
               </Accordion.Header>
@@ -130,7 +135,11 @@ const Order = () => {
 
                 {/* Shipping */}
                 <h6>Shipping Address</h6>
-                <p className="mb-3">{order.shippingAddress || "N/A"}</p>
+                <p className="mb-3">
+                  {order.shippingAddress
+                    ? `${order.shippingAddress.fullName}, ${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.postalCode}, ${order.shippingAddress.country}`
+                    : "N/A"}
+                </p>
 
                 {/* Payment */}
                 <h5>Payment Details</h5>
