@@ -28,17 +28,20 @@ const Order = () => {
     setActiveKey(activeKey === key ? null : key);
   };
   const getStatusVariant = (status) => {
-    switch (status) {
-      case "Delivered":
-        return "success";
-      case "Shipped":
-        return "warning";
-      case "Order received":
+    if (!status) return "secondary";
+
+    switch (status.trim().toLowerCase()) {
+      case "order received":
         return "primary";
+      case "shipped":
+        return "warning";
+      case "delivered":
+        return "success";
       default:
         return "secondary";
     }
   };
+
   useEffect(() => {
     const fetchOrders = async () => {
       if (!customer?._id) return;
