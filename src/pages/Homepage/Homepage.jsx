@@ -28,33 +28,6 @@ export default function Homepage() {
     getFeaturedProducts();
   }, [dispatch]);
 
-  const getCreatedAt = (p) => {
-    if (p?.createdAt) return new Date(p.createdAt);
-    if (p?._id) {
-      const ts = parseInt(String(p._id).substring(0, 8), 16) * 1000;
-      return new Date(ts);
-    }
-    return null;
-  };
-
-  const isNew = (p, days = 14) => {
-    const d = getCreatedAt(p);
-    if (!d) return false;
-    const now = Date.now();
-    const ageDays = (now - d.getTime()) / (1000 * 60 * 60 * 24);
-    return ageDays <= days;
-  };
-
-  const newArrivalsAll = products
-    .filter((p) => isNew(p, 14))
-    .sort((a, b) => getCreatedAt(b) - getCreatedAt(a));
-
-  const newArrivals = (
-    newArrivalsAll.length
-      ? newArrivalsAll
-      : [...(products || [])].sort((a, b) => getCreatedAt(b) - getCreatedAt(a))
-  ).slice(0, 4);
-
   return (
     <div teclassName="bg-dark text-light">
       {/* HERO */}
@@ -160,7 +133,7 @@ export default function Homepage() {
           majorTitle="New Arrivals"
           minorTitle="Just In"
           titleDescription="Fresh drops you’ll love"
-          products={newArrivals}
+          products={featured.recentlyAddedProducts}
           tagLabel="New Arrival"
           tagClass="tag-arrival"
         />
@@ -172,7 +145,7 @@ export default function Homepage() {
           majorTitle="Best Sellers"
           minorTitle="Our best selling products"
           titleDescription="Customer favorited right now"
-          products={products}
+          products={featured.bestSellerProducts}
           tagLabel="Best Seller"
           tagClass="tag-best-seller"
         />
