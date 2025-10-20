@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import product from "../assets/product.webp";
 import { Button, Col, Row, Tab, Tabs, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Stars } from "../components/stars/Stars";
+import { ShowStars, Stars } from "../components/stars/Stars";
 import { BsArrowLeft } from "react-icons/bs";
 import { useParams } from "react-router-dom";
 import { fetchAllProductsAction } from "../features/product/productAction";
@@ -53,41 +53,11 @@ const ProductDetail = () => {
             </Col>
 
             <Col md={6}>
-              <div className="d-flex flex-column justify-content-center align-items-start h-100">
+              <div className="d-flex flex-column justify-content-between align-items-start h-100">
                 <h2 className="mb-2">{product?.name}</h2>
                 <p className="mb-3">{product?.description}</p>
-
-                {/* Interactive Stars */}
-                <div className="mb-3">
-                  <Stars
-                    stars={myRating}
-                    editable
-                    onChange={(val) => setMyRating(val)}
-                  />
-                  <p className="text-white mt-2">
-                    {myRating > 0
-                      ? `You rated this ${myRating} / 5 ⭐`
-                      : "Click the stars to rate"}
-                  </p>
-                </div>
-
-                {/* Key Features */}
-                <div
-                  className="d-flex flex-column p-3 mb-2 rounded w-100 card-neo"
-                  style={{ background: "var(--neo-d1)" }}
-                >
-                  <h2 className="mb-3">Key Features</h2>
-                  <ul
-                    className="mb-1 d-flex align-items-start flex-column"
-                    style={{ gap: "1rem" }}
-                  >
-                    <li>Premium Build Quality</li>
-                    <li>Latest Technology</li>
-                    <li>Extended Warranty</li>
-                    <li>Fast Performance</li>
-                  </ul>
-                </div>
-
+                Average Rating
+                <ShowStars averageRating={product?.averageRating} />
                 {/* Add to Cart */}
                 <Button
                   type="submit"
@@ -102,19 +72,7 @@ const ProductDetail = () => {
             </Col>
           </Row>
 
-          {/* Tabs Section */}
-          <Row className="py-5 g-5 mt-5 mb-5">
-            <Col>
-              <Tabs
-                defaultActiveKey="description"
-                id="uncontrolled-tab-example"
-                className="mb-3"
-              >
-                <Tab eventKey="description" title="Description"></Tab>
-                <Tab eventKey="reviews" title="Reviews"></Tab>
-              </Tabs>
-            </Col>
-          </Row>
+          <div>hello world</div>
         </Container>
       </section>
     </div>
