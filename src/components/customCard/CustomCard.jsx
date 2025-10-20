@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 const CustomCard = ({ product, tagLabel, tagClass }) => {
   const dispatch = useDispatch();
   return (
-    <div className="card-neo rounded-4 h-100 overflow-hidden">
+    <div className="card-neo rounded-4 h-100 overflow-hidden d-flex flex-column flex-fill w-100">
       <Link
         to={`/product/${product.slug}`}
         className="position-relative featured-media overflow-hidden d-block"
@@ -35,7 +35,7 @@ const CustomCard = ({ product, tagLabel, tagClass }) => {
         )}
       </Link>
 
-      <div className="d-flex flex-column p-4">
+      <div className="d-flex flex-column flex-grow-1 p-4">
         <h5 className="mb-1">
           <Link
             to={`/product/${product._id}`}
