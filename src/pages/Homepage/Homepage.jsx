@@ -21,11 +21,11 @@ export default function Homepage() {
   const { categories } = useSelector((store) => store.categoryStore);
   useEffect(() => {
     dispatch(fetchAllProductsAction());
-    const getFeaturedProdcuts = async () => {
+    const getFeaturedProducts = async () => {
       const result = await fetchFeaturedProductsAction();
       if (result) setFeatured(result);
     };
-    getFeaturedProdcuts();
+    getFeaturedProducts();
   }, [dispatch]);
 
   const getCreatedAt = (p) => {
@@ -239,10 +239,7 @@ export default function Homepage() {
             {categories?.slice(0, 4).map((c) => (
               <Col xs={6} md={4} lg={3} key={c.name}>
                 <Link
-                  // to={`/category/${c.name.toLowerCase()}`}
-                  // bsPrefix="neo"
                   to={`/category/${c.slug}`}
-                  bsprefix="neo"
                   className="text-decoration-none"
                 >
                   <div className="p-4 rounded-4 card-neo text-center h-100">

@@ -1,16 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux"; //Since the products are coming in from the redux store.
+import { useSelector } from "react-redux";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  ToggleButtonGroup,
+  ToggleButton,
+} from "react-bootstrap";
 
 const Category = () => {
-  const { slug } = useParams(); //Shows the sub-category, replaces the useParams with the sub-categories: Laptop, Wearables etc. etc.
+  const { slug } = useParams();
   const [view, setView] = useState("grid");
 
-  const { products } = useSelector((store) => store.products);
+  const { products } = useSelector((store) => store.productStore);
 
-  const filteredProducts = products.filter(
-    (product) => product.category.toLowerCase() === slug.toLowerCase()
-  );
+  const filteredProducts = products.filter((p) => {
+    // if (!p.category) return false; // skip products without category
+
+    if (typeof p.category === "string") {
+      return p.category.toLowerCase() === slug.toLowerCase();
+    }
+
+    if (typeof p.category === "object" && p.category.slug) {
+      return p.category.slug.toLowerCase() === slug.toLowerCase();
+    }
+
+    return false;
+  });
+
   console.log(filteredProducts);
 
   return (

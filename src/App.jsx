@@ -20,6 +20,8 @@ import Checkout from "./pages/Checkout";
 import ThankYou from "./pages/ThankYou";
 import Verify from "./pages/Verify/Verify";
 import Order from "./pages/Order";
+import { fetchAllProductsAction } from "./features/product/productAction";
+import { fetchAllProducts } from "./features/product/productAPI";
 
 function App() {
   const dispatch = useDispatch();
@@ -31,6 +33,8 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchAllCategoriesAction());
+    dispatch(fetchAllProductsAction);
+    dispatch(fetchAllProducts);
   }, [dispatch]);
 
   return (
