@@ -12,18 +12,15 @@ import { useSelector } from "react-redux";
 import { retrieveAllOrder } from "../features/order/orderAPI";
 import { BsCartX } from "react-icons/bs";
 import { Link } from "react-router-dom";
-
 const Order = () => {
   const { customer } = useSelector((store) => store.customerStore);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [activeKey, setActiveKey] = useState("0");
-
   const toggleAccordion = (key) => {
     setActiveKey(activeKey === key ? null : key);
   };
-
   const getStatusVariant = (status) => {
     switch (status) {
       case "Delivered":
@@ -36,7 +33,6 @@ const Order = () => {
         return "secondary";
     }
   };
-
   useEffect(() => {
     const fetchOrders = async () => {
       if (!customer?._id) return;
@@ -54,19 +50,15 @@ const Order = () => {
         setLoading(false);
       }
     };
-
     fetchOrders();
   }, [customer]);
-
   if (loading)
     return (
       <div className="text-center mt-5">
         <Spinner animation="border" />
       </div>
     );
-
   if (error) return <Alert variant="danger">{error}</Alert>;
-
   if (orders.length === 0) {
     return (
       <div
@@ -80,50 +72,42 @@ const Order = () => {
         </p>
         <Link
           to="/products"
-          className="rounded-pill px-4 py-2 shadow-sm btn btn-primary"
+          variant="primary"
+          className="rounded-pill px-4 py-2 shadow-sm"
         >
           Shop Now
         </Link>
       </div>
     );
   }
-
   return (
-    <Container className="py-5 position-relative">
+    <Container className="container py-5">
       <h2 className="mb-4">Order History</h2>
       <Accordion activeKey={activeKey}>
         {orders.map((order, index) => (
-          <Card
-            key={order._id}
-            className="mb-3 shadow-sm border-0 position-relative"
-          >
-            {/* Badge positioned absolutely so it won't inherit Accordion.Header button styles */}
-            <Badge
-              bg={getStatusVariant(order.status)}
-              className="text-capitalize position-absolute top-0 end-0 m-3"
-              style={{ zIndex: 10 }}
-            >
-              {order.status}
-            </Badge>
-
+          <Card key={order._id} className="mb-3 shadow-sm border-0">
             <Accordion.Item eventKey={index.toString()}>
               <Accordion.Header
                 onClick={() => toggleAccordion(index.toString())}
               >
                 <div className="d-flex justify-content-between w-100 align-items-center">
                   <div>
-                    <strong>Order #{order._id.slice(-6)}</strong> —{" "}
+                    <strong>Order #{order._id.slice(-6)}</strong> —
                     {new Date(order.createdAt).toLocaleDateString()}
                   </div>
                   <div className="d-flex align-items-center gap-2">
                     <strong>${order.total?.toFixed(2)}</strong>
+                    <Badge
+                      bg={getStatusVariant(order.status)}
+                      className="text-capitalize"
+                    >
+                      {order.status}
+                    </Badge>
                   </div>
                 </div>
               </Accordion.Header>
-
               <Accordion.Body>
-                {/* Order Items */}
-                <h6>Items Ordered</h6>
+                {/* Order Items */} <h6>Items Ordered</h6>
                 <ul className="mb-3">
                   {order.items?.map((item, idx) => (
                     <li key={idx}>
@@ -132,28 +116,23 @@ const Order = () => {
                     </li>
                   ))}
                 </ul>
-
-                {/* Shipping */}
-                <h6>Shipping Address</h6>
-                <p className="mb-3">
-                  {order.shippingAddress
-                    ? `${order.shippingAddress.fullName}, ${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.postalCode}, ${order.shippingAddress.country}`
-                    : "N/A"}
-                </p>
-
-                {/* Payment */}
-                <h5>Payment Details</h5>
+                {/* Shipping */} <h6>Shipping Address</h6>
+                <p className="mb-3">{order.shippingAddress || "N/A"}</p>
+                {/* Payment */} <h5>Payment Details</h5>
                 <p>
-                  Method: {order.paymentMethod || "Card"} <br />
-                  Total: <strong>${order.total?.toFixed(2)}</strong>
+                  Method: {order.paymentMethod || "Card"} <br /> Total:
+                  <strong>${order.total?.toFixed(2)}</strong>
                 </p>
-
                 {/* Action Buttons */}
-                <div className="d-flex gap-2 mt-3">
-                  <Button variant="primary" size="sm">
-                    Track Order
-                  </Button>
-                </div>
+                {order.status === "Delivered" ? (
+                  <div className="d-flex gap-2 mt-3">
+                    <Button variant="primary" size="m">
+                      Give a review
+                    </Button>
+                  </div>
+                ) : (
+                  ""
+                )}
               </Accordion.Body>
             </Accordion.Item>
           </Card>
@@ -162,5 +141,4 @@ const Order = () => {
     </Container>
   );
 };
-
 export default Order;
