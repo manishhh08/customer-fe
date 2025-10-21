@@ -216,7 +216,7 @@ export default function Homepage() {
 
       {/* CATEGORIES */}
       <section
-        className="py-5"
+        className="py-5 hero-wrap"
         style={{
           background: "linear-gradient(180deg, var(--neo-d2), var(--neo-d1))",
         }}
