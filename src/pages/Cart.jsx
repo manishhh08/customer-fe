@@ -11,7 +11,6 @@ const Cart = () => {
   const { items: cartItems } = useSelector((state) => state.cartStore);
   const { customer } = useSelector((state) => state.customerStore);
   const navigate = useNavigate();
-
   const handleQuantity = (id, change) => {
     dispatch(updateQuantity({ id, change }));
   };

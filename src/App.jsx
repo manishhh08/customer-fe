@@ -21,17 +21,18 @@ import ThankYou from "./pages/ThankYou";
 import Verify from "./pages/Verify/Verify";
 import Order from "./pages/Order";
 import UserProfile from "./pages/UserProfile/UserProfile";
+import { fetchAllProductsAction } from "./features/product/productAction";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getCustomerDetail());
-    // dispatch(fetchAllProductsAction());
   }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchAllCategoriesAction());
+    dispatch(fetchAllProductsAction());
   }, [dispatch]);
 
   return (
@@ -43,7 +44,12 @@ function App() {
           <Route path="auth" element={<AuthPage />} />
 
           {/* Instead of creating multiple static routes (listing each routes), creating a dynamic route which handles all the categories */}
-          <Route path="category/:slug" element={<Category />} />
+          {/* <Route path="category/:slug" element={<Category />} /> */}
+          <Route path="/category/:categorySlug" element={<Category />} />
+          <Route
+            path="/category/:categorySlug/:subCategorySlug"
+            element={<Category />}
+          />
 
           <Route path="cart" element={<Cart />} />
           <Route path="verify" element={<Verify />} />

@@ -16,3 +16,14 @@ export const getFeaturedProductsApi = async () => {
     url: `${apiUrl}/products/featured-products`,
   });
 };
+export const fetchProductsBySubCategoryApi = async (
+  categorySlug,
+  subCategorySlug
+) => {
+  const response = await apiProcessor({
+    method: "get",
+    url: `${apiUrl}/products/${categorySlug}/${subCategorySlug}`,
+  });
+
+  return response.data.products;
+};
