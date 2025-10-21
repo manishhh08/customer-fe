@@ -46,3 +46,13 @@ export const fetchCustomerDetail = async () => {
     isPrivate: true,
   });
 };
+
+// update customer detail
+export const updateCustomerDetail = async (obj) => {
+  return apiProcessor({
+    method: "PATCH",
+    url: `${apiUrl}/customer`,
+    data: obj,
+    isPrivate: true,
+  });
+};
