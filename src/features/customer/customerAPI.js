@@ -50,7 +50,7 @@ export const fetchCustomerDetail = async () => {
 // update customer detail
 export const updateCustomerDetail = async (obj) => {
   return apiProcessor({
-    method: "PUT",
+    method: "PATCH",
     url: `${apiUrl}/customer`,
     data: obj,
     isPrivate: true,

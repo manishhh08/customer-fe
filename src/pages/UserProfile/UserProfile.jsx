@@ -34,7 +34,7 @@ export default function Account() {
 
   useEffect(() => {
     if (!customer) dispatch(getCustomerDetail());
-  }, [customer, dispatch]); // fetch “me” on load  :contentReference[oaicite:0]{index=0}
+  }, [customer, dispatch]);
 
   useEffect(() => {
     if (customer) {
@@ -50,7 +50,7 @@ export default function Account() {
         if (res?.status === "success") setOrdersCount(res.orders?.length || 0);
       });
     }
-  }, [customer]); // uses your existing orders API  :contentReference[oaicite:1]{index=1}
+  }, [customer]);
 
   const onChange = (e) =>
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
@@ -67,7 +67,10 @@ export default function Account() {
       new Date(customer.createdAt).toLocaleDateString()
     : "—";
 
-  const onLogout = () => dispatch(logoutAction()); // clears tokens + store  :contentReference[oaicite:2]{index=2}
+  const updatedAt = customer.updatedAt
+    ? customer.updatedAt.split?.("T")?.[0] ||
+      new Date(customer.updatedAt).toLocaleDateString()
+    : "—";
 
   if (loading && !customer) {
     return (
@@ -87,24 +90,20 @@ export default function Account() {
       <Container>
         {/* Header */}
         <div className="d-flex flex-wrap align-items-center justify-content-between mb-4">
-          <h2 className="fw-bold m-0">My Account</h2>
+          <div>
+            <h2 className="fw-bold m-0">My Account</h2>
+            <small>
+              Review recent orders, manage delivery options, and update your
+              profile.
+            </small>
+          </div>
           <div className="d-flex align-items-center gap-2">
-            <Badge bg={customer?.isVerified ? "success" : "secondary"}>
-              {customer?.isVerified ? "Verified" : "Unverified"}
-            </Badge>
             <Link
               to="/orders"
               className="btn-ghost neo rounded-4 text-decoration-none"
             >
               Orders ({ordersCount})
             </Link>
-            <Button
-              bsPrefix="neo"
-              className="btn-ghost rounded-4"
-              onClick={onLogout}
-            >
-              Logout
-            </Button>
           </div>
         </div>
 
@@ -188,7 +187,7 @@ export default function Account() {
             </div>
           </Col>
 
-          {/* Preview / meta */}
+          {/* Profile Card */}
           <Col md={5}>
             <div className="card-neo rounded-4 p-4 h-100 d-flex flex-column align-items-center text-center">
               <div
@@ -209,12 +208,18 @@ export default function Account() {
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </div>
-              <div className="h5 m-0">
+              <div className="h5 mb-3">
                 {form.fname} {form.lname}
               </div>
-              <div className="text-white-50 mb-3">{form.email}</div>
+              <Badge bg={customer?.isVerified ? "success" : "secondary"}>
+                {customer?.isVerified ? "Verified" : "Unverified"}
+              </Badge>
+              <div className="text-white-50 my-3">{form.email}</div>
               <div className="small text-white-50">
                 Member since: {memberSince}
+              </div>
+              <div className="small text-white-50">
+                Last updated: {updatedAt}
               </div>
             </div>
           </Col>
