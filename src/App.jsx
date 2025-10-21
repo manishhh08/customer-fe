@@ -20,6 +20,7 @@ import Checkout from "./pages/Checkout";
 import ThankYou from "./pages/ThankYou";
 import Verify from "./pages/Verify/Verify";
 import Order from "./pages/Order";
+import UserProfile from "./pages/UserProfile/UserProfile";
 import { fetchAllProductsAction } from "./features/product/productAction";
 
 function App() {
@@ -62,6 +63,7 @@ function App() {
           }
         >
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="manage-account" element={<UserProfile />} />
           <Route path="orders" element={<Order />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="thank-you" element={<ThankYou />} />

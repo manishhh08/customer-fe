@@ -88,7 +88,7 @@ const Header = ({ toggleSidebar }) => {
 
                 <Dropdown.Menu align="end" variant="dark">
                   <Dropdown.Header>Welcome, {customer?.fname}</Dropdown.Header>
-                  <Dropdown.Item as={Link} to="/account">
+                  <Dropdown.Item as={Link} to="/manage-account">
                     <FaUserGear /> Manage Account
                   </Dropdown.Item>
                   <Dropdown.Item as={Link} to="/orders">

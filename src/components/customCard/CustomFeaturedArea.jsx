@@ -21,9 +21,9 @@ const CustomFeaturedArea = ({
         <p className="text-white-50">{titleDescription}</p>
       </div>
 
-      <Row className="g-4">
+      <Row className="g-4 align-items-stretch">
         {products?.slice(0, 4).map((p) => (
-          <Col xs={12} md={6} lg={3} key={p._id}>
+          <Col xs={12} md={6} lg={3} className="d-flex" key={p._id}>
             <CustomCard
               product={p}
               handleAddToCart={handleAddToCart}
