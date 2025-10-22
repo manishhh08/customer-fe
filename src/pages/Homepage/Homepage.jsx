@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Container, Row, Col, Button, Pagination } from "react-bootstrap";
 import {
   BsLightningCharge,
@@ -17,13 +17,13 @@ import CustomFeaturedArea from "../../components/customCard/CustomFeaturedArea";
 
 export default function Homepage() {
   const dispatch = useDispatch();
+  const location = useLocation();
   const [featured, setFeatured] = useState({});
   const [activePage, setActivePage] = useState(1);
 
   const { products } = useSelector((store) => store.productStore);
   const { categories } = useSelector((store) => store.categoryStore);
 
-  //
   const itemsPerPage = 4;
   const totalPages = Math.ceil(categories.length / itemsPerPage);
   const currentCategories = categories.slice(
@@ -53,6 +53,18 @@ export default function Homepage() {
     };
     getFeaturedProducts();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (location.state?.scrollTo) {
+      const target = document.getElementById(location.state.scrollTo);
+      if (target) {
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
 
   return (
     <div className="bg-dark text-light">
@@ -151,7 +163,11 @@ export default function Homepage() {
       </section>
 
       {/* NEW ARRIVALS */}
-      <section className="py-5" style={{ background: "var(--neo-d1)" }}>
+      <section
+        className="py-5"
+        id="new-arrivals"
+        style={{ background: "var(--neo-d1)" }}
+      >
         <CustomFeaturedArea
           majorTitle="New Arrivals"
           minorTitle="Just In"
@@ -163,7 +179,11 @@ export default function Homepage() {
       </section>
 
       {/* BEST SELLERS */}
-      <section className="py-5" style={{ background: "var(--neo-d1)" }}>
+      <section
+        className="py-5"
+        id="best-sellers"
+        style={{ background: "var(--neo-d1)" }}
+      >
         <CustomFeaturedArea
           majorTitle="Best Sellers"
           minorTitle="Our best selling products"

@@ -1,8 +1,20 @@
 import React from "react";
+import { Button } from "react-bootstrap";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Footer = () => {
   const year = new Date().getFullYear();
+  const navigate = useNavigate();
+  const location = useLocation();
 
+  const scrollToSection = (id) => {
+    if (location.pathname !== "/") {
+      navigate("/", { state: { scrollTo: id } });
+    } else {
+      const redirect = document.getElementById(id);
+      if (redirect) redirect.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <footer className="bg-dark text-light py-5 ">
       <div className="container">
@@ -20,14 +32,26 @@ const Footer = () => {
             <h6 className="text-uppercase fw-semibold mb-2">Shop</h6>
             <ul className="list-unstyled">
               <li>
-                <a className="link-light link-underline-opacity-0" href="#">
+                <Link
+                  className="btn btn-link link-light link-underline-opacity-0 p-0"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection("new-arrivals");
+                  }}
+                >
                   New Arrivals
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="link-light link-underline-opacity-0" href="#">
+                <Link
+                  className="btn btn-link link-light link-underline-opacity-0 p-0"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection("best-sellers");
+                  }}
+                >
                   Best Sellers
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
