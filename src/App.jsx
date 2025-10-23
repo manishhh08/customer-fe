@@ -45,9 +45,9 @@ function App() {
 
           {/* Instead of creating multiple static routes (listing each routes), creating a dynamic route which handles all the categories */}
           {/* <Route path="category/:slug" element={<Category />} /> */}
-          <Route path="/category/:categorySlug" element={<Category />} />
+          {/* <Route path="/category/:categorySlug" element={<Category />} /> */}
           <Route
-            path="/category/:categorySlug/:subCategorySlug"
+            path="/category/:category/:subCategory"
             element={<Category />}
           />
 

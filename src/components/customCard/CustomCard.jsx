@@ -14,13 +14,7 @@ const CustomCard = ({ product, tagLabel, tagClass }) => {
         className="position-relative featured-media overflow-hidden d-block"
         aria-label={`Open ${product.name}`}
       >
-        <img
-          src={
-            product.images[0] ||
-            "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1600&auto=format&fit=crop"
-          }
-          alt={product.name}
-        />
+        <img src={product.images[0]} alt={product.name} />
 
         <span
           className={`position-absolute top-0 end-0 m-3 chip ${tagClass} fw-semibold z-2`}
@@ -52,12 +46,7 @@ const CustomCard = ({ product, tagLabel, tagClass }) => {
         </p>
 
         <div className="d-flex align-items-baseline gap-2 mb-3">
-          <div className="h4 m-0">${product.price.toFixed(2)}</div>
-          {product.comparePrice && (
-            <del className="text-white-50">
-              ${product.comparePrice.toFixed(2)}
-            </del>
-          )}
+          <div className="h4 m-0 text-white">${product.price.toFixed(2)}</div>
         </div>
 
         <Button
