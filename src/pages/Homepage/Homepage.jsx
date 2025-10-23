@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { Link, useLocation } from "react-router-dom";
+import { Container, Row, Col, Button, Pagination } from "react-bootstrap";
 import {
   BsLightningCharge,
   BsShieldCheck,
   BsTruck,
   BsArrowRight,
 } from "react-icons/bs";
+import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAllProductsAction,
@@ -16,17 +17,54 @@ import CustomFeaturedArea from "../../components/customCard/CustomFeaturedArea";
 
 export default function Homepage() {
   const dispatch = useDispatch();
+  const location = useLocation();
   const [featured, setFeatured] = useState({});
+  const [activePage, setActivePage] = useState(1);
+
   const { products } = useSelector((store) => store.productStore);
   const { categories } = useSelector((store) => store.categoryStore);
+
+  const itemsPerPage = 4;
+  const totalPages = Math.ceil(categories.length / itemsPerPage);
+  const currentCategories = categories.slice(
+    (activePage - 1) * itemsPerPage,
+    activePage * itemsPerPage
+  );
+
+  const paginationItems = [];
+  for (let number = 1; number <= totalPages; number++) {
+    paginationItems.push(
+      <Pagination.Item
+        key={number}
+        active={number === activePage}
+        onClick={() => setActivePage(number)}
+      >
+        {number}
+      </Pagination.Item>
+    );
+  }
+
   useEffect(() => {
     dispatch(fetchAllProductsAction());
-    const getFeaturedProdcuts = async () => {
+
+    const getFeaturedProducts = async () => {
       const result = await fetchFeaturedProductsAction();
       if (result) setFeatured(result);
     };
-    getFeaturedProdcuts();
+    getFeaturedProducts();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (location.state?.scrollTo) {
+      const target = document.getElementById(location.state.scrollTo);
+      if (target) {
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
 
   return (
     <div className="bg-dark text-light">
@@ -34,7 +72,6 @@ export default function Homepage() {
       <section className="hero-wrap py-5 py-md-6">
         <Container className="py-4 py-lg-5">
           <Row className="align-items-center g-5">
-            {/* Left copy */}
             <Col lg={6}>
               <div className="d-inline-flex align-items-center gap-2 pill px-3 py-2 rounded-5 mb-3">
                 <span className="badge rounded-pill bg-transparent text-light">
@@ -86,7 +123,6 @@ export default function Homepage() {
               </Row>
             </Col>
 
-            {/* Right visual */}
             <Col lg={6}>
               <div className="position-relative">
                 <div
@@ -105,7 +141,7 @@ export default function Homepage() {
                   <img
                     className="img-fluid"
                     alt="Latest tech products"
-                    src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?q=80&w=1600&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1758186374131-d542d2beae0c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1632"
                   />
                 </div>
               </div>
@@ -119,8 +155,7 @@ export default function Homepage() {
         <CustomFeaturedArea
           majorTitle="Hot Deals This Week"
           minorTitle="Featured Collection"
-          titleDescription="Handpicked selection of the most popular and trending tech
-              products"
+          titleDescription="Handpicked selection of the most popular and trending tech products"
           products={products}
           tagLabel="HOT"
           tagClass="tag-hot"
@@ -128,7 +163,11 @@ export default function Homepage() {
       </section>
 
       {/* NEW ARRIVALS */}
-      <section className="py-5" style={{ background: "var(--neo-d1)" }}>
+      <section
+        className="py-5"
+        id="new-arrivals"
+        style={{ background: "var(--neo-d1)" }}
+      >
         <CustomFeaturedArea
           majorTitle="New Arrivals"
           minorTitle="Just In"
@@ -140,7 +179,11 @@ export default function Homepage() {
       </section>
 
       {/* BEST SELLERS */}
-      <section className="py-5" style={{ background: "var(--neo-d1)" }}>
+      <section
+        className="py-5"
+        id="best-sellers"
+        style={{ background: "var(--neo-d1)" }}
+      >
         <CustomFeaturedArea
           majorTitle="Best Sellers"
           minorTitle="Our best selling products"
@@ -192,8 +235,13 @@ export default function Homepage() {
       </section>
 
       {/* CATEGORIES */}
-      <section className="py-5" style={{ background: "var(--neo-d1)" }}>
-        <Container>
+      <section
+        className="py-5"
+        style={{
+          background: "linear-gradient(180deg, var(--neo-d2), var(--neo-d1))",
+        }}
+      >
+        <Container className="position-relative">
           <div className="text-center mb-4">
             <h2 className="display-6 fw-bold">Shop by Category</h2>
             <hr className="my-3 mx-auto" style={{ width: "5rem" }} />
@@ -202,24 +250,65 @@ export default function Homepage() {
             </p>
           </div>
 
-          <Row className="g-3 g-md-4">
-            {categories?.map((c) => (
-              <Col xs={6} md={4} lg={3} key={c.name}>
-                <Link
-                  // to={`/category/${c.name.toLowerCase()}`}
-                  // bsPrefix="neo"
-                  to={`/category/${c.slug}`}
-                  bsprefix="neo"
-                  className="text-decoration-none"
-                >
-                  <div className="p-4 rounded-4 card-neo text-center h-100">
-                    <div className="icon-pill mx-auto mb-3 fs-4">{c.icon}</div>
-                    <div className="text-light fw-semibold">{c.name}</div>
-                  </div>
-                </Link>
-              </Col>
-            ))}
-          </Row>
+          {/* Row Wrapper needs position-relative for arrows */}
+          <div className="position-relative">
+            <Row className="g-2 g-md-3">
+              {currentCategories.map((c) => (
+                <Col xs={6} md={4} lg={3} key={c.name}>
+                  <Link
+                    to={`/category/${c.slug}`}
+                    className="text-decoration-none"
+                  >
+                    <div className="p-4 rounded-4 card-neo text-center h-100">
+                      <div className="icon-pill mx-auto mb-3 fs-4">
+                        {c.icon}
+                      </div>
+                      <div className="text-light fw-semibold">{c.name}</div>
+                    </div>
+                  </Link>
+                </Col>
+              ))}
+            </Row>
+
+            {/* Prev Arrow */}
+            {activePage > 1 && (
+              <div
+                className="position-absolute top-50 translate-middle-y"
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: "#1a1a1a",
+                  color: "#fff",
+                  padding: "0.5rem",
+                  borderRadius: "50%",
+                  left: "-2.5rem",
+                  zIndex: 10,
+                }}
+                onClick={() => setActivePage((prev) => Math.max(prev - 1, 1))}
+              >
+                <IoIosArrowBack size={24} />
+              </div>
+            )}
+            {/* Next Arrow */}
+            {activePage < totalPages && (
+              <div
+                className="position-absolute top-50 translate-middle-y"
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: "#1a1a1a",
+                  color: "#fff",
+                  padding: "0.5rem",
+                  borderRadius: "50%",
+                  right: "-2.5rem", // move arrow right outside the category
+                  zIndex: 10,
+                }}
+                onClick={() =>
+                  setActivePage((prev) => Math.min(prev + 1, totalPages))
+                }
+              >
+                <IoIosArrowForward size={24} />
+              </div>
+            )}
+          </div>
         </Container>
       </section>
 
