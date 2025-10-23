@@ -16,7 +16,7 @@ const CustomCard = ({ product, tagLabel, tagClass }) => {
       >
         <img
           src={
-            product.images ||
+            product.images[0] ||
             "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1600&auto=format&fit=crop"
           }
           alt={product.name}
