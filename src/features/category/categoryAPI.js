@@ -9,3 +9,10 @@ export const fetchAllCategories = async () => {
     url: `${apiUrl}/category`,
   });
 };
+
+export const fetchCategoryProductsApi = async (slug) => {
+  return apiProcessor({
+    method: "get",
+    url: `${apiUrl}/category/${slug}`,
+  });
+};
