@@ -22,6 +22,7 @@ import Verify from "./pages/Verify/Verify";
 import Order from "./pages/Order";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import { fetchAllProductsAction } from "./features/product/productAction";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 function App() {
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ function App() {
             element={<Category />}
           />
 
+          <Route path="privacy-policy" element={<PrivacyPolicy />} />
           <Route path="cart" element={<Cart />} />
           <Route path="verify" element={<Verify />} />
         </Route>

@@ -78,7 +78,7 @@ const Footer = () => {
               </div>
               <small className="text-secondary d-block">
                 By subscribing, you agree to our{" "}
-                <a className="link-light" href="#">
+                <a className="link-light" href="privacy-policy">
                   Privacy Policy
                 </a>
                 .
