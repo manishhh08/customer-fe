@@ -57,28 +57,36 @@ const Footer = () => {
           </div>
 
           {/* Newsletter */}
-          <div className="col-12 col-md-3">
-            <h6 className="text-uppercase fw-semibold mb-2">Get updates</h6>
-            <form className="needs-validation" noValidate>
-              <label htmlFor="footerEmail" className="form-label small">
+          <div className="col-12 col-md-4 text-center text-md-start">
+            <h6 className="text-uppercase fw-semibold mb-3">Get Updates</h6>
+
+            <form
+              action="https://gmail.us15.list-manage.com/subscribe/post?u=71a640f48bb6d54e8d33b241f&amp;id=a01de5494d&amp;f_id=00e9c2e1f0"
+              method="post"
+              noValidate
+            >
+              <label
+                htmlFor="footerEmail"
+                className="form-label small d-block mb-2"
+              >
                 Subscribe to our newsletter
               </label>
               <div className="input-group mb-2">
                 <input
-                  id="footerEmail"
                   type="email"
+                  name="EMAIL"
                   className="form-control form-control-sm"
+                  id="footerEmail"
                   placeholder="you@example.com"
-                  aria-label="Email address"
                   required
                 />
-                <button className="btn btn-primary btn-sm" type="submit">
+                <button type="submit" className="btn btn-primary btn-sm">
                   Subscribe
                 </button>
               </div>
               <small className="text-secondary d-block">
                 By subscribing, you agree to our{" "}
-                <a className="link-light" href="privacy-policy">
+                <a href="/privacy-policy" className="link-light">
                   Privacy Policy
                 </a>
                 .
