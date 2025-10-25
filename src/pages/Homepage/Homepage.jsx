@@ -68,7 +68,6 @@ export default function Homepage() {
 
   return (
     <div className="bg-dark text-light">
-      {/* HERO */}
       <section className="hero-wrap py-5 py-md-6">
         <Container className="py-4 py-lg-5">
           <Row className="align-items-center g-5">
