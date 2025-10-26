@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
-import SideBar from "./SideBar";
+import SideBar from "./SideBar.jsx";
 import { Outlet } from "react-router-dom";
 import { fetchAllCategoriesAction } from "../../features/category/categoryAction";
 import { FaArrowUp } from "react-icons/fa";

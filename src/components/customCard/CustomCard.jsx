@@ -14,13 +14,22 @@ const CustomCard = ({ product, tagLabel, tagClass }) => {
         className="position-relative featured-media overflow-hidden d-block"
         aria-label={`Open ${product.name}`}
       >
-        <img
-          src={
-            product.images ||
-            "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1600&auto=format&fit=crop"
-          }
-          alt={product.name}
-        />
+        <div className="overflow-hidden">
+          <img
+            src={product.images?.[0]}
+            alt={product.name}
+            className="img-fluid w-100 transition transform"
+            style={{
+              objectFit: "cover",
+
+              transition: "transform 0.4s ease",
+            }}
+            onMouseOver={(e) =>
+              (e.currentTarget.style.transform = "scale(1.05)")
+            }
+            onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          />
+        </div>
 
         <span
           className={`position-absolute top-0 end-0 m-3 chip ${tagClass} fw-semibold z-2`}
@@ -36,10 +45,10 @@ const CustomCard = ({ product, tagLabel, tagClass }) => {
       </Link>
 
       <div className="d-flex flex-column flex-grow-1 p-4">
-        <h5 className="mb-1">
+        <h5 className="mb-1 line-clamp-2">
           <Link
             to={`/product/${product._id}`}
-            className="text-decoration-none link-title"
+            className="small text-decoration-none link-title"
           >
             {product.name}
           </Link>
@@ -47,17 +56,12 @@ const CustomCard = ({ product, tagLabel, tagClass }) => {
         <p className="small text-white-50 mb-3">
           Average Rating: {product.averageRating}
         </p>
-        <p className="small text-white-50 mb-3 line-clamp-2">
+        <p className="small text-white-50 mb-3 line-clamp-2 overflow-hidden">
           {product.description}
         </p>
 
         <div className="d-flex align-items-baseline gap-2 mb-3">
-          <div className="h4 m-0">${product.price.toFixed(2)}</div>
-          {product.comparePrice && (
-            <del className="text-white-50">
-              ${product.comparePrice.toFixed(2)}
-            </del>
-          )}
+          <div className="h4 m-0 text-white">${product.price.toFixed(2)}</div>
         </div>
 
         <Button
