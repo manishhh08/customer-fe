@@ -10,30 +10,11 @@ import {
   ToggleButtonGroup,
   ToggleButton,
 } from "react-bootstrap";
-import {
-  fetchProductsBySubCategoryAction,
-  fetchAllProductsAction,
-} from "../../features/product/productAction";
 
 const Category = () => {
   const { categorySlug, subCategorySlug } = useParams();
   const dispatch = useDispatch();
   const [view, setView] = useState("grid");
-
-  const { products, loading } = useSelector((store) => store.productStore);
-
-  useEffect(() => {
-    if (categorySlug && subCategorySlug) {
-      // fetch products by sub-category
-      dispatch(fetchProductsBySubCategoryAction(categorySlug, subCategorySlug));
-    } else {
-      // fetch all active products
-      dispatch(fetchAllProductsAction());
-    }
-  }, [dispatch, categorySlug, subCategorySlug]);
-  useEffect(() => {
-    console.log("Params:", { categorySlug, subCategorySlug });
-  }, [categorySlug, subCategorySlug]);
 
   if (loading) return <p className="text-center my-5">Loading products...</p>;
 

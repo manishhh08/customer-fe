@@ -1,9 +1,5 @@
 import { setLoading } from "../customer/customerSlice";
-import {
-  fetchAllProducts,
-  fetchProductsBySubCategoryApi,
-  getFeaturedProductsApi,
-} from "./productAPI";
+import { fetchAllProducts, getFeaturedProductsApi } from "./productAPI";
 import { setProducts } from "./productSlice";
 
 export const fetchAllProductsAction = () => async (dispatch) => {
@@ -25,20 +21,3 @@ export const fetchFeaturedProductsAction = async () => {
       recentlyAddedProducts: result.recentlyAddedProducts,
     };
 };
-
-export const fetchProductsBySubCategoryAction =
-  (categorySlug, subCategorySlug) => async (dispatch) => {
-    try {
-      dispatch(setLoading(true));
-
-      const products = await fetchProductsBySubCategoryApi(
-        categorySlug,
-        subCategorySlug
-      );
-      dispatch(setProducts(products)); // products is the filtered array
-    } catch (error) {
-      console.error("Failed to fetch subcategory products:", error);
-    } finally {
-      dispatch(setLoading(false));
-    }
-  };
