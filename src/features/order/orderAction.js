@@ -10,7 +10,6 @@ export const createNewOrderAction = (orderObject) => async (dispatch) => {
       return data;
     }
   } catch (err) {
-    toast[data.status](data?.message || "Something went wrong");
     console.log("Order creation error:", err.message, err.stack);
     return {
       status: "error",

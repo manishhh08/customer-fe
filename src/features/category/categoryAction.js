@@ -1,4 +1,4 @@
-import { fetchAllCategories } from "./categoryAPI";
+import { fetchAllCategories, fetchCategoryProductsApi } from "./categoryAPI";
 import {
   setCategories,
   setLoading,
@@ -23,4 +23,9 @@ export const fetchAllCategoriesAction = () => async (dispatch) => {
       setError(error.message || "Network error while fetching categories")
     );
   }
+};
+
+export const fetchCategoryProductsAction = async (slug) => {
+  const result = await fetchCategoryProductsApi(slug);
+  return result;
 };
