@@ -1,33 +1,12 @@
-// src/features/review/reviewAPI.js
-import { apiProcessor } from "../../utils/axiosHelper.js"; // adjust path if needed
+import { apiProcessor } from "../../utils/axiosHelper";
+const apiUrl = import.meta.env.VITE_APP_API_URL + "/api/v1";
 
-const reviewEP = "/reviews"; // base endpoint (change if your backend uses different route)
-
-// ========== PRIVATE API CALLS (with auth) ==========
-export const createReview = async (data) => {
-  const obj = {
-    method: "POST",
-    url: reviewEP,
+// Create Review
+export const createNewReview = async (data) => {
+  return apiProcessor({
+    method: "post",
+    url: `${apiUrl}/reviews`,
+    isPrivate: true,
     data,
-    isPrivate: true,
-  };
-  return await apiProcessor(obj);
-};
-
-export const fetchReviews = async () => {
-  const obj = {
-    method: "GET",
-    url: reviewEP,
-    isPrivate: true,
-  };
-  return await apiProcessor(obj);
-};
-
-// ========== PUBLIC API CALL ==========
-export const fetchPublicReviews = async () => {
-  const obj = {
-    method: "GET",
-    url: reviewEP + "/public",
-  };
-  return await apiProcessor(obj);
+  });
 };

@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { CustomInput } from "../components/custominput/CustomInput";
-import { CustomModal } from "../components/custommodal/CustomModal";
+import { CustomInput } from "./custominput/CustomInput";
+import { CustomModal } from "./custommodal/CustomModal";
 import { createReviewAction } from "../features/review/reviewAction";
+import { Stars } from "./stars/Stars";
 
 const ReviewForm = ({ show, onHide, product }) => {
   const dispatch = useDispatch();
@@ -11,7 +12,6 @@ const ReviewForm = ({ show, onHide, product }) => {
     title: "",
     rating: "",
     comment: "",
-    productId: "",
   });
 
   useEffect(() => {
@@ -19,6 +19,8 @@ const ReviewForm = ({ show, onHide, product }) => {
       setForm((prev) => ({ ...prev, productId: product._id }));
     }
   }, [product]);
+
+  console.log("PRoduct passed to review form", product);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,8 +30,8 @@ const ReviewForm = ({ show, onHide, product }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(createReviewAction(form));
-    onHide(); // close modal after submission
-    setForm({ title: "", rating: "", comment: "", productId: "" });
+    onHide();
+    setForm({ productId: "", title: "", rating: "", comment: "" });
   };
 
   return (
@@ -46,20 +48,22 @@ const ReviewForm = ({ show, onHide, product }) => {
           onChange={handleChange}
           placeholder="Enter review title"
         />
-        <CustomInput
-          label="Rating"
-          name="rating"
-          type="select"
-          value={form.rating}
-          onChange={handleChange}
-          options={[
-            { label: "1 - Poor", value: "1" },
-            { label: "2 - Fair", value: "2" },
-            { label: "3 - Good", value: "3" },
-            { label: "4 - Very Good", value: "4" },
-            { label: "5 - Excellent", value: "5" },
-          ]}
-        />
+
+        {/* Interactive Stars Component */}
+        <div className="mb-3">
+          <label className="form-label">Rating</label>
+          <Stars
+            editable
+            stars={form.rating}
+            onChange={(value) =>
+              setForm((prev) => ({
+                ...prev,
+                rating: value,
+              }))
+            }
+          />
+        </div>
+
         <CustomInput
           label="Comment"
           name="comment"
@@ -68,7 +72,8 @@ const ReviewForm = ({ show, onHide, product }) => {
           onChange={handleChange}
           placeholder="Write your feedback..."
         />
-        <div className="d-flex justify-content-end">
+
+        <div className="d-flex justify-content-end mt-3">
           <Button variant="secondary" onClick={onHide} className="me-2">
             Cancel
           </Button>
@@ -80,4 +85,5 @@ const ReviewForm = ({ show, onHide, product }) => {
     </CustomModal>
   );
 };
+
 export default ReviewForm;

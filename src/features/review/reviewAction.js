@@ -1,42 +1,14 @@
-// src/features/review/reviewAction.js
 import { toast } from "react-toastify";
-import { createReview, fetchReviews, fetchPublicReviews } from "./reviewAPI";
-import { setReviews, setPubReviews } from "./reviewSlice";
-
-// ========== ADD NEW REVIEW ==========
-export const createReviewAction = (data) => async (dispatch) => {
+import { createNewReview } from "./reviewAPI";
+export const createReviewAction = (data) => async () => {
   try {
-    const result = await createReview(data);
+    const result = await createNewReview(data);
     if (result?.status === "success") {
-      toast.success("Review added successfully!");
-      // Optionally fetch updated reviews
-      dispatch(fetchReviewsAction());
+      toast.success("Review submitted successfully!");
+    } else {
+      toast.error(result.message || "Failed to submit review");
     }
   } catch (error) {
-    toast.error(error.message || "Failed to add review");
-  }
-};
-
-// ========== FETCH PRIVATE REVIEWS ==========
-export const fetchReviewsAction = () => async (dispatch) => {
-  try {
-    const result = await fetchReviews();
-    if (result?.status === "success") {
-      dispatch(setReviews(result.data));
-    }
-  } catch (error) {
-    toast.error("Unable to fetch reviews");
-  }
-};
-
-// ========== FETCH PUBLIC REVIEWS ==========
-export const fetchPublicReviewsAction = () => async (dispatch) => {
-  try {
-    const result = await fetchPublicReviews();
-    if (result?.status === "success") {
-      dispatch(setPubReviews(result.data));
-    }
-  } catch (error) {
-    toast.error("Unable to load public reviews");
+    toast.error(error.message || "Server Error");
   }
 };

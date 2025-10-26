@@ -26,7 +26,7 @@ export const apiProcessor = async ({
 
     return response.data;
   } catch (err) {
-    console.log("error", err?.response?.data);
+    // console.log("error", err?.response?.data);
     if (err?.response?.data?.message.includes("jwt expire")) {
       // renew access token and call refresh token api
       let data = await refreshTokenApi();
