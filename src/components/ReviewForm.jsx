@@ -15,8 +15,12 @@ const ReviewForm = ({ show, onHide, product }) => {
   });
 
   useEffect(() => {
-    if (product?._id) {
-      setForm((prev) => ({ ...prev, productId: product._id }));
+    if (product) {
+      // ✅ Use productId if available, otherwise fall back to _id
+      const correctId = product.productId || product._id;
+      if (correctId) {
+        setForm((prev) => ({ ...prev, productId: correctId }));
+      }
     }
   }, [product]);
 
@@ -29,6 +33,7 @@ const ReviewForm = ({ show, onHide, product }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("Submitting review form", form); // ✅ Add this
     dispatch(createReviewAction(form));
     onHide();
     setForm({ productId: "", title: "", rating: "", comment: "" });

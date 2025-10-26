@@ -135,25 +135,6 @@ const Checkout = () => {
                   onChange={(e) => setPaymentMethod(e.target.value)}
                   className="mb-2"
                 />
-                <Form.Check
-                  type="radio"
-                  label="PayPal"
-                  name="paymentMethod"
-                  id="paypal"
-                  value="paypal"
-                  checked={paymentMethod === "paypal"}
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="mb-2"
-                />
-                <Form.Check
-                  type="radio"
-                  label="Cash on Delivery"
-                  name="paymentMethod"
-                  id="cod"
-                  value="cod"
-                  checked={paymentMethod === "cod"}
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                />
               </Form>
               {/* Render Stripe if credit card selected */}
               {paymentMethod === "creditCard" && (

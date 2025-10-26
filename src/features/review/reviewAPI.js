@@ -10,3 +10,11 @@ export const createNewReview = async (data) => {
     data,
   });
 };
+
+// Get all active reviews for a specific product
+export const getReviewsByProductApi = (productId) => {
+  return apiProcessor({
+    method: "get",
+    url: `${apiUrl}/reviews/product/${productId}`,
+  });
+};
