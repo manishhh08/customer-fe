@@ -14,6 +14,7 @@ import {
   fetchFeaturedProductsAction,
 } from "../../features/product/productAction";
 import CustomFeaturedArea from "../../components/customCard/CustomFeaturedArea";
+import Category from "../Category/Category";
 
 export default function Homepage() {
   const dispatch = useDispatch();
@@ -22,11 +23,17 @@ export default function Homepage() {
   const [activePage, setActivePage] = useState(1);
 
   const { products } = useSelector((store) => store.productStore);
-  const { categories } = useSelector((store) => store.categoryStore);
+  const { categories, subCategories } = useSelector(
+    (store) => store.categoryStore
+  );
 
   const itemsPerPage = 4;
   const totalPages = Math.ceil(categories.length / itemsPerPage);
   const currentCategories = categories.slice(
+    (activePage - 1) * itemsPerPage,
+    activePage * itemsPerPage
+  );
+  const currentSubCategories = subCategories.slice(
     (activePage - 1) * itemsPerPage,
     activePage * itemsPerPage
   );
@@ -252,21 +259,38 @@ export default function Homepage() {
           {/* Row Wrapper needs position-relative for arrows */}
           <div className="position-relative">
             <Row className="g-2 g-md-3">
-              {currentCategories.map((c) => (
-                <Col xs={6} md={4} lg={3} key={c.name}>
-                  <Link
-                    to={`/category/${c.slug}`}
-                    className="text-decoration-none"
-                  >
-                    <div className="p-4 rounded-4 card-neo text-center h-100">
-                      <div className="icon-pill mx-auto mb-3 fs-4">
-                        {c.icon}
+              {currentSubCategories.map((c) => {
+                const parentCategory = categories.find(
+                  (item) => item._id === c.parent
+                );
+
+                return (
+                  <Col xs={6} md={4} lg={3} key={c.name}>
+                    <Link
+                      to={`/category/${parentCategory?.slug}/${c.slug}`}
+                      className="text-decoration-none"
+                    >
+                      <div className="p-4 rounded-4 card-neo text-center h-100">
+                        <div
+                          className="icon-pill mx-auto mb-3 fs-4"
+                          style={{ overflow: "hidden" }}
+                        >
+                          <img
+                            style={{
+                              maxWidth: "100%",
+                              maxHeight: "100%",
+                              objectFit: "contain",
+                            }}
+                            src={c.image}
+                            alt=""
+                          />
+                        </div>
+                        <div className="text-light fw-semibold">{c.name}</div>
                       </div>
-                      <div className="text-light fw-semibold">{c.name}</div>
-                    </div>
-                  </Link>
-                </Col>
-              ))}
+                    </Link>
+                  </Col>
+                );
+              })}
             </Row>
 
             {/* Prev Arrow */}
