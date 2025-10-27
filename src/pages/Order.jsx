@@ -167,9 +167,9 @@ const Order = () => {
                     );
                   })}
                 </ul>
-                {/* Shipping */} <h6>Shipping Address</h6>
+                <h6>Shipping Address</h6>
                 <p className="mb-3">{order.shippingAddress || "N/A"}</p>
-                {/* Payment */} <h5>Payment Details</h5>
+                <h5>Payment Details</h5>
                 <p>
                   Method: {order.paymentMethod || "Card"} <br /> Total:
                   <strong>${order.total?.toFixed(2)}</strong>

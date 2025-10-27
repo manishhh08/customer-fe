@@ -249,19 +249,31 @@ export default function Homepage() {
             </p>
           </div>
 
-          {/* Row Wrapper needs position-relative for arrows */}
           <div className="position-relative">
             <Row className="g-2 g-md-3">
               {currentCategories.map((c) => (
-                <Col xs={6} md={4} lg={3} key={c.name}>
+                <Col xs={6} md={4} lg={3} key={c._id}>
                   <Link
                     to={`/category/${c.slug}`}
                     className="text-decoration-none"
                   >
-                    <div className="p-4 rounded-4 card-neo text-center h-100">
-                      <div className="icon-pill mx-auto mb-3 fs-4">
-                        {c.icon}
+                    <div className="p-3 rounded-4 card-neo text-center h-100 bg-dark">
+                      {/* Category Image */}
+                      <div className="mb-3">
+                        <img
+                          src={c.image || "/images/placeholder.png"}
+                          alt={c.name}
+                          className="img-fluid rounded shadow-sm"
+                          style={{
+                            width: "100px",
+                            height: "70px",
+                            objectFit: "cover",
+                            borderRadius: "10px",
+                          }}
+                        />
                       </div>
+
+                      {/* Category Name */}
                       <div className="text-light fw-semibold">{c.name}</div>
                     </div>
                   </Link>
