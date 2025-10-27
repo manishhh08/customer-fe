@@ -8,7 +8,9 @@ export const createReviewAction = (data) => async () => {
     } else {
       toast.error(result.message || "Failed to submit review");
     }
+    return result;
   } catch (error) {
     toast.error(error.message || "Server Error");
+    return { status: "error", message: error.message };
   }
 };
