@@ -1,6 +1,11 @@
 import { setLoading } from "../customer/customerSlice";
-import { fetchAllProducts, getFeaturedProductsApi } from "./productAPI";
-import { setProducts } from "./productSlice";
+import {
+  fetchAllProducts,
+  fetchProductsBySubCategoryApi,
+  fetchTopRatedProductsApi,
+  getFeaturedProductsApi,
+} from "./productAPI";
+import { setProducts, setTopRatedProducts } from "./productSlice";
 
 export const fetchAllProductsAction = () => async (dispatch) => {
   try {
@@ -20,4 +25,32 @@ export const fetchFeaturedProductsAction = async () => {
       bestSellerProducts: result.bestSellerProducts,
       recentlyAddedProducts: result.recentlyAddedProducts,
     };
+};
+
+export const fetchProductsBySubCategoryAction =
+  (categorySlug, subCategorySlug) => async (dispatch) => {
+    try {
+      dispatch(setLoading(true));
+
+      const products = await fetchProductsBySubCategoryApi(
+        categorySlug,
+        subCategorySlug
+      );
+      dispatch(setProducts(products)); // products is the filtered array
+    } catch (error) {
+      console.error("Failed to fetch subcategory products:", error);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+export const fetchTopRatedProductsAction = () => async (dispatch) => {
+  try {
+    const response = await fetchTopRatedProductsApi();
+    if (response.status === "success") {
+      dispatch(setTopRatedProducts(response.data));
+    }
+  } catch (error) {
+    console.error("Failed to fetch top-rated products:", error);
+  }
 };

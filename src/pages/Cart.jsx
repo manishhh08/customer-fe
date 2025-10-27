@@ -56,7 +56,7 @@ const Cart = () => {
               <Card.Body>
                 <Row className="align-items-center">
                   <Col xs={3} md={2}>
-                    <Image src={item.images} alt={item.name} fluid rounded />
+                    <Image src={item.images[0]} alt={item.name} fluid rounded />
                   </Col>
 
                   <Col xs={9} md={6}>

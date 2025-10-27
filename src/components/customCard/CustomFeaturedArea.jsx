@@ -33,17 +33,6 @@ const CustomFeaturedArea = ({
           </Col>
         ))}
       </Row>
-
-      <div className="text-center mt-4">
-        <Link to="/products">
-          <Button
-            bsPrefix="neo"
-            className="btn-ghost rounded-4 px-4 d-inline-flex align-items-center gap-2"
-          >
-            View All Products <BsArrowRight />
-          </Button>
-        </Link>
-      </div>
     </Container>
   );
 };

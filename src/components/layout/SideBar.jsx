@@ -43,12 +43,9 @@ const SideBar = ({ categories, subcategories, isOpen, closeSidebar }) => {
               style={{ cursor: "pointer" }}
             >
               <div className="d-flex align-items-center justify-content-between">
-                <span
-                  className="text-decoration-none text-light flex-grow-1"
-                  to={`/category/${cat.slug}`}
-                >
+                <div className="text-decoration-none text-light flex-grow-1">
                   {cat.name}
-                </span>
+                </div>
 
                 {hasSub && <FaChevronRight style={{ flexShrink: 0 }} />}
               </div>
