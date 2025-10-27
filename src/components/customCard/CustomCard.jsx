@@ -20,8 +20,8 @@ const CustomCard = ({ product, tagLabel, tagClass }) => {
             alt={product.name}
             className="img-fluid w-100 transition transform"
             style={{
+              height: "304.4px",
               objectFit: "cover",
-
               transition: "transform 0.4s ease",
             }}
             onMouseOver={(e) =>
