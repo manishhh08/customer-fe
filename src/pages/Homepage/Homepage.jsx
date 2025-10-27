@@ -23,17 +23,12 @@ export default function Homepage() {
   const [featured, setFeatured] = useState({});
   const [activePage, setActivePage] = useState(1);
 
-<<<<<<< HEAD
-  const { products } = useSelector((store) => store.productStore);
-  const { categories, subCategories } = useSelector(
-    (store) => store.categoryStore
-  );
-=======
   const { products, topRatedProducts } = useSelector(
     (store) => store.productStore
   );
-  const { categories } = useSelector((store) => store.categoryStore);
->>>>>>> 2b7c6410a273582925534a32eb3ea1e7fa0986af
+  const { categories, subCategories } = useSelector(
+    (store) => store.categoryStore
+  );
 
   const itemsPerPage = 4;
   const totalPages = Math.ceil(categories.length / itemsPerPage);
@@ -286,7 +281,6 @@ export default function Homepage() {
 
           <div className="position-relative">
             <Row className="g-2 g-md-3">
-<<<<<<< HEAD
               {currentSubCategories.map((c) => {
                 const parentCategory = categories.find(
                   (item) => item._id === c.parent
@@ -319,36 +313,6 @@ export default function Homepage() {
                   </Col>
                 );
               })}
-=======
-              {currentCategories.map((c) => (
-                <Col xs={6} md={4} lg={3} key={c._id}>
-                  <Link
-                    to={`/category/${c.slug}`}
-                    className="text-decoration-none"
-                  >
-                    <div className="p-3 rounded-4 card-neo text-center h-100 bg-dark">
-                      {/* Category Image */}
-                      <div className="mb-3">
-                        <img
-                          src={c.image || "/images/placeholder.png"}
-                          alt={c.name}
-                          className="img-fluid rounded shadow-sm"
-                          style={{
-                            width: "100px",
-                            height: "70px",
-                            objectFit: "cover",
-                            borderRadius: "10px",
-                          }}
-                        />
-                      </div>
-
-                      {/* Category Name */}
-                      <div className="text-light fw-semibold">{c.name}</div>
-                    </div>
-                  </Link>
-                </Col>
-              ))}
->>>>>>> 2b7c6410a273582925534a32eb3ea1e7fa0986af
             </Row>
 
             {/* Prev Arrow */}
