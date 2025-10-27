@@ -5,10 +5,8 @@ import { BsArrowLeft } from "react-icons/bs";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchAllProductsAction } from "../features/product/productAction";
 import { addToCart } from "../features/cart/cartSlice";
-
 import { getReviewsByProductApi } from "../features/review/reviewAPI";
 import { FaStar } from "react-icons/fa";
-
 import { ShowStars } from "../components/stars/Stars";
 
 const ProductDetail = () => {
@@ -18,15 +16,12 @@ const ProductDetail = () => {
   const dispatch = useDispatch();
   const { slug } = useParams();
   const navigate = useNavigate();
-
   const [reviews, setReviews] = useState([]);
 
-  // ✅ 1. Fetch all products (if not already loaded)
   useEffect(() => {
     dispatch(fetchAllProductsAction());
   }, [dispatch]);
 
-  // ✅ 2. Find the product by slug
   useEffect(() => {
     const foundProduct = products.find((item) => item.slug === slug);
     if (foundProduct) {
@@ -35,7 +30,6 @@ const ProductDetail = () => {
     }
   }, [products, slug]);
 
-  // ✅ 3. Fetch only active reviews for this product
   useEffect(() => {
     const fetchReviews = async () => {
       if (product?._id) {
@@ -53,14 +47,13 @@ const ProductDetail = () => {
     fetchReviews();
   }, [product]);
 
-  // ✅ Add to cart handler
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
   };
 
-  // const handleThumbnailClick = (imgUrl) => {
-  //   setMainImage(imgUrl);
-  // };
+  const handleThumbnailClick = (imgUrl) => {
+    setMainImage(imgUrl);
+  };
 
   return (
     <div className="bg-dark text-light min-vh-100 d-flex flex-column">
@@ -74,15 +67,48 @@ const ProductDetail = () => {
           <BsArrowLeft className="me-2" /> Back to Products
         </Button>
 
-        {/* Product Info */}
-        <Row className="g-4 align-items-center">
-          <Col md={6} className="d-flex justify-content-center">
-            <div style={{ maxWidth: "450px", width: "100%" }}>
+        <Row className="g-4 align-items-start">
+          <Col md={6} className="d-flex flex-column align-items-center">
+            <div
+              className="overflow-hidden rounded-4 shadow mb-4 w-100 d-flex justify-content-center align-items-center"
+              style={{ maxWidth: "400px" }}
+            >
               <img
-                src={product?.images}
+                src={mainImage}
                 alt={product?.name}
-                className="img-fluid rounded shadow"
+                className="img-fluid rounded shadow-sm"
+                style={{
+                  objectFit: "cover",
+                  maxHeight: "500px",
+                  transition: "transform 0.3s",
+                }}
+                onMouseOver={(e) =>
+                  (e.currentTarget.style.transform = "scale(1.05)")
+                }
+                onMouseOut={(e) =>
+                  (e.currentTarget.style.transform = "scale(1)")
+                }
               />
+            </div>
+
+            <div className="d-flex flex-wrap justify-content-center gap-2">
+              {product?.images?.map((img, i) => (
+                <div
+                  key={i}
+                  className={`border rounded-3 overflow-hidden shadow-sm ${
+                    img === mainImage ? "border-info" : "border-secondary"
+                  }`}
+                  style={{ width: "80px", height: "80px", cursor: "pointer" }}
+                  onClick={() => handleThumbnailClick(img)}
+                >
+                  <img
+                    src={img}
+                    alt={`thumbnail-${i}`}
+                    className="img-fluid w-100 h-100"
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
+              ))}
             </div>
           </Col>
 
@@ -94,7 +120,7 @@ const ProductDetail = () => {
               Average Rating:
               <ShowStars averageRating={product?.averageRating} />
             </div>
-
+            <h3 className="my-3 ">$ {product?.price}</h3>
             <Button
               type="submit"
               size="lg"

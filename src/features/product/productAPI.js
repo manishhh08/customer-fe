@@ -27,3 +27,10 @@ export const fetchProductsBySubCategoryApi = async (
 
   return response.data.products;
 };
+
+export const fetchTopRatedProductsApi = async () => {
+  return apiProcessor({
+    method: "get",
+    url: `${apiUrl}/products/top-rated`,
+  });
+};
