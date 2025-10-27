@@ -30,12 +30,3 @@ export const fetchCategoryProductsAction = async (slug) => {
   return result;
 };
 
-// export const fetchCategoryProductsAction = async (slug) => {
-//   try {
-//     const { data } = await axios.get(`${rootUrl}/${slug}/products`);
-//     return data;
-//   } catch (error) {
-//     console.error("Error fetching category products:", error);
-//     return { status: "error", message: error.message };
-//   }
-// };
