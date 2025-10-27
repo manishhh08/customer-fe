@@ -26,7 +26,6 @@ const ProductDetail = () => {
     dispatch(fetchAllProductsAction());
   }, [dispatch]);
 
-  // ✅ 2. Find the product by slug
   useEffect(() => {
     const foundProduct = products.find((item) => item.slug === slug);
     if (foundProduct) {
@@ -35,25 +34,6 @@ const ProductDetail = () => {
     }
   }, [products, slug]);
 
-  // ✅ 3. Fetch only active reviews for this product
-  useEffect(() => {
-    const fetchReviews = async () => {
-      if (product?._id) {
-        const res = await getReviewsByProductApi(product._id);
-        console.log("📦 Reviews API response:", res);
-
-        if (res.status === "success") {
-          console.log("✅ Setting reviews:", res.data);
-          setReviews(res.data);
-        } else {
-          console.log("❌ Error response:", res);
-        }
-      }
-    };
-    fetchReviews();
-  }, [product]);
-
-  // ✅ Add to cart handler
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
   };

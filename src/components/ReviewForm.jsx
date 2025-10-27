@@ -6,9 +6,10 @@ import { CustomModal } from "./custommodal/CustomModal";
 import { createReviewAction } from "../features/review/reviewAction";
 import { Stars } from "./stars/Stars";
 
-const ReviewForm = ({ show, onHide, product }) => {
+const ReviewForm = ({ show, onHide, product, onReviewSuccess }) => {
   const dispatch = useDispatch();
   const [form, setForm] = useState({
+    productId: "",
     title: "",
     rating: "",
     comment: "",
@@ -16,7 +17,6 @@ const ReviewForm = ({ show, onHide, product }) => {
 
   useEffect(() => {
     if (product) {
-      // ✅ Use productId if available, otherwise fall back to _id
       const correctId = product.productId || product._id;
       if (correctId) {
         setForm((prev) => ({ ...prev, productId: correctId }));
@@ -24,17 +24,26 @@ const ReviewForm = ({ show, onHide, product }) => {
     }
   }, [product]);
 
-  console.log("PRoduct passed to review form", product);
+  console.log("Product passed to review form", product);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting review form", form); // ✅ Add this
-    dispatch(createReviewAction(form));
+
+    try {
+      const result = await dispatch(createReviewAction(form));
+
+      if (result?.status === "success" && onReviewSuccess) {
+        onReviewSuccess?.(form.productId);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
     onHide();
     setForm({ productId: "", title: "", rating: "", comment: "" });
   };
