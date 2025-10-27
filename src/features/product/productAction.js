@@ -2,9 +2,10 @@ import { setLoading } from "../customer/customerSlice";
 import {
   fetchAllProducts,
   fetchProductsBySubCategoryApi,
+  fetchTopRatedProductsApi,
   getFeaturedProductsApi,
 } from "./productAPI";
-import { setProducts } from "./productSlice";
+import { setProducts, setTopRatedProducts } from "./productSlice";
 
 export const fetchAllProductsAction = () => async (dispatch) => {
   try {
@@ -42,3 +43,14 @@ export const fetchProductsBySubCategoryAction =
       dispatch(setLoading(false));
     }
   };
+
+export const fetchTopRatedProductsAction = () => async (dispatch) => {
+  try {
+    const response = await fetchTopRatedProductsApi();
+    if (response.status === "success") {
+      dispatch(setTopRatedProducts(response.data));
+    }
+  } catch (error) {
+    console.error("Failed to fetch top-rated products:", error);
+  }
+};

@@ -36,6 +36,17 @@ const Footer = () => {
                   className="btn btn-link link-light link-underline-opacity-0 p-0"
                   onClick={(e) => {
                     e.preventDefault();
+                    scrollToSection("hot-deals");
+                  }}
+                >
+                  Hot Deals
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="btn btn-link link-light link-underline-opacity-0 p-0"
+                  onClick={(e) => {
+                    e.preventDefault();
                     scrollToSection("new-arrivals");
                   }}
                 >
