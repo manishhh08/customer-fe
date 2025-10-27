@@ -12,12 +12,18 @@ import { useSelector } from "react-redux";
 import { retrieveAllOrder } from "../features/order/orderAPI";
 import { BsCartX } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import ReviewForm from "../components/ReviewForm";
+
 const Order = () => {
   const { customer } = useSelector((store) => store.customerStore);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [activeKey, setActiveKey] = useState("0");
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
   const toggleAccordion = (key) => {
     setActiveKey(activeKey === key ? null : key);
   };
@@ -62,6 +68,7 @@ const Order = () => {
       </div>
     );
   if (error) return <Alert variant="danger">{error}</Alert>;
+
   if (orders.length === 0) {
     return (
       <div
@@ -109,13 +116,30 @@ const Order = () => {
                   </div>
                 </div>
               </Accordion.Header>
+
               <Accordion.Body>
                 {/* Order Items */} <h6>Items Ordered</h6>
                 <ul className="mb-3">
                   {order.items?.map((item, idx) => (
                     <li key={idx}>
-                      {item.productName} × {item.quantity} — $
-                      {item.price?.toFixed(2)}
+                      <div>
+                        {item.productName} × {item.quantity} — $
+                        {item.price?.toFixed(2)}
+                      </div>
+
+                      {/* show review button if delivered */}
+                      {order.status === "Delivered" && (
+                        <Button
+                          varient="outline-primary"
+                          size="sm"
+                          onClick={() => {
+                            setSelectedProduct(item);
+                            setShowModal(true);
+                          }}
+                        >
+                          Review
+                        </Button>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -126,22 +150,38 @@ const Order = () => {
                   Method: {order.paymentMethod || "Card"} <br /> Total:
                   <strong>${order.total?.toFixed(2)}</strong>
                 </p>
-                {/* Action Buttons */}
+                {/* Action Buttons
                 {order.status === "Delivered" ? (
                   <div className="d-flex gap-2 mt-3">
-                    <Button variant="primary" size="m">
+                    <Button
+                      variant="primary"
+                      size="m"
+                      onClick={() => setShowModal(true)}
+                    >
                       Give a review
                     </Button>
+                    <ReviewForm
+                      show={showModal}
+                      onHide={() => setShowModal(false)}
+                    />
                   </div>
                 ) : (
                   ""
-                )}
+                )} */}
               </Accordion.Body>
             </Accordion.Item>
           </Card>
         ))}
       </Accordion>
+      {selectedProduct && (
+        <ReviewForm
+          show={showModal}
+          onHide={() => setShowModal(false)}
+          product={selectedProduct}
+        />
+      )}
     </Container>
   );
 };
+
 export default Order;
