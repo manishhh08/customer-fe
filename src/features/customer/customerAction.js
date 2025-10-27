@@ -8,6 +8,7 @@ import {
   createCustomer,
   fetchCustomerDetail,
   loginCustomer,
+  updateCustomerDetail,
   verifyEmailAPi,
 } from "./customerAPI";
 import { logoutCustomer, setCustomer, setLoading } from "./customerSlice";
@@ -69,6 +70,22 @@ export const getCustomerDetail = () => async (dispatch) => {
   } catch (err) {
     console.error(err);
     dispatch(setCustomer(null));
+  }
+};
+
+export const updateCustomerDetailAction = (form) => async (dispatch) => {
+  try {
+    const res = await updateCustomerDetail(form);
+    if (res.status === "success") {
+      toast.success(res.message || "Profile updated");
+      // refresh store
+      if (res.customer) dispatch(setCustomer(res.customer));
+      else dispatch(fetchCustomerDetail());
+    } else {
+      toast.error(res.message || "Could not update profile");
+    }
+  } catch (e) {
+    toast.error(e?.message || "Update failed");
   }
 };
 

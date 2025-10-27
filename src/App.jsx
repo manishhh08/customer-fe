@@ -20,17 +20,20 @@ import Checkout from "./pages/Checkout";
 import ThankYou from "./pages/ThankYou";
 import Verify from "./pages/Verify/Verify";
 import Order from "./pages/Order";
+import UserProfile from "./pages/UserProfile/UserProfile";
+import { fetchAllProductsAction } from "./features/product/productAction";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getCustomerDetail());
-    // dispatch(fetchAllProductsAction());
   }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchAllCategoriesAction());
+    dispatch(fetchAllProductsAction());
   }, [dispatch]);
 
   return (
@@ -42,8 +45,14 @@ function App() {
           <Route path="auth" element={<AuthPage />} />
 
           {/* Instead of creating multiple static routes (listing each routes), creating a dynamic route which handles all the categories */}
-          <Route path="category/:slug" element={<Category />} />
+          {/* <Route path="category/:slug" element={<Category />} /> */}
+          {/* <Route path="/category/:categorySlug" element={<Category />} /> */}
+          <Route
+            path="/category/:category/:subCategory"
+            element={<Category />}
+          />
 
+          <Route path="privacy-policy" element={<PrivacyPolicy />} />
           <Route path="cart" element={<Cart />} />
           <Route path="verify" element={<Verify />} />
         </Route>
@@ -56,6 +65,7 @@ function App() {
           }
         >
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="manage-account" element={<UserProfile />} />
           <Route path="orders" element={<Order />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="thank-you" element={<ThankYou />} />

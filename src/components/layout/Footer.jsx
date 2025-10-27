@@ -1,35 +1,30 @@
 import React from "react";
+import { Button } from "react-bootstrap";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Footer = () => {
   const year = new Date().getFullYear();
+  const navigate = useNavigate();
+  const location = useLocation();
 
+  const scrollToSection = (id) => {
+    if (location.pathname !== "/") {
+      navigate("/", { state: { scrollTo: id } });
+    } else {
+      const redirect = document.getElementById(id);
+      if (redirect) redirect.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
-    <footer className="bg-dark text-light py-5">
+    <footer className="bg-dark text-light pt-3 pb-5 ">
       <div className="container">
-        <div className="row gy-3">
+        <div className="row gy-3 d-flex flex-row justify-content-between">
           {/* Brand + blurb */}
           <div className="col-12 col-md-4">
-            <h5 className="fw-bold">ShopMate</h5>
+            <h5 className="fw-bold">Electra Hub</h5>
             <p className="text-secondary mb-2">
-              Your everyday marketplace for fashion, gadgets, and home
-              essentials. Fast shipping, easy returns, and secure checkout.
+              Your Hub for All Things Electric.
             </p>
-
-            {/* Social buttons */}
-            <div className="d-flex flex-wrap gap-2">
-              <a className="btn btn-outline-light btn-sm" href="#">
-                Facebook
-              </a>
-              <a className="btn btn-outline-light btn-sm" href="#">
-                Instagram
-              </a>
-              <a className="btn btn-outline-light btn-sm" href="#">
-                TikTok
-              </a>
-              <a className="btn btn-outline-light btn-sm" href="#">
-                YouTube
-              </a>
-            </div>
           </div>
 
           {/* Shop links */}
@@ -37,83 +32,61 @@ const Footer = () => {
             <h6 className="text-uppercase fw-semibold mb-2">Shop</h6>
             <ul className="list-unstyled">
               <li>
-                <a className="link-light link-underline-opacity-0" href="#">
+                <Link
+                  className="btn btn-link link-light link-underline-opacity-0 p-0"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection("new-arrivals");
+                  }}
+                >
                   New Arrivals
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="link-light link-underline-opacity-0" href="#">
+                <Link
+                  className="btn btn-link link-light link-underline-opacity-0 p-0"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection("best-sellers");
+                  }}
+                >
                   Best Sellers
-                </a>
-              </li>
-              <li>
-                <a className="link-light link-underline-opacity-0" href="#">
-                  Deals
-                </a>
-              </li>
-              <li>
-                <a className="link-light link-underline-opacity-0" href="#">
-                  Gift Cards
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Help links */}
-          <div className="col-6 col-md-3">
-            <h6 className="text-uppercase fw-semibold mb-2">Help</h6>
-            <ul className="list-unstyled">
-              <li>
-                <a className="link-light link-underline-opacity-0" href="#">
-                  Track Order
-                </a>
-              </li>
-              <li>
-                <a className="link-light link-underline-opacity-0" href="#">
-                  Shipping & Returns
-                </a>
-              </li>
-              <li>
-                <a className="link-light link-underline-opacity-0" href="#">
-                  Size Guide
-                </a>
-              </li>
-              <li>
-                <a className="link-light link-underline-opacity-0" href="#">
-                  Contact Support
-                </a>
-              </li>
-              <li>
-                <a className="link-light link-underline-opacity-0" href="#">
-                  FAQs
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
 
           {/* Newsletter */}
-          <div className="col-12 col-md-3">
-            <h6 className="text-uppercase fw-semibold mb-2">Get updates</h6>
-            <form className="needs-validation" noValidate>
-              <label htmlFor="footerEmail" className="form-label small">
+          <div className="col-12 col-md-4 text-center text-md-start">
+            <h6 className="text-uppercase fw-semibold mb-3">Get Updates</h6>
+
+            <form
+              action="https://gmail.us15.list-manage.com/subscribe/post?u=71a640f48bb6d54e8d33b241f&amp;id=a01de5494d&amp;f_id=00e9c2e1f0"
+              method="post"
+              noValidate
+            >
+              <label
+                htmlFor="footerEmail"
+                className="form-label small d-block mb-2"
+              >
                 Subscribe to our newsletter
               </label>
               <div className="input-group mb-2">
                 <input
-                  id="footerEmail"
                   type="email"
+                  name="EMAIL"
                   className="form-control form-control-sm"
+                  id="footerEmail"
                   placeholder="you@example.com"
-                  aria-label="Email address"
                   required
                 />
-                <button className="btn btn-primary btn-sm" type="submit">
+                <button type="submit" className="btn btn-primary btn-sm">
                   Subscribe
                 </button>
               </div>
               <small className="text-secondary d-block">
                 By subscribing, you agree to our{" "}
-                <a className="link-light" href="#">
+                <a href="/privacy-policy" className="link-light">
                   Privacy Policy
                 </a>
                 .
@@ -128,7 +101,7 @@ const Footer = () => {
         <div className="row">
           <div className="col-12 text-center">
             <div className="text-secondary small">
-              © {year} ShopMate Pty Ltd. All rights reserved.
+              © {year} Electra Hub Pty Ltd. All rights reserved.
             </div>
           </div>
         </div>

@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, Outlet } from "react-router-dom";
+import { FaArrowUp, FaCommentDots } from "react-icons/fa";
+
 import Header from "./Header";
 import Footer from "./Footer";
-import SideBar from "./SideBar";
-import { Outlet } from "react-router-dom";
+import SideBar from "./SideBar.jsx";
+import ChatBot from "../../pages/ChatBot.jsx";
 import { fetchAllCategoriesAction } from "../../features/category/categoryAction";
-import { FaArrowUp } from "react-icons/fa";
 
 const LayoutWithSidebar = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const [isSidebarOpen, setSidebarOpen] = useState(false); // closed on load
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const { categories, subCategories } = useSelector(
     (store) => store.categoryStore
@@ -31,8 +33,7 @@ const LayoutWithSidebar = () => {
   // Handle resize
   useEffect(() => {
     const handleResize = () => {
-      const mobile = window.innerWidth < 992;
-      setIsMobile(mobile);
+      setIsMobile(window.innerWidth < 992);
       setSidebarOpen(false);
     };
     window.addEventListener("resize", handleResize);
@@ -44,7 +45,7 @@ const LayoutWithSidebar = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [location.pathname]);
 
-  // Show scroll button when content leaves viewport
+  // Show scroll-top button
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 300);
@@ -111,7 +112,7 @@ const LayoutWithSidebar = () => {
         onClick={handleScrollTop}
         className="position-fixed rounded-circle border-0 shadow btn-neo"
         style={{
-          bottom: "30px",
+          bottom: "20px",
           right: "30px",
           width: "45px",
           height: "45px",
@@ -127,6 +128,61 @@ const LayoutWithSidebar = () => {
       >
         <FaArrowUp />
       </button>
+
+      {/* Chatbot toggle button */}
+      <button
+        onClick={() => setIsChatOpen(true)}
+        className="position-fixed rounded-circle border-0 shadow btn-neo"
+        style={{
+          bottom: "80px",
+          right: "30px",
+          width: "45px",
+          height: "45px",
+          cursor: "pointer",
+          zIndex: 1100,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <FaCommentDots />
+      </button>
+
+      {/* Floating ChatBot */}
+      {isChatOpen && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: "140px",
+            right: "20px",
+            width: "350px",
+            height: "400px",
+            zIndex: 1200,
+            borderRadius: "10px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+            background: "#fff",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <ChatBot />
+          <button
+            onClick={() => setIsChatOpen(false)}
+            style={{
+              position: "absolute",
+              top: "5px",
+              right: "5px",
+              border: "none",
+              background: "transparent",
+              cursor: "pointer",
+              fontSize: "16px",
+              color: "#333",
+            }}
+          >
+            ✖
+          </button>
+        </div>
+      )}
 
       <style>
         {`
