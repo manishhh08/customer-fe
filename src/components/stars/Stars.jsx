@@ -64,13 +64,9 @@ export const Stars = ({
 };
 
 export const ShowStars = ({ averageRating }) => {
-  console.log("Average rating", averageRating);
   const halfStar = !Number.isInteger(averageRating);
-  console.log(halfStar);
   const fullStar = Math.floor(averageRating);
-  console.log(fullStar);
   const emptyStar = maxRating - fullStar - halfStar;
-  console.log(333, emptyStar);
   const starArray = [];
   for (let i = 0; i < fullStar; i++) {
     starArray.push(<FaStar className="text-warning" />);
@@ -79,6 +75,5 @@ export const ShowStars = ({ averageRating }) => {
   for (let i = 0; i < emptyStar; i++) {
     starArray.push(<FaStar className="text-secondary" />);
   }
-  console.log(starArray);
   return <div>{starArray}</div>;
 };
