@@ -13,6 +13,7 @@ import {
   fetchAllProductsAction,
   fetchFeaturedProductsAction,
 } from "../../features/product/productAction";
+import { fetchAllCategoriesAction } from "../../features/category/categoryAction";
 import CustomFeaturedArea from "../../components/customCard/CustomFeaturedArea";
 
 export default function Homepage() {
@@ -46,6 +47,7 @@ export default function Homepage() {
 
   useEffect(() => {
     dispatch(fetchAllProductsAction());
+    dispatch(fetchAllCategoriesAction());
 
     const getFeaturedProducts = async () => {
       const result = await fetchFeaturedProductsAction();
