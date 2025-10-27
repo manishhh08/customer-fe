@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAllProductsAction,
   fetchFeaturedProductsAction,
+  fetchTopRatedProductsAction,
 } from "../../features/product/productAction";
 import { fetchAllCategoriesAction } from "../../features/category/categoryAction";
 import CustomFeaturedArea from "../../components/customCard/CustomFeaturedArea";
@@ -22,7 +23,9 @@ export default function Homepage() {
   const [featured, setFeatured] = useState({});
   const [activePage, setActivePage] = useState(1);
 
-  const { products } = useSelector((store) => store.productStore);
+  const { products, topRatedProducts } = useSelector(
+    (store) => store.productStore
+  );
   const { categories } = useSelector((store) => store.categoryStore);
 
   const itemsPerPage = 4;
@@ -47,7 +50,7 @@ export default function Homepage() {
 
   useEffect(() => {
     dispatch(fetchAllProductsAction());
-    dispatch(fetchAllCategoriesAction());
+    dispatch(fetchTopRatedProductsAction());
 
     const getFeaturedProducts = async () => {
       const result = await fetchFeaturedProductsAction();
@@ -152,7 +155,11 @@ export default function Homepage() {
       </section>
 
       {/* FEATURED */}
-      <section className="py-5" style={{ background: "var(--neo-d1)" }}>
+      <section
+        className="py-5"
+        id="hot-deals"
+        style={{ background: "var(--neo-d1)" }}
+      >
         <CustomFeaturedArea
           majorTitle="Hot Deals This Week"
           minorTitle="Featured Collection"
@@ -196,41 +203,56 @@ export default function Homepage() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="py-5" style={{ background: "var(--neo-d1)" }}>
+      <section
+        className="py-5"
+        style={{
+          background: "linear-gradient(180deg, var(--neo-d2), var(--neo-d1))",
+        }}
+      >
         <Container>
           <div className="text-center mb-4">
-            <h2 className="display-6 fw-bold text-center mb-4">
-              What Customers Say
-            </h2>
-            <hr className="my-3 mx-auto" style={{ width: "5rem" }} />
+            <h2 className="display-6 fw-bold">Testimonial</h2>
+            <hr className="my-3 mx-auto" style={{ width: "15em" }} />
             <p className="text-white-50">
-              Hear from our satisfied customers who love our products and
-              service
+              Check what our recent customers has to say
             </p>
           </div>
           <Row className="g-4">
-            {[
-              {
-                name: "Alex P.",
-                text: "Super fast delivery and great quality.",
-              },
-              {
-                name: "Jamie L.",
-                text: "Love the UI and the deals each week!",
-              },
-              {
-                name: "Priya K.",
-                text: "Support was quick to help me choose.",
-              },
-            ].map((t) => (
-              <Col xs={12} md={4} key={t.name}>
-                <div className="p-4 rounded-4 card-neo h-100">
-                  <div className="mb-2">★★★★★</div>
-                  <p className="mb-2 text-white-50">{t.text}</p>
-                  <div className="small text-neo fw-semibold">{t.name}</div>
-                </div>
+            {topRatedProducts.length === 0 ? (
+              <Col xs={12} className="text-center text-white-50">
+                No top-rated reviews yet.
               </Col>
-            ))}
+            ) : (
+              topRatedProducts.flatMap((prod) =>
+                (prod.reviews || []).slice(0, 2).map((rev) => (
+                  <Col xs={12} md={4} key={rev._id}>
+                    <div className="p-4 rounded-4 bg-secondary bg-opacity-10 h-100 d-flex flex-column justify-content-between card-neo">
+                      <div className="fw-semibold text-white mb-3">
+                        {rev?.customer?.fname} {rev?.customer?.lname}
+                      </div>
+                      {/* Star Rating */}
+                      <div className="mb-2 text-warning">
+                        {"★".repeat(rev.rating) + "☆".repeat(5 - rev.rating)}
+                      </div>
+
+                      {/* Review Title */}
+                      <p className="fw-bold text-white mb-1">{rev.title}</p>
+
+                      {/* Review Comment */}
+                      <p className="text-white-50 mb-2">{rev.comment}</p>
+
+                      {/* Reviewer Name */}
+                      <div className="small fw-semibold text-white">
+                        {rev.customerId?.fname} {rev.customerId?.lname}
+                      </div>
+
+                      {/* Product Name */}
+                      <div className="small text-info mt-1">{prod.name}</div>
+                    </div>
+                  </Col>
+                ))
+              )
+            )}
           </Row>
         </Container>
       </section>
@@ -245,25 +267,37 @@ export default function Homepage() {
         <Container className="position-relative">
           <div className="text-center mb-4">
             <h2 className="display-6 fw-bold">Shop by Category</h2>
-            <hr className="my-3 mx-auto" style={{ width: "5rem" }} />
+            <hr className="my-3 mx-auto" style={{ width: "20rem" }} />
             <p className="text-white-50">
               Find exactly what you're looking for
             </p>
           </div>
 
-          {/* Row Wrapper needs position-relative for arrows */}
           <div className="position-relative">
             <Row className="g-2 g-md-3">
               {currentCategories.map((c) => (
-                <Col xs={6} md={4} lg={3} key={c.name}>
+                <Col xs={6} md={4} lg={3} key={c._id}>
                   <Link
                     to={`/category/${c.slug}`}
                     className="text-decoration-none"
                   >
-                    <div className="p-4 rounded-4 card-neo text-center h-100">
-                      <div className="icon-pill mx-auto mb-3 fs-4">
-                        {c.icon}
+                    <div className="p-3 rounded-4 card-neo text-center h-100 bg-dark">
+                      {/* Category Image */}
+                      <div className="mb-3">
+                        <img
+                          src={c.image || "/images/placeholder.png"}
+                          alt={c.name}
+                          className="img-fluid rounded shadow-sm"
+                          style={{
+                            width: "100px",
+                            height: "70px",
+                            objectFit: "cover",
+                            borderRadius: "10px",
+                          }}
+                        />
                       </div>
+
+                      {/* Category Name */}
                       <div className="text-light fw-semibold">{c.name}</div>
                     </div>
                   </Link>
