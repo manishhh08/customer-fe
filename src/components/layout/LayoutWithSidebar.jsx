@@ -6,8 +6,8 @@ import { FaArrowUp, FaCommentDots } from "react-icons/fa";
 import Header from "./Header";
 import Footer from "./Footer";
 import SideBar from "./SideBar.jsx";
-import ChatBot from "../../pages/ChatBot.jsx";
 import { fetchAllCategoriesAction } from "../../features/category/categoryAction";
+import ChatCard from "../customCard/ChatCard.jsx";
 
 const LayoutWithSidebar = () => {
   const dispatch = useDispatch();
@@ -17,6 +17,7 @@ const LayoutWithSidebar = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const toggleChat = () => setIsChatOpen((prev) => !prev);
 
   const { categories, subCategories } = useSelector(
     (store) => store.categoryStore
@@ -165,7 +166,7 @@ const LayoutWithSidebar = () => {
             flexDirection: "column",
           }}
         >
-          <ChatBot />
+          <ChatCard isOpen={isChatOpen} onToggle={toggleChat} />
           <button
             onClick={() => setIsChatOpen(false)}
             style={{
