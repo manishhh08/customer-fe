@@ -5,10 +5,9 @@ import { BsArrowLeft } from "react-icons/bs";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchAllProductsAction } from "../features/product/productAction";
 import { addToCart } from "../features/cart/cartSlice";
-import { getReviewsByProductApi } from "../features/review/reviewAPI";
-import { FaStar } from "react-icons/fa";
 import { ShowStars } from "../components/stars/Stars";
 import { BsCart } from "react-icons/bs";
+import { recordRecentlyViewedProduct } from "../features/customer/customerAPI";
 
 const ProductDetail = () => {
   const { products } = useSelector((store) => store.productStore);
@@ -22,6 +21,12 @@ const ProductDetail = () => {
   useEffect(() => {
     dispatch(fetchAllProductsAction());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (product?._id) {
+      recordRecentlyViewedProduct(product._id).catch(() => {});
+    }
+  }, [product?._id]);
 
   useEffect(() => {
     const foundProduct = products.find((item) => item.slug === slug);
@@ -123,7 +128,7 @@ const ProductDetail = () => {
               type="submit"
               size="lg"
               bsPrefix="neo"
-              className="btn-neo rounded-4 px-4 mt-4"
+              className="btn-neo rounded-4 px-5 py-2 d-inline-flex align-items-center gap-2"
               onClick={() => handleAddToCart(product)}
             >
               <BsCart /> Add to Cart

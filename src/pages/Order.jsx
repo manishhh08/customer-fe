@@ -13,6 +13,7 @@ import { retrieveAllOrder } from "../features/order/orderAPI";
 import { BsCartX } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import ReviewForm from "../components/ReviewForm";
+import DashboardSidebar from "../components/DashboardSidebar";
 
 const Order = () => {
   const { customer } = useSelector((store) => store.customerStore);
@@ -109,12 +110,13 @@ const Order = () => {
 
   return (
     <section
-      className="py-5 text-white h-100"
+      className="py-5 text-white h-100 with-customer-sidebar"
       style={{
         background: "linear-gradient(180deg,var(--neo-d1),var(--neo-d2))",
       }}
     >
-      <Container>
+      <DashboardSidebar />
+      <Container className="px-4">
         <div className="mb-4">
           <h2 className="fw-bold m-0">Order History</h2>
           <small>
@@ -133,7 +135,7 @@ const Order = () => {
                       <strong>Order #{order._id.slice(-6)}</strong> —
                       {new Date(order.createdAt).toLocaleDateString()}
                     </div>
-                    <div className="d-flex align-items-center gap-2">
+                    <div className="d-flex align-items-center gap-2 me-2">
                       <strong>${order.total?.toFixed(2)}</strong>
                       <Badge
                         bg={getStatusVariant(order.status)}
