@@ -226,35 +226,36 @@ export default function Homepage() {
                 No top-rated reviews yet.
               </Col>
             ) : (
-              topRatedProducts.flatMap((prod) =>
-                (prod.reviews || []).slice(0, 2).map((rev) => (
-                  <Col xs={12} md={4} key={rev._id}>
+              topRatedProducts
+                .flatMap((prod) =>
+                  (prod.reviews || []).map((rev) => ({
+                    ...rev,
+                    productName: prod.name,
+                  }))
+                )
+                .sort((a, b) => b.rating - a.rating)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 4)
+                .map((rev) => (
+                  <Col xs={12} md={3} key={rev._id}>
                     <div className="p-4 rounded-4 bg-secondary bg-opacity-10 h-100 d-flex flex-column justify-content-between card-neo">
                       <div className="fw-semibold text-white mb-3">
                         {rev?.customer?.fname} {rev?.customer?.lname}
                       </div>
-                      {/* Star Rating */}
+
                       <div className="mb-2 text-warning">
                         {"★".repeat(rev.rating) + "☆".repeat(5 - rev.rating)}
                       </div>
 
-                      {/* Review Title */}
                       <p className="fw-bold text-white mb-1">{rev.title}</p>
-
-                      {/* Review Comment */}
                       <p className="text-white-50 mb-2">{rev.comment}</p>
 
-                      {/* Reviewer Name */}
-                      <div className="small fw-semibold text-white">
-                        {rev.customerId?.fname} {rev.customerId?.lname}
+                      <div className="small text-white fw-bold fs-6 mt-1">
+                        {rev.productName}
                       </div>
-
-                      {/* Product Name */}
-                      <div className="small text-info mt-1">{prod.name}</div>
                     </div>
                   </Col>
                 ))
-              )
             )}
           </Row>
         </Container>
@@ -291,22 +292,31 @@ export default function Homepage() {
                     >
                       <div className="p-3 rounded-4 card-neo text-center h-100 bg-dark">
                         {/* Category Image */}
-                        <div className="mb-3">
+                        <div
+                          className="d-flex align-items-center justify-content-center mx-auto bg-dark bg-opacity-10 rounded"
+                          style={{
+                            width: "auto",
+                            height: "70px",
+                            overflow: "hidden",
+                            borderRadius: "10px",
+                          }}
+                        >
                           <img
                             src={c.image || "/images/placeholder.png"}
                             alt={c.name}
-                            className="img-fluid rounded shadow-sm"
                             style={{
-                              width: "100px",
-                              height: "70px",
-                              objectFit: "cover",
-                              borderRadius: "10px",
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "contain",
+                              objectPosition: "center",
                             }}
                           />
                         </div>
 
                         {/* Category Name */}
-                        <div className="text-light fw-semibold">{c.name}</div>
+                        <div className="text-light fw-semibold mt-2">
+                          {c.name}
+                        </div>
                       </div>
                     </Link>
                   </Col>
