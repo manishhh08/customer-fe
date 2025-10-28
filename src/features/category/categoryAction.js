@@ -29,3 +29,4 @@ export const fetchCategoryProductsAction = async (slug) => {
   const result = await fetchCategoryProductsApi(slug);
   return result;
 };
+

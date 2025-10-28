@@ -5,9 +5,9 @@ import { BsArrowLeft } from "react-icons/bs";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchAllProductsAction } from "../features/product/productAction";
 import { addToCart } from "../features/cart/cartSlice";
-import { getReviewsByProductApi } from "../features/review/reviewAPI";
-import { FaStar } from "react-icons/fa";
 import { ShowStars } from "../components/stars/Stars";
+import { BsCart } from "react-icons/bs";
+import { recordRecentlyViewedProduct } from "../features/customer/customerAPI";
 
 const ProductDetail = () => {
   const { products } = useSelector((store) => store.productStore);
@@ -21,6 +21,12 @@ const ProductDetail = () => {
   useEffect(() => {
     dispatch(fetchAllProductsAction());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (product?._id) {
+      recordRecentlyViewedProduct(product._id).catch(() => {});
+    }
+  }, [product?._id]);
 
   useEffect(() => {
     const foundProduct = products.find((item) => item.slug === slug);
@@ -56,8 +62,8 @@ const ProductDetail = () => {
   };
 
   return (
-    <div className="bg-dark text-light min-vh-100 d-flex flex-column">
-      <Container fluid className="hero-wrap py-5 flex-grow-1">
+    <div className="hero-wrap text-light min-vh-100 d-flex flex-column">
+      <Container className="py-5 flex-grow-1">
         <Button
           size="lg"
           bsPrefix="neo"
@@ -67,12 +73,9 @@ const ProductDetail = () => {
           <BsArrowLeft className="me-2" /> Back to Products
         </Button>
 
-        <Row className="g-4 align-items-start">
+        <Row className="g-5 align-items-start">
           <Col md={6} className="d-flex flex-column align-items-center">
-            <div
-              className="overflow-hidden rounded-4 shadow mb-4 w-100 d-flex justify-content-center align-items-center"
-              style={{ maxWidth: "400px" }}
-            >
+            <div className="rounded-4 shadow-lg overflow-hidden mb-4">
               <img
                 src={mainImage}
                 alt={product?.name}
@@ -125,10 +128,10 @@ const ProductDetail = () => {
               type="submit"
               size="lg"
               bsPrefix="neo"
-              className="btn-neo rounded-4 px-4 mt-4"
+              className="btn-neo rounded-4 px-5 py-2 d-inline-flex align-items-center gap-2"
               onClick={() => handleAddToCart(product)}
             >
-              Add to Cart
+              <BsCart /> Add to Cart
             </Button>
           </Col>
         </Row>

@@ -16,6 +16,7 @@ import {
   updateCustomerDetailAction,
 } from "../../features/customer/customerAction";
 import { retrieveAllOrder } from "../../features/order/orderAPI";
+import DashboardSidebar from "../../components/DashboardSidebar.jsx";
 
 export default function Account() {
   const dispatch = useDispatch();
@@ -82,12 +83,13 @@ export default function Account() {
 
   return (
     <section
-      className="py-5 text-white h-100"
+      className="py-5 text-white h-100 with-customer-sidebar"
       style={{
         background: "linear-gradient(180deg,var(--neo-d1),var(--neo-d2))",
       }}
     >
-      <Container>
+      <DashboardSidebar />
+      <Container className="px-4">
         {/* Header */}
         <div className="d-flex flex-wrap align-items-center justify-content-between mb-4">
           <div>

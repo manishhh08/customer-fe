@@ -56,3 +56,22 @@ export const updateCustomerDetail = async (obj) => {
     isPrivate: true,
   });
 };
+
+// record recently viewed product
+export const recordRecentlyViewedProduct = async (productId) => {
+  return apiProcessor({
+    method: "POST",
+    url: `${apiUrl}/customer/recently-viewed`,
+    data: { productId },
+    isPrivate: true,
+  });
+};
+
+// get recently viewed products
+export const getRecentlyViewedProducts = async (limit) => {
+  return apiProcessor({
+    method: "GET",
+    url: `${apiUrl}/customer/recently-viewed?limit=${limit}`,
+    isPrivate: true,
+  });
+}
