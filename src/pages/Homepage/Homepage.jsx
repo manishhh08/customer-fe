@@ -14,6 +14,7 @@ import {
   fetchFeaturedProductsAction,
   fetchTopRatedProductsAction,
 } from "../../features/product/productAction";
+import { fetchAllCategoriesAction } from "../../features/category/categoryAction";
 import CustomFeaturedArea from "../../components/customCard/CustomFeaturedArea";
 import Category from "../Category/Category";
 
@@ -209,7 +210,7 @@ export default function Homepage() {
       <section
         className="py-5"
         style={{
-          background: "linear-gradient(180deg, var(--neo-d2), var(--neo-d1))",
+          background: "var(--neo-d1)",
         }}
       >
         <Container>
@@ -263,9 +264,9 @@ export default function Homepage() {
 
       {/* CATEGORIES */}
       <section
-        className="py-5"
+        className="py-5 hero-wrap"
         style={{
-          background: "linear-gradient(180deg, var(--neo-d2), var(--neo-d1))",
+          background: "var(--neo-d1)",
         }}
       >
         <Container className="position-relative">

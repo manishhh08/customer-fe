@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchCategoryProductsAction } from "../../features/category/categoryAction";
-import CustomCard from "../../components/customCard/CustomCard";
+
 import {
   Container,
   Row,
