@@ -44,9 +44,8 @@ function App() {
           <Route path="product/:slug" element={<ProductDetail />} />
           <Route path="auth" element={<AuthPage />} />
 
-          {/* Instead of creating multiple static routes (listing each routes), creating a dynamic route which handles all the categories */}
-          {/* <Route path="category/:slug" element={<Category />} /> */}
-          {/* <Route path="/category/:categorySlug" element={<Category />} /> */}
+          {/* Instead of creating multiple static routes (listing each routes), creating a dynamic route which handles all the categories  */}
+
           <Route
             path="/category/:category/:subCategory"
             element={<Category />}
