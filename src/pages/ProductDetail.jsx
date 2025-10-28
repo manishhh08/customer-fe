@@ -134,7 +134,10 @@ const ProductDetail = () => {
         </Row>
 
         {/* ✅ Reviews Section */}
-        <div className="mt-5 text-white">
+        <div
+          className="mt-5 text-white"
+          style={{ maxHeight: "300px", overflowY: "scroll" }}
+        >
           <h5 className="mb-3">Customer Reviews</h5>
 
           {!reviews || reviews.length === 0 ? (

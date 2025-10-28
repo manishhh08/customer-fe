@@ -27,9 +27,9 @@ const Order = () => {
   const toggleAccordion = (key) => {
     setActiveKey(activeKey === key ? null : key);
   };
+
   const getStatusVariant = (status) => {
     if (!status) return "secondary";
-
     switch (status.trim().toLowerCase()) {
       case "order received":
         return "primary";
@@ -42,18 +42,25 @@ const Order = () => {
     }
   };
 
-  const handleReviewSuccess = (productId) => {
+  // ✅ Update local state after review
+  const handleReviewSuccess = (productId, orderId) => {
     setOrders((prevOrders) =>
-      prevOrders.map((order) => ({
-        ...order,
-        items: order.items.map((item) =>
-          item.productId === productId || item._id === productId
-            ? { ...item, isReviewed: true }
-            : item
-        ),
-      }))
+      prevOrders.map((order) => {
+        if (order._id === orderId) {
+          return {
+            ...order,
+            items: order.items.map((item) =>
+              item.productId === productId
+                ? { ...item, isReviewed: true }
+                : item
+            ),
+          };
+        }
+        return order;
+      })
     );
   };
+
   useEffect(() => {
     const fetchOrders = async () => {
       if (!customer?._id) return;
@@ -73,15 +80,17 @@ const Order = () => {
     };
     fetchOrders();
   }, [customer]);
+
   if (loading)
     return (
       <div className="text-center mt-5">
         <Spinner animation="border" />
       </div>
     );
+
   if (error) return <Alert variant="danger">{error}</Alert>;
 
-  if (orders.length === 0) {
+  if (orders.length === 0)
     return (
       <div
         className="d-flex flex-column justify-content-center align-items-center text-center"
@@ -92,18 +101,14 @@ const Order = () => {
         <p className="text-muted mb-4">
           Looks like you haven’t placed any orders yet.
         </p>
-        <Link
-          to="/products"
-          variant="primary"
-          className="rounded-pill px-4 py-2 shadow-sm"
-        >
+        <Link to="/products" className="rounded-pill px-4 py-2 shadow-sm">
           Shop Now
         </Link>
       </div>
     );
-  }
+
   return (
-    <Container className="container py-5">
+    <Container className="py-5">
       <h2 className="mb-4">Order History</h2>
       <Accordion activeKey={activeKey}>
         {orders.map((order, index) => (
@@ -114,7 +119,7 @@ const Order = () => {
               >
                 <div className="d-flex justify-content-between w-100 align-items-center">
                   <div>
-                    <strong>Order #{order._id.slice(-6)}</strong> —
+                    <strong>Order #{order._id.slice(-6)}</strong> —{" "}
                     {new Date(order.createdAt).toLocaleDateString()}
                   </div>
                   <div className="d-flex align-items-center gap-2">
@@ -132,71 +137,52 @@ const Order = () => {
               <Accordion.Body>
                 <h6>Items Ordered</h6>
                 <ul className="mb-3 list-unstyled">
-                  {order.items?.map((item, idx) => {
-                    const isReviewed = item.isReviewed;
+                  {order.items?.map((item, idx) => (
+                    <li
+                      key={idx}
+                      className="d-flex justify-content-between align-items-center mb-2 p-2 rounded bg-light"
+                    >
+                      <div className="fw-semibold">
+                        {item.productName} × {item.quantity} — $
+                        {item.price?.toFixed(2)}
+                      </div>
 
-                    return (
-                      <li
-                        key={idx}
-                        className="d-flex justify-content-between align-items-center mb-2 p-2 rounded bg-light"
-                      >
-                        <div className="fw-semibold">
-                          {item.productName} × {item.quantity} — $
-                          {item.price?.toFixed(2)}
-                        </div>
-
-                        {order.status === "Delivered" && (
-                          <Button
-                            variant={isReviewed ? "secondary" : "primary"}
-                            size="sm"
-                            disabled={isReviewed}
-                            onClick={() => {
-                              if (!isReviewed) {
-                                setSelectedProduct({
-                                  productId: item.productId || item._id,
-                                  productName: item.productName,
-                                });
-                                setShowModal(true);
-                              }
-                            }}
-                          >
-                            {isReviewed ? "Already reviewed" : "Review"}
-                          </Button>
-                        )}
-                      </li>
-                    );
-                  })}
+                      {/* ✅ Review Button */}
+                      {order.status === "Delivered" && (
+                        <Button
+                          variant={item.isReviewed ? "secondary" : "primary"}
+                          size="sm"
+                          disabled={item.isReviewed}
+                          onClick={() => {
+                            setSelectedProduct({
+                              productId: item.productId,
+                              orderId: order._id,
+                              productName: item.productName,
+                            });
+                            setShowModal(true);
+                          }}
+                        >
+                          {item.isReviewed ? "Already reviewed" : "Review"}
+                        </Button>
+                      )}
+                    </li>
+                  ))}
                 </ul>
+
                 <h6>Shipping Address</h6>
                 <p className="mb-3">{order.shippingAddress || "N/A"}</p>
                 <h5>Payment Details</h5>
                 <p>
-                  Method: {order.paymentMethod || "Card"} <br /> Total:
+                  Method: {order.paymentMethod || "Card"} <br /> Total:{" "}
                   <strong>${order.total?.toFixed(2)}</strong>
                 </p>
-                {/* Action Buttons
-                {order.status === "Delivered" ? (
-                  <div className="d-flex gap-2 mt-3">
-                    <Button
-                      variant="primary"
-                      size="m"
-                      onClick={() => setShowModal(true)}
-                    >
-                      Give a review
-                    </Button>
-                    <ReviewForm
-                      show={showModal}
-                      onHide={() => setShowModal(false)}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )} */}
               </Accordion.Body>
             </Accordion.Item>
           </Card>
         ))}
       </Accordion>
+
+      {/* ✅ Review Modal */}
       {selectedProduct && (
         <ReviewForm
           show={showModal}
