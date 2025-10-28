@@ -1,11 +1,10 @@
-// src/pages/Checkout.jsx
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { setOrders } from "../features/order/orderSlice";
 import { clearCart } from "../features/cart/cartSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import StripePaymentForm from "../components/StripePaymentForm";
@@ -18,12 +17,23 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState("creditCard");
 
   const { items: cartItems } = useSelector((state) => state.cartStore);
+  const { customer } = useSelector((state) => state.customerStore);
 
   const [form, setForm] = useState({
     name: "",
     email: "",
     address: "",
   });
+
+  useEffect(() => {
+    if (customer) {
+      setForm((prev) => ({
+        ...prev,
+        name: `${customer.fname || ""} ${customer.lname || ""}`.trim(),
+        email: customer.email || "",
+      }));
+    }
+  }, [customer]);
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -37,19 +47,19 @@ const Checkout = () => {
     setForm({ ...form, [name]: value });
   };
 
-  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
   const handleOrderSuccess = () => {
     const orderData = {
       customer: form,
+      address: form.address,
       orderItems: cartItems,
       total,
       date: new Date().toISOString(),
     };
 
     dispatch(setOrders(orderData));
-    dispatch(clearCart());
 
+    //consoling
+    console.log("Handle order success trigerred. ");
     navigate("/thank-you", { state: { order: orderData } });
   };
 
@@ -59,10 +69,7 @@ const Checkout = () => {
       toast.error("Please fill in all fields");
       return;
     }
-    if (!validateEmail(form.email)) {
-      toast.error("Please enter a valid email address");
-      return;
-    }
+
     handleOrderSuccess();
   };
 
@@ -94,8 +101,7 @@ const Checkout = () => {
                     name="name"
                     value={form.name}
                     onChange={handleChange}
-                    placeholder="Enter your full name"
-                    required
+                    readOnly
                   />
                 </Form.Group>
 
@@ -106,8 +112,7 @@ const Checkout = () => {
                     name="email"
                     value={form.email}
                     onChange={handleChange}
-                    placeholder="you@example.com"
-                    required
+                    readOnly
                   />
                 </Form.Group>
 
@@ -142,6 +147,7 @@ const Checkout = () => {
                   <Elements stripe={stripePromise}>
                     <StripePaymentForm
                       total={total}
+                      address={form.address}
                       onPaymentSuccess={handleOrderSuccess}
                     />
                   </Elements>

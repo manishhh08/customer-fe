@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  useStripe,
-  useElements,
-  CardElement,
-  PaymentElement,
-} from "@stripe/react-stripe-js";
+import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { Button } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -12,7 +7,7 @@ import { createNewOrderAction } from "../features/order/orderAction";
 import { clearCart } from "../features/cart/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-const StripePaymentForm = ({ total, onPaymentSuccess }) => {
+const StripePaymentForm = ({ total, address, onPaymentSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -34,7 +29,6 @@ const StripePaymentForm = ({ total, onPaymentSuccess }) => {
           }
         );
         setClientSecret(data.clientSecret);
-        console.log(data.clientSecret);
       } catch (err) {
         toast.error("Failed to initialize payment");
       }
@@ -68,19 +62,17 @@ const StripePaymentForm = ({ total, onPaymentSuccess }) => {
         setLoading(false);
         return;
       }
-
       if (paymentIntent.status === "succeeded") {
-        toast.success("Payment successful!");
-
+        console.log("inside if block");
         const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
         if (cartItems.length === 0) {
           toast.info("Cart is empty");
           setLoading(false);
           return;
         }
-
         const orderObject = {
           customerId: customer._id,
+          address,
           items: cartItems.map((item) => ({
             productId: item._id,
             productName: item.name,
@@ -91,9 +83,9 @@ const StripePaymentForm = ({ total, onPaymentSuccess }) => {
           currency: "AUD",
           paymentIntentId: paymentIntent.id,
         };
+        const result = await dispatch(createNewOrderAction(orderObject));
 
-        dispatch(createNewOrderAction(orderObject));
-
+        console.log(result, "111111");
         dispatch(clearCart());
         localStorage.removeItem("cartItems");
 
@@ -101,7 +93,6 @@ const StripePaymentForm = ({ total, onPaymentSuccess }) => {
       }
     } catch (err) {
       console.error(err);
-      toast.error("Order creation failed");
     } finally {
       setLoading(false);
     }
