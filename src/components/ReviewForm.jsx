@@ -10,6 +10,7 @@ const ReviewForm = ({ show, onHide, product, onReviewSuccess }) => {
   const dispatch = useDispatch();
   const [form, setForm] = useState({
     productId: "",
+    orderId: "",
     title: "",
     rating: "",
     comment: "",
@@ -19,7 +20,11 @@ const ReviewForm = ({ show, onHide, product, onReviewSuccess }) => {
     if (product) {
       const correctId = product.productId || product._id;
       if (correctId) {
-        setForm((prev) => ({ ...prev, productId: correctId }));
+        setForm((prev) => ({
+          ...prev,
+          productId: correctId,
+          orderId: product.orderId || "",
+        }));
       }
     }
   }, [product]);
@@ -38,14 +43,20 @@ const ReviewForm = ({ show, onHide, product, onReviewSuccess }) => {
       const result = await dispatch(createReviewAction(form));
 
       if (result?.status === "success" && onReviewSuccess) {
-        onReviewSuccess?.(form.productId);
+        onReviewSuccess?.(form.productId, form.orderId);
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      onHide();
+      setForm({
+        productId: "",
+        orderId: "",
+        title: "",
+        rating: "",
+        comment: "",
+      });
     }
-
-    onHide();
-    setForm({ productId: "", title: "", rating: "", comment: "" });
   };
 
   return (

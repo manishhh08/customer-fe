@@ -31,11 +31,8 @@ export default function Homepage() {
   );
 
   const itemsPerPage = 4;
-  const totalPages = Math.ceil(categories.length / itemsPerPage);
-  const currentCategories = categories.slice(
-    (activePage - 1) * itemsPerPage,
-    activePage * itemsPerPage
-  );
+  const totalPages = Math.ceil(subCategories.length / itemsPerPage);
+
   const currentSubCategories = subCategories.slice(
     (activePage - 1) * itemsPerPage,
     activePage * itemsPerPage
@@ -97,7 +94,7 @@ export default function Homepage() {
                 Premium electronics, cutting-edge gadgets, and exclusive deals.
                 Experience technology that transforms your lifestyle.
               </p>
-
+              {/* TODO */}
               <div className="d-flex flex-wrap gap-3 mb-4">
                 <Link to="/products">
                   <Button
