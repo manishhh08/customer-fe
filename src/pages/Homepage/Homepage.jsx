@@ -210,7 +210,7 @@ export default function Homepage() {
       <section
         className="py-5"
         style={{
-          background: "linear-gradient(180deg, var(--neo-d2), var(--neo-d1))",
+          background: "var(--neo-d1)",
         }}
       >
         <Container>
@@ -266,7 +266,7 @@ export default function Homepage() {
       <section
         className="py-5 hero-wrap"
         style={{
-          background: "linear-gradient(180deg, var(--neo-d2), var(--neo-d1))",
+          background: "var(--neo-d1)",
         }}
       >
         <Container className="position-relative">
