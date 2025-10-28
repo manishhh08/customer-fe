@@ -8,74 +8,91 @@ import {
   Badge,
 } from "react-bootstrap";
 import { FaCommentDots, FaTimes } from "react-icons/fa";
+import { postMessageAction } from "../../features/chatbot/chatAction"; // adjust path
 
-const ChatCard = ({
-  messages,
-  input,
-  setInput,
-  handleSend,
-  isOpen,
-  toggleOpen,
-  loading,
-}) => {
-  const chatEndRef = useRef(null);
+const ChatCard = ({ isOpen, onToggle }) => {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const chatEndRef = useRef(null);
 
-  // Auto-scroll to bottom
+  // Scroll to bottom
   useEffect(() => {
     if (chatEndRef.current)
       chatEndRef.current.scrollIntoView({ behavior: "smooth" });
 
-    // Increase unread count when bot sends message & chat is closed
+    // Unread badge logic
     if (!isOpen && messages.length > 0) {
       const last = messages[messages.length - 1];
       if (last.sender === "bot") setUnreadCount((prev) => prev + 1);
     }
   }, [messages, isOpen]);
 
-  // Reset unread badge when opened
+  // Reset unread count when chat opens
   useEffect(() => {
     if (isOpen) setUnreadCount(0);
   }, [isOpen]);
 
+  // Handle message sending
+  const handleSend = async () => {
+    if (!input.trim()) return;
+    const userMsg = {
+      id: Date.now(),
+      sender: "user",
+      text: input,
+      timestamp: new Date().toLocaleTimeString(),
+    };
+    setMessages((prev) => [...prev, userMsg]);
+    setInput("");
+    setLoading(true);
+
+    // Add typing message
+    const typingMsg = { id: Date.now() + 1, sender: "bot", typing: true };
+    setMessages((prev) => [...prev, typingMsg]);
+
+    try {
+      const res = await postMessageAction(input);
+
+      const botMsg = {
+        id: Date.now() + 2,
+        sender: "bot",
+        text: res?.output || "I'm sorry, I didn’t quite catch that.",
+        timestamp: new Date().toLocaleTimeString(),
+      };
+
+      setMessages((prev) => prev.map((msg) => (msg.typing ? botMsg : msg)));
+    } catch (err) {
+      console.error("Chatbot error:", err);
+      const errMsg = {
+        id: Date.now() + 3,
+        sender: "bot",
+        text: "There was a problem connecting to the chatbot.",
+        timestamp: new Date().toLocaleTimeString(),
+      };
+      setMessages((prev) => prev.map((msg) => (msg.typing ? errMsg : msg)));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       {/* Floating Button */}
-      {!isOpen && (
-        <Button
-          onClick={toggleOpen}
+      {!isOpen && unreadCount > 0 && (
+        <Badge
+          bg="danger"
+          pill
           style={{
-            width: "60px",
-            height: "60px",
-            borderRadius: "50%",
-            fontSize: "1.5rem",
-            position: "fixed",
-            bottom: "20px",
-            right: "20px",
-            zIndex: 1100,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            position: "absolute",
+            top: "0",
+            right: "0",
+            transform: "translate(50%, -50%)",
+            fontSize: "0.7rem",
           }}
-          variant="primary"
         >
-          <FaCommentDots />
-          {unreadCount > 0 && (
-            <Badge
-              bg="danger"
-              pill
-              style={{
-                position: "absolute",
-                top: "0",
-                right: "0",
-                transform: "translate(50%, -50%)",
-                fontSize: "0.7rem",
-              }}
-            >
-              {unreadCount}
-            </Badge>
-          )}
-        </Button>
+          {unreadCount}
+        </Badge>
       )}
 
       {/* Chat Window */}
@@ -92,15 +109,13 @@ const ChatCard = ({
             zIndex: 1100,
           }}
         >
-          {/* Header */}
           <Card.Header className="bg-primary text-white d-flex justify-content-between align-items-center">
             <span>💬 Electra Hub Assistant</span>
-            <Button size="sm" variant="light" onClick={toggleOpen}>
+            <Button size="sm" variant="light" onClick={onToggle}>
               <FaTimes />
             </Button>
           </Card.Header>
 
-          {/* Body */}
           <Card.Body className="overflow-auto p-2" style={{ flex: 1 }}>
             {messages.length === 0 && (
               <div className="text-center text-muted mt-5">
@@ -108,7 +123,6 @@ const ChatCard = ({
                 <p>Ask me about products, offers, or your orders.</p>
               </div>
             )}
-
             {messages.map((msg) => (
               <div
                 key={msg.id}
@@ -144,7 +158,6 @@ const ChatCard = ({
             <div ref={chatEndRef} />
           </Card.Body>
 
-          {/* Footer Input */}
           <Card.Footer className="p-2 border-top">
             <Form
               onSubmit={(e) => {
