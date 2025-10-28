@@ -23,6 +23,7 @@ import Order from "./pages/Order";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import { fetchAllProductsAction } from "./features/product/productAction";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import RecentPurchase from "./pages/RecentPurchase";
 
 function App() {
   const dispatch = useDispatch();
@@ -67,6 +68,7 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="manage-account" element={<UserProfile />} />
           <Route path="orders" element={<Order />} />
+          <Route path="recent-purchases" element={<RecentPurchase />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="thank-you" element={<ThankYou />} />
         </Route>

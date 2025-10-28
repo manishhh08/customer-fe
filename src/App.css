@@ -115,7 +115,7 @@ a {
     var(--neo-mid),
     var(--neo-end)
   );
-  color: #fff;
+  color: #000;
   position: relative;
   overflow: hidden;
   isolation: isolate;
@@ -345,6 +345,127 @@ a {
 
 .table > :not(caption) > * > * {
   color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* === Customer Sidebar === */
+.customer-sidebar {
+  position: fixed;
+  inset: 72px auto 0 0;
+  width: 250px;
+  background: rgba(15, 20, 35, 0.8);
+  backdrop-filter: blur(6px);
+  border-right: 1px solid var(--neo-border, rgba(255, 255, 255, 0.08));
+  padding: 18px 14px;
+}
+.cs-brand {
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  margin: 2px 6px 10px;
+}
+.cs-section {
+  font-size: 0.8rem;
+  color: #9fb0ff;
+  opacity: 0.9;
+  margin: 14px 6px 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.cs-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cs-link {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.55rem 0.7rem;
+  color: #dfe5ff;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.cs-link svg {
+  font-size: 18px;
+  opacity: 0.95;
+}
+.cs-link:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+.cs-link.active {
+  background: linear-gradient(90deg, #3b82f6 0%, #22d3ee 100%);
+  color: #0a0f1f;
+  font-weight: 600;
+}
+.cs-foot {
+  margin-top: auto;
+  padding: 0.5rem;
+}
+.cs-foot-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #cfd6ff;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.5rem 0.7rem;
+  border-radius: 999px;
+  cursor: pointer;
+  user-select: none;
+}
+.cs-foot-pill:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.with-customer-sidebar {
+  padding-left: 250px;
+}
+
+/* Recently Viewed — list look */
+.rv-card {
+  background: rgba(255, 255, 255, 0.04);
+}
+.rv-list .rv-item + .rv-item {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.rv-thumb {
+  width: 56px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.08);
+}
+@media (min-width: 992px) {
+  .rv-thumb {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+.rv-title {
+  line-height: 1.2;
+}
+.rv-sub {
+  line-height: 1.2;
+  margin-top: 2px;
+}
+
+.rv-meta {
+  white-space: nowrap;
+}
+
+/* Mobile: sidebar becomes overlay; content not shifted */
+@media (max-width: 991px) {
+  .customer-sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+  }
+  .customer-sidebar.is-open {
+    transform: translateX(0);
+  }
+  .with-customer-sidebar {
+    padding-left: 0;
+  }
 }
 
 /* clamp utility */
