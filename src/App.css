@@ -8,6 +8,11 @@
   --neo-border: rgba(255, 255, 255, 0.08);
 }
 
+a {
+  color: inherit;
+  text-decoration: none !important;
+}
+
 /* Header search */
 .header-search {
   width: min(520px, 50vw);
@@ -287,6 +292,67 @@
 .parent-category:hover {
   transform: scale(1.05);
   background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Recommendation tiles */
+.rec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.rec-tile {
+  border: 1px solid var(--neo-border);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.rec-media {
+  aspect-ratio: 1/1;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.rec-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.rec-hover {
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.rec-tile:hover .rec-hover {
+  opacity: 1;
+}
+
+.table-transparent {
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: transparent;
+  --bs-table-hover-bg: rgba(255, 255, 255, 0.06);
+  --bs-table-border-color: rgba(255, 255, 255, 0.15);
+  background-color: transparent !important;
+}
+
+.table-transparent > :not(caption) > * > * {
+  background-color: transparent !important;
+  color: #fff;
+}
+
+.table > :not(caption) > * > * {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* clamp utility */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 @supports not (aspect-ratio: 1) {

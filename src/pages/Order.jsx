@@ -108,90 +108,108 @@ const Order = () => {
     );
 
   return (
-    <Container className="py-5">
-      <h2 className="mb-4">Order History</h2>
-      <Accordion activeKey={activeKey}>
-        {orders.map((order, index) => (
-          <Card key={order._id} className="mb-3 shadow-sm border-0">
-            <Accordion.Item eventKey={index.toString()}>
-              <Accordion.Header
-                onClick={() => toggleAccordion(index.toString())}
-              >
-                <div className="d-flex justify-content-between w-100 align-items-center">
-                  <div>
-                    <strong>Order #{order._id.slice(-6)}</strong> —{" "}
-                    {new Date(order.createdAt).toLocaleDateString()}
+    <section
+      className="py-5 text-white h-100"
+      style={{
+        background: "linear-gradient(180deg,var(--neo-d1),var(--neo-d2))",
+      }}
+    >
+      <Container>
+        <div className="mb-4">
+          <h2 className="fw-bold m-0">Order History</h2>
+          <small>
+            Track recent orders, view details, and manage deliveries.
+          </small>
+        </div>
+        <Accordion activeKey={activeKey}>
+          {orders.map((order, index) => (
+            <Card key={order._id} className="mb-3 shadow-sm border-0">
+              <Accordion.Item eventKey={index.toString()}>
+                <Accordion.Header
+                  onClick={() => toggleAccordion(index.toString())}
+                >
+                  <div className="d-flex justify-content-between w-100 align-items-center">
+                    <div>
+                      <strong>Order #{order._id.slice(-6)}</strong> —
+                      {new Date(order.createdAt).toLocaleDateString()}
+                    </div>
+                    <div className="d-flex align-items-center gap-2">
+                      <strong>${order.total?.toFixed(2)}</strong>
+                      <Badge
+                        bg={getStatusVariant(order.status)}
+                        className="text-capitalize"
+                      >
+                        {order.status}
+                      </Badge>
+                    </div>
                   </div>
-                  <div className="d-flex align-items-center gap-2">
+                </Accordion.Header>
+
+                <Accordion.Body>
+                  {/* Order Items */} <h6>Items Ordered</h6>
+                  <ul className="mb-3">
+                    {order.items?.map((item, idx) => (
+                      <li key={idx}>
+                        <div>
+                          {item.productName} × {item.quantity} — $
+                          {item.price?.toFixed(2)}
+                        </div>
+
+                        {/* show review button if delivered */}
+                        {order.status === "Delivered" && (
+                          <Button
+                            varient="outline-primary"
+                            size="sm"
+                            onClick={() => {
+                              setSelectedProduct(item);
+                              setShowModal(true);
+                            }}
+                          >
+                            Review
+                          </Button>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                  {/* Shipping */} <h6>Shipping Address</h6>
+                  <p className="mb-3">{order.shippingAddress || "N/A"}</p>
+                  {/* Payment */} <h5>Payment Details</h5>
+                  <p>
+                    Method: {order.paymentMethod || "Card"} <br /> Total:
                     <strong>${order.total?.toFixed(2)}</strong>
-                    <Badge
-                      bg={getStatusVariant(order.status)}
-                      className="text-capitalize"
+                  </p>
+                  {/* Action Buttons
+                {order.status === "Delivered" ? (
+                  <div className="d-flex gap-2 mt-3">
+                    <Button
+                      variant="primary"
+                      size="m"
+                      onClick={() => setShowModal(true)}
                     >
-                      {order.status}
-                    </Badge>
+                      Give a review
+                    </Button>
+                    <ReviewForm
+                      show={showModal}
+                      onHide={() => setShowModal(false)}
+                    />
                   </div>
-                </div>
-              </Accordion.Header>
-
-              <Accordion.Body>
-                <h6>Items Ordered</h6>
-                <ul className="mb-3 list-unstyled">
-                  {order.items?.map((item, idx) => (
-                    <li
-                      key={idx}
-                      className="d-flex justify-content-between align-items-center mb-2 p-2 rounded bg-light"
-                    >
-                      <div className="fw-semibold">
-                        {item.productName} × {item.quantity} — $
-                        {item.price?.toFixed(2)}
-                      </div>
-
-                      {/* ✅ Review Button */}
-                      {order.status === "Delivered" && (
-                        <Button
-                          variant={item.isReviewed ? "secondary" : "primary"}
-                          size="sm"
-                          disabled={item.isReviewed}
-                          onClick={() => {
-                            setSelectedProduct({
-                              productId: item.productId,
-                              orderId: order._id,
-                              productName: item.productName,
-                            });
-                            setShowModal(true);
-                          }}
-                        >
-                          {item.isReviewed ? "Already reviewed" : "Review"}
-                        </Button>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-
-                <h6>Shipping Address</h6>
-                <p className="mb-3">{order.shippingAddress || "N/A"}</p>
-                <h5>Payment Details</h5>
-                <p>
-                  Method: {order.paymentMethod || "Card"} <br /> Total:{" "}
-                  <strong>${order.total?.toFixed(2)}</strong>
-                </p>
-              </Accordion.Body>
-            </Accordion.Item>
-          </Card>
-        ))}
-      </Accordion>
-
-      {/* ✅ Review Modal */}
-      {selectedProduct && (
-        <ReviewForm
-          show={showModal}
-          onHide={() => setShowModal(false)}
-          product={selectedProduct}
-          onReviewSuccess={handleReviewSuccess}
-        />
-      )}
-    </Container>
+                ) : (
+                  ""
+                )} */}
+                </Accordion.Body>
+              </Accordion.Item>
+            </Card>
+          ))}
+        </Accordion>
+        {selectedProduct && (
+          <ReviewForm
+            show={showModal}
+            onHide={() => setShowModal(false)}
+            product={selectedProduct}
+          />
+        )}
+      </Container>
+    </section>
   );
 };
 
