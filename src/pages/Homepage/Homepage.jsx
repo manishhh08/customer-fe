@@ -289,21 +289,23 @@ export default function Homepage() {
                       to={`/category/${parentCategory?.slug}/${c.slug}`}
                       className="text-decoration-none"
                     >
-                      <div className="p-4 rounded-4 card-neo text-center h-100">
-                        <div
-                          className="icon-pill mx-auto mb-3 fs-4"
-                          style={{ overflow: "hidden" }}
-                        >
+                      <div className="p-3 rounded-4 card-neo text-center h-100 bg-dark">
+                        {/* Category Image */}
+                        <div className="mb-3">
                           <img
+                            src={c.image || "/images/placeholder.png"}
+                            alt={c.name}
+                            className="img-fluid rounded shadow-sm"
                             style={{
-                              maxWidth: "100%",
-                              maxHeight: "100%",
-                              objectFit: "contain",
+                              width: "100px",
+                              height: "70px",
+                              objectFit: "cover",
+                              borderRadius: "10px",
                             }}
-                            src={c.image}
-                            alt=""
                           />
                         </div>
+
+                        {/* Category Name */}
                         <div className="text-light fw-semibold">{c.name}</div>
                       </div>
                     </Link>
