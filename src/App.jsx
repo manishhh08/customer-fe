@@ -24,6 +24,7 @@ import UserProfile from "./pages/UserProfile/UserProfile";
 import { fetchAllProductsAction } from "./features/product/productAction";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import RecentPurchase from "./pages/RecentPurchase";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const dispatch = useDispatch();
@@ -71,6 +72,7 @@ function App() {
           <Route path="checkout" element={<Checkout />} />
           <Route path="thank-you" element={<ThankYou />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       <ToastContainer
