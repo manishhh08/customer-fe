@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { subscribeCustomerAction } from "../../features/subscribe/subscribeAction";
 
 const Footer = () => {
   const year = new Date().getFullYear();
   const navigate = useNavigate();
   const location = useLocation();
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   const scrollToSection = (id) => {
     if (location.pathname !== "/") {
@@ -15,8 +19,13 @@ const Footer = () => {
       if (redirect) redirect.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    subscribeCustomerAction(email, setEmail, setMessage, setLoading);
+  };
   return (
-    <footer className="bg-dark text-light pt-3 pb-5 ">
+    <footer className="bg-dark text-light pt-3 pb-5 z-2">
       <div className="container">
         <div className="row gy-3 d-flex flex-row justify-content-between">
           {/* Brand + blurb */}
@@ -71,31 +80,44 @@ const Footer = () => {
           <div className="col-12 col-md-4 text-center text-md-start">
             <h6 className="text-uppercase fw-semibold mb-3">Get Updates</h6>
 
-            <form
-              action="https://gmail.us15.list-manage.com/subscribe/post?u=71a640f48bb6d54e8d33b241f&amp;id=a01de5494d&amp;f_id=00e9c2e1f0"
-              method="post"
-              noValidate
-            >
+            <form onSubmit={handleSubmit} noValidate>
               <label
                 htmlFor="footerEmail"
                 className="form-label small d-block mb-2"
               >
                 Subscribe to our newsletter
               </label>
+
               <div className="input-group mb-2">
                 <input
                   type="email"
-                  name="EMAIL"
                   className="form-control form-control-sm"
                   id="footerEmail"
                   placeholder="you@example.com"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
-                <button type="submit" className="btn btn-primary btn-sm">
-                  Subscribe
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-sm"
+                  disabled={loading}
+                >
+                  {loading ? "Subscribing..." : "Subscribe"}
                 </button>
               </div>
-              <small className="text-secondary d-block">
+
+              {message && (
+                <small
+                  className={`d-block ${
+                    message.startsWith("🎉") ? "text-success" : "text-danger"
+                  }`}
+                >
+                  {message}
+                </small>
+              )}
+
+              <small className="text-secondary d-block mt-2">
                 By subscribing, you agree to our{" "}
                 <a href="/privacy-policy" className="link-light">
                   Privacy Policy

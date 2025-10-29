@@ -77,6 +77,7 @@ export default function Homepage() {
 
   return (
     <div className="bg-dark text-light">
+      {/* HERO SECTION */}
       <section className="hero-wrap py-5 py-md-6">
         <Container className="py-4 py-lg-5">
           <Row className="align-items-center g-5">
@@ -239,7 +240,10 @@ export default function Homepage() {
                 .slice(0, 4)
                 .map((rev) => (
                   <Col xs={12} md={3} key={rev._id}>
-                    <div className="p-4 rounded-4 bg-secondary bg-opacity-10 h-100 d-flex flex-column justify-content-between card-neo">
+                    <div
+                      className="p-4 rounded-4 bg-secondary bg-opacity-10 h-100 d-flex flex-column justify-content-between card-neo "
+                      style={{ maxHeight: "300px" }}
+                    >
                       <div className="fw-semibold text-white mb-3">
                         {rev?.customer?.fname} {rev?.customer?.lname}
                       </div>
@@ -248,8 +252,10 @@ export default function Homepage() {
                         {"★".repeat(rev.rating) + "☆".repeat(5 - rev.rating)}
                       </div>
 
-                      <p className="fw-bold text-white mb-1">{rev.title}</p>
-                      <p className="text-white-50 mb-2">{rev.comment}</p>
+                      <p className="fw-bold text-white mb-1 ">{rev.title}</p>
+                      <p className="text-white-50 mb-2 line-clamp-2">
+                        {rev.comment}
+                      </p>
 
                       <div className="small text-white fw-bold fs-6 mt-1">
                         {rev.productName}

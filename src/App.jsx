@@ -23,6 +23,8 @@ import Order from "./pages/Order";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import { fetchAllProductsAction } from "./features/product/productAction";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import RecentPurchase from "./pages/RecentPurchase";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,13 +47,11 @@ function App() {
           <Route path="auth" element={<AuthPage />} />
 
           {/* Instead of creating multiple static routes (listing each routes), creating a dynamic route which handles all the categories  */}
-          <Route path="category/:slug" element={<Category />} />
-          <Route path="/category/:categorySlug" element={<Category />} />
 
-          {/* <Route
+          <Route
             path="/category/:category/:subCategory"
             element={<Category />}
-          /> */}
+          />
 
           <Route path="privacy-policy" element={<PrivacyPolicy />} />
           <Route path="cart" element={<Cart />} />
@@ -68,9 +68,11 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="manage-account" element={<UserProfile />} />
           <Route path="orders" element={<Order />} />
+          <Route path="recent-purchases" element={<RecentPurchase />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="thank-you" element={<ThankYou />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       <ToastContainer
