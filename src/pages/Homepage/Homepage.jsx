@@ -97,7 +97,7 @@ export default function Homepage() {
               </p>
               {/* TODO */}
               <div className="d-flex flex-wrap gap-3 mb-4">
-                <Link to="/products">
+                {/* <Link to="/products">
                   <Button
                     size="lg"
                     bsPrefix="neo"
@@ -114,7 +114,7 @@ export default function Homepage() {
                   >
                     View Deals
                   </Button>
-                </Link>
+                </Link> */}
               </div>
 
               <Row className="g-4 pt-2">
