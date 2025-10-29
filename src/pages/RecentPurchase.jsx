@@ -1,15 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Container,
-  Row,
-  Col,
-  Table,
-  Badge,
-  Form,
-  Button,
-  Pagination,
-} from "react-bootstrap";
+import { Container, Row, Col, Table, Badge, Pagination } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import { retrieveAllOrder } from "../features/order/orderAPI";
@@ -194,7 +185,7 @@ export default function RecentPurchase() {
                       <td className="text-end">
                         <div className="d-flex justify-content-end gap-2">
                           <Link
-                            to="/orders"
+                            to={`/orders?orderId=${o._id}`}
                             className="btn-ghost neo rounded-4"
                           >
                             Details

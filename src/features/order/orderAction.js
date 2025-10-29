@@ -4,7 +4,6 @@ import { createNewOrder } from "./orderAPI";
 export const createNewOrderAction = (orderObject) => async () => {
   try {
     const data = await createNewOrder(orderObject);
-    console.log(data);
     if (data.status === "success") {
       toast[data.status](data.message);
       return data;
@@ -13,7 +12,6 @@ export const createNewOrderAction = (orderObject) => async () => {
       return data;
     }
   } catch (err) {
-    console.log("Order creation error:", err.message, err.stack);
     return {
       status: "error",
       message: err?.message || "Something went wrong",

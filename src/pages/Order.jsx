@@ -11,7 +11,7 @@ import {
 import { useSelector } from "react-redux";
 import { retrieveAllOrder } from "../features/order/orderAPI";
 import { BsCartX } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ReviewForm from "../components/ReviewForm";
 import DashboardSidebar from "../components/DashboardSidebar";
 
@@ -20,10 +20,12 @@ const Order = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [activeKey, setActiveKey] = useState("0");
-
+  const [activeKey, setActiveKey] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const preSelectedOrderId = params.get("orderId");
 
   const toggleAccordion = (key) => {
     setActiveKey(activeKey === key ? null : key);
@@ -77,6 +79,12 @@ const Order = () => {
     fetchOrders();
   }, [customer]);
 
+  useEffect(() => {
+    if (orders.length > 0 && preSelectedOrderId) {
+      const idx = orders.findIndex((o) => o._id === preSelectedOrderId);
+      if (idx >= 0) setActiveKey(idx.toString());
+    }
+  }, [orders, preSelectedOrderId]);
   if (loading)
     return (
       <div className="text-center mt-5">
@@ -148,11 +156,8 @@ const Order = () => {
                     {order.items?.map((item, idx) => (
                       <li key={idx} className="mb-3">
                         <div className="d-flex justify-content-between align-items-center p-2 border rounded">
-                          <div>
-                            {item.productName} × {item.quantity} — $
-                            {item.price?.toFixed(2)}
-                          </div>
-
+                          {item.productName} × {item.quantity} — $
+                          {item.price?.toFixed(2)}
                           {order.status === "Delivered" && (
                             <Button
                               variant={

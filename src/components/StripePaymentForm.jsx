@@ -63,7 +63,6 @@ const StripePaymentForm = ({ total, address, onPaymentSuccess }) => {
         return;
       }
       if (paymentIntent.status === "succeeded") {
-        console.log("inside if block");
         const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
         if (cartItems.length === 0) {
           toast.info("Cart is empty");
@@ -85,7 +84,6 @@ const StripePaymentForm = ({ total, address, onPaymentSuccess }) => {
         };
         const result = await dispatch(createNewOrderAction(orderObject));
 
-        console.log(result, "111111");
         dispatch(clearCart());
         localStorage.removeItem("cartItems");
 

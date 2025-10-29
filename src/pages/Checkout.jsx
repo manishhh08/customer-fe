@@ -58,8 +58,6 @@ const Checkout = () => {
 
     dispatch(setOrders(orderData));
 
-    //consoling
-    console.log("Handle order success trigerred. ");
     navigate("/thank-you", { state: { order: orderData } });
   };
 
