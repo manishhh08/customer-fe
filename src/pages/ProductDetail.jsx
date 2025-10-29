@@ -8,6 +8,8 @@ import { addToCart } from "../features/cart/cartSlice";
 import { ShowStars } from "../components/stars/Stars";
 import { BsCart } from "react-icons/bs";
 import { recordRecentlyViewedProduct } from "../features/customer/customerAPI";
+import { getReviewsByProductApi } from "../features/review/reviewAPI";
+import { FaStar } from "react-icons/fa";
 
 const ProductDetail = () => {
   const { products } = useSelector((store) => store.productStore);
@@ -40,10 +42,8 @@ const ProductDetail = () => {
     const fetchReviews = async () => {
       if (product?._id) {
         const res = await getReviewsByProductApi(product._id);
-        console.log("📦 Reviews API response:", res);
 
         if (res.status === "success") {
-          console.log("✅ Setting reviews:", res.data);
           setReviews(res.data);
         } else {
           console.log("❌ Error response:", res);
@@ -78,7 +78,7 @@ const ProductDetail = () => {
             <div className="rounded-4 shadow-lg overflow-hidden mb-4">
               <img
                 src={mainImage}
-                alt={product?.name}
+                alt={product?.name || "Product Image"}
                 className="img-fluid rounded shadow-sm"
                 style={{
                   objectFit: "cover",
