@@ -74,4 +74,4 @@ export const getRecentlyViewedProducts = async (limit) => {
     url: `${apiUrl}/customer/recently-viewed?limit=${limit}`,
     isPrivate: true,
   });
-}
+};

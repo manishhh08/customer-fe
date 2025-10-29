@@ -1,11 +1,14 @@
 import { toast } from "react-toastify";
 import { createNewOrder } from "./orderAPI";
 
-export const createNewOrderAction = async (orderObject) => {
+export const createNewOrderAction = (orderObject) => async () => {
   try {
     const data = await createNewOrder(orderObject);
     console.log(data);
     if (data.status === "success") {
+      toast[data.status](data.message);
+      return data;
+    } else {
       toast[data.status](data.message);
       return data;
     }

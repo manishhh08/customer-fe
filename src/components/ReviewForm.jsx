@@ -24,12 +24,11 @@ const ReviewForm = ({ show, onHide, product, onReviewSuccess }) => {
           ...prev,
           productId: correctId,
           orderId: product.orderId || "",
+          itemId: product.itemId,
         }));
       }
     }
   }, [product]);
-
-  console.log("Product passed to review form", product);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,7 +42,7 @@ const ReviewForm = ({ show, onHide, product, onReviewSuccess }) => {
       const result = await dispatch(createReviewAction(form));
 
       if (result?.status === "success" && onReviewSuccess) {
-        onReviewSuccess?.(form.productId, form.orderId);
+        onReviewSuccess?.(form.itemId, form.orderId);
       }
     } catch (error) {
       console.error(error);
@@ -92,7 +91,8 @@ const ReviewForm = ({ show, onHide, product, onReviewSuccess }) => {
         <CustomInput
           label="Comment"
           name="comment"
-          type="text"
+          as="textarea"
+          rows={4}
           value={form.comment}
           onChange={handleChange}
           placeholder="Write your feedback..."

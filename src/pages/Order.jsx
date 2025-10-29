@@ -42,23 +42,18 @@ const Order = () => {
         return "secondary";
     }
   };
-
-  // ✅ Update local state after review
-  const handleReviewSuccess = (productId, orderId) => {
+  const handleReviewSuccess = (itemId, orderId) => {
     setOrders((prevOrders) =>
-      prevOrders.map((order) => {
-        if (order._id === orderId) {
-          return {
-            ...order,
-            items: order.items.map((item) =>
-              item.productId === productId
-                ? { ...item, isReviewed: true }
-                : item
-            ),
-          };
-        }
-        return order;
-      })
+      prevOrders.map((order) =>
+        order._id === orderId
+          ? {
+              ...order,
+              items: order.items.map((item) =>
+                item._id === itemId ? { ...item, isReviewed: true } : item
+              ),
+            }
+          : order
+      )
     );
   };
 
@@ -148,56 +143,48 @@ const Order = () => {
                 </Accordion.Header>
 
                 <Accordion.Body>
-                  {/* Order Items */} <h6>Items Ordered</h6>
-                  <ul className="mb-3">
+                  <h6>Items Ordered</h6>
+                  <ul className="mb-3 list-unstyled">
                     {order.items?.map((item, idx) => (
-                      <li key={idx}>
-                        <div>
-                          {item.productName} × {item.quantity} — $
-                          {item.price?.toFixed(2)}
-                        </div>
+                      <li key={idx} className="mb-3">
+                        <div className="d-flex justify-content-between align-items-center p-2 border rounded">
+                          <div>
+                            {item.productName} × {item.quantity} — $
+                            {item.price?.toFixed(2)}
+                          </div>
 
-                        {/* show review button if delivered */}
-                        {order.status === "Delivered" && (
-                          <Button
-                            varient="outline-primary"
-                            size="sm"
-                            onClick={() => {
-                              setSelectedProduct(item);
-                              setShowModal(true);
-                            }}
-                          >
-                            Review
-                          </Button>
-                        )}
+                          {order.status === "Delivered" && (
+                            <Button
+                              variant={
+                                item.isReviewed ? "secondary" : "primary"
+                              }
+                              size="sm"
+                              disabled={item.isReviewed}
+                              onClick={() => {
+                                if (!item.isReviewed) {
+                                  setSelectedProduct({
+                                    ...item,
+                                    orderId: order._id,
+                                    itemId: item._id,
+                                  });
+                                  setShowModal(true);
+                                }
+                              }}
+                            >
+                              {item.isReviewed ? "Already Reviewed" : "Review"}
+                            </Button>
+                          )}
+                        </div>
                       </li>
                     ))}
                   </ul>
-                  {/* Shipping */} <h6>Shipping Address</h6>
-                  <p className="mb-3">{order.shippingAddress || "N/A"}</p>
-                  {/* Payment */} <h5>Payment Details</h5>
+                  <h6>Shipping Address</h6>
+                  <p className="mb-3">{order.address || "N/A"}</p>
+                  <h5>Payment Details</h5>
                   <p>
                     Method: {order.paymentMethod || "Card"} <br /> Total:
                     <strong>${order.total?.toFixed(2)}</strong>
                   </p>
-                  {/* Action Buttons
-                {order.status === "Delivered" ? (
-                  <div className="d-flex gap-2 mt-3">
-                    <Button
-                      variant="primary"
-                      size="m"
-                      onClick={() => setShowModal(true)}
-                    >
-                      Give a review
-                    </Button>
-                    <ReviewForm
-                      show={showModal}
-                      onHide={() => setShowModal(false)}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )} */}
                 </Accordion.Body>
               </Accordion.Item>
             </Card>
@@ -208,6 +195,7 @@ const Order = () => {
             show={showModal}
             onHide={() => setShowModal(false)}
             product={selectedProduct}
+            onReviewSuccess={handleReviewSuccess}
           />
         )}
       </Container>
