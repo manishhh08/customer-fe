@@ -7,7 +7,7 @@ import {
   Spinner,
   Badge,
 } from "react-bootstrap";
-import { FaCommentDots, FaTimes } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import { postMessageAction } from "../../features/chatbot/chatAction"; // adjust path
 
 const ChatCard = ({ isOpen, onToggle }) => {
@@ -24,7 +24,7 @@ const ChatCard = ({ isOpen, onToggle }) => {
 
     // Unread badge logic
     if (!isOpen && messages.length > 0) {
-      const last = messages[messages.length - 1];
+      const last = messages[messages.length - 1];``
       if (last.sender === "bot") setUnreadCount((prev) => prev + 1);
     }
   }, [messages, isOpen]);
@@ -37,41 +37,73 @@ const ChatCard = ({ isOpen, onToggle }) => {
   // Handle message sending
   const handleSend = async () => {
     if (!input.trim()) return;
+
     const userMsg = {
       id: Date.now(),
       sender: "user",
       text: input,
       timestamp: new Date().toLocaleTimeString(),
     };
+
+    // Show user's message immediately
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
+
+    // Show typing indicator
+    const typingId = Date.now() + 1;
+    const typingMsg = { id: typingId, sender: "bot", typing: true };
+    setMessages((prev) => [...prev, typingMsg]);
     setLoading(true);
 
-    // Add typing message
-    const typingMsg = { id: Date.now() + 1, sender: "bot", typing: true };
-    setMessages((prev) => [...prev, typingMsg]);
+    // Define callback functions for streaming
+    const handleChunk = (chunk) => {
+      // Each chunk received from backend — append it to the typing message
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === typingId
+            ? {
+                ...msg,
+                typing: false,
+                text: (msg.text || "") + chunk, // append new chunk text
+              }
+            : msg
+        )
+      );
+    };
+
+    const handleDone = () => {
+      // Called once the response is fully received
+      setLoading(false);
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === typingId
+            ? {
+                ...msg,
+                typing: false,
+                timestamp: new Date().toLocaleTimeString(),
+              }
+            : msg
+        )
+      );
+    };
 
     try {
-      const res = await postMessageAction(input);
-
-      const botMsg = {
-        id: Date.now() + 2,
-        sender: "bot",
-        text: res?.output || "I'm sorry, I didn’t quite catch that.",
-        timestamp: new Date().toLocaleTimeString(),
-      };
-
-      setMessages((prev) => prev.map((msg) => (msg.typing ? botMsg : msg)));
+      // Send message to backend and provide callbacks
+      await postMessageAction(input, handleChunk, handleDone);
     } catch (err) {
       console.error("Chatbot error:", err);
-      const errMsg = {
-        id: Date.now() + 3,
-        sender: "bot",
-        text: "There was a problem connecting to the chatbot.",
-        timestamp: new Date().toLocaleTimeString(),
-      };
-      setMessages((prev) => prev.map((msg) => (msg.typing ? errMsg : msg)));
-    } finally {
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === typingId
+            ? {
+                ...msg,
+                typing: false,
+                text: "❌ Sorry, something went wrong. Please try again.",
+                timestamp: new Date().toLocaleTimeString(),
+              }
+            : msg
+        )
+      );
       setLoading(false);
     }
   };
