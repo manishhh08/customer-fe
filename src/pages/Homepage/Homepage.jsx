@@ -14,6 +14,7 @@ import {
   fetchFeaturedProductsAction,
   fetchTopRatedProductsAction,
 } from "../../features/product/productAction";
+import { fetchAllCategoriesAction } from "../../features/category/categoryAction";
 import CustomFeaturedArea from "../../components/customCard/CustomFeaturedArea";
 import Category from "../Category/Category";
 
@@ -31,11 +32,8 @@ export default function Homepage() {
   );
 
   const itemsPerPage = 4;
-  const totalPages = Math.ceil(categories.length / itemsPerPage);
-  const currentCategories = categories.slice(
-    (activePage - 1) * itemsPerPage,
-    activePage * itemsPerPage
-  );
+  const totalPages = Math.ceil(subCategories.length / itemsPerPage);
+
   const currentSubCategories = subCategories.slice(
     (activePage - 1) * itemsPerPage,
     activePage * itemsPerPage
@@ -79,6 +77,7 @@ export default function Homepage() {
 
   return (
     <div className="bg-dark text-light">
+      {/* HERO SECTION */}
       <section className="hero-wrap py-5 py-md-6">
         <Container className="py-4 py-lg-5">
           <Row className="align-items-center g-5">
@@ -97,7 +96,7 @@ export default function Homepage() {
                 Premium electronics, cutting-edge gadgets, and exclusive deals.
                 Experience technology that transforms your lifestyle.
               </p>
-
+              {/* TODO */}
               <div className="d-flex flex-wrap gap-3 mb-4">
                 <Link to="/products">
                   <Button
@@ -212,7 +211,7 @@ export default function Homepage() {
       <section
         className="py-5"
         style={{
-          background: "linear-gradient(180deg, var(--neo-d2), var(--neo-d1))",
+          background: "var(--neo-d1)",
         }}
       >
         <Container>
@@ -229,35 +228,41 @@ export default function Homepage() {
                 No top-rated reviews yet.
               </Col>
             ) : (
-              topRatedProducts.flatMap((prod) =>
-                (prod.reviews || []).slice(0, 2).map((rev) => (
-                  <Col xs={12} md={4} key={rev._id}>
-                    <div className="p-4 rounded-4 bg-secondary bg-opacity-10 h-100 d-flex flex-column justify-content-between card-neo">
+              topRatedProducts
+                .flatMap((prod) =>
+                  (prod.reviews || []).map((rev) => ({
+                    ...rev,
+                    productName: prod.name,
+                  }))
+                )
+                .sort((a, b) => b.rating - a.rating)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 4)
+                .map((rev) => (
+                  <Col xs={12} md={3} key={rev._id}>
+                    <div
+                      className="p-4 rounded-4 bg-secondary bg-opacity-10 h-100 d-flex flex-column justify-content-between card-neo "
+                      style={{ maxHeight: "300px" }}
+                    >
                       <div className="fw-semibold text-white mb-3">
                         {rev?.customer?.fname} {rev?.customer?.lname}
                       </div>
-                      {/* Star Rating */}
+
                       <div className="mb-2 text-warning">
                         {"★".repeat(rev.rating) + "☆".repeat(5 - rev.rating)}
                       </div>
 
-                      {/* Review Title */}
-                      <p className="fw-bold text-white mb-1">{rev.title}</p>
+                      <p className="fw-bold text-white mb-1 ">{rev.title}</p>
+                      <p className="text-white-50 mb-2 line-clamp-2">
+                        {rev.comment}
+                      </p>
 
-                      {/* Review Comment */}
-                      <p className="text-white-50 mb-2">{rev.comment}</p>
-
-                      {/* Reviewer Name */}
-                      <div className="small fw-semibold text-white">
-                        {rev.customerId?.fname} {rev.customerId?.lname}
+                      <div className="small text-white fw-bold fs-6 mt-1">
+                        {rev.productName}
                       </div>
-
-                      {/* Product Name */}
-                      <div className="small text-info mt-1">{prod.name}</div>
                     </div>
                   </Col>
                 ))
-              )
             )}
           </Row>
         </Container>
@@ -265,9 +270,9 @@ export default function Homepage() {
 
       {/* CATEGORIES */}
       <section
-        className="py-5"
+        className="py-5 hero-wrap"
         style={{
-          background: "linear-gradient(180deg, var(--neo-d2), var(--neo-d1))",
+          background: "var(--neo-d1)",
         }}
       >
         <Container className="position-relative">
@@ -292,22 +297,33 @@ export default function Homepage() {
                       to={`/category/${parentCategory?.slug}/${c.slug}`}
                       className="text-decoration-none"
                     >
-                      <div className="p-4 rounded-4 card-neo text-center h-100">
+                      <div className="p-3 rounded-4 card-neo text-center h-100 bg-dark">
+                        {/* Category Image */}
                         <div
-                          className="icon-pill mx-auto mb-3 fs-4"
-                          style={{ overflow: "hidden" }}
+                          className="d-flex align-items-center justify-content-center mx-auto bg-dark bg-opacity-10 rounded"
+                          style={{
+                            width: "auto",
+                            height: "70px",
+                            overflow: "hidden",
+                            borderRadius: "10px",
+                          }}
                         >
                           <img
+                            src={c.image || "/images/placeholder.png"}
+                            alt={c.name}
                             style={{
-                              maxWidth: "100%",
-                              maxHeight: "100%",
+                              width: "100%",
+                              height: "100%",
                               objectFit: "contain",
+                              objectPosition: "center",
                             }}
-                            src={c.image}
-                            alt=""
                           />
                         </div>
-                        <div className="text-light fw-semibold">{c.name}</div>
+
+                        {/* Category Name */}
+                        <div className="text-light fw-semibold mt-2">
+                          {c.name}
+                        </div>
                       </div>
                     </Link>
                   </Col>

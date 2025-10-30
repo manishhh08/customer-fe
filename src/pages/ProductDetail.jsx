@@ -5,9 +5,11 @@ import { BsArrowLeft } from "react-icons/bs";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchAllProductsAction } from "../features/product/productAction";
 import { addToCart } from "../features/cart/cartSlice";
+import { ShowStars } from "../components/stars/Stars";
+import { BsCart } from "react-icons/bs";
+import { recordRecentlyViewedProduct } from "../features/customer/customerAPI";
 import { getReviewsByProductApi } from "../features/review/reviewAPI";
 import { FaStar } from "react-icons/fa";
-import { ShowStars } from "../components/stars/Stars";
 
 const ProductDetail = () => {
   const { products } = useSelector((store) => store.productStore);
@@ -23,6 +25,12 @@ const ProductDetail = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    if (product?._id) {
+      recordRecentlyViewedProduct(product._id).catch(() => {});
+    }
+  }, [product?._id]);
+
+  useEffect(() => {
     const foundProduct = products.find((item) => item.slug === slug);
     if (foundProduct) {
       setProduct(foundProduct);
@@ -34,10 +42,8 @@ const ProductDetail = () => {
     const fetchReviews = async () => {
       if (product?._id) {
         const res = await getReviewsByProductApi(product._id);
-        console.log("📦 Reviews API response:", res);
 
         if (res.status === "success") {
-          console.log("✅ Setting reviews:", res.data);
           setReviews(res.data);
         } else {
           console.log("❌ Error response:", res);
@@ -56,8 +62,8 @@ const ProductDetail = () => {
   };
 
   return (
-    <div className="bg-dark text-light min-vh-100 d-flex flex-column">
-      <Container fluid className="hero-wrap py-5 flex-grow-1">
+    <div className="hero-wrap text-light min-vh-100 d-flex flex-column">
+      <Container className="py-5 flex-grow-1">
         <Button
           size="lg"
           bsPrefix="neo"
@@ -67,15 +73,12 @@ const ProductDetail = () => {
           <BsArrowLeft className="me-2" /> Back to Products
         </Button>
 
-        <Row className="g-4 align-items-start">
+        <Row className="g-5 align-items-start">
           <Col md={6} className="d-flex flex-column align-items-center">
-            <div
-              className="overflow-hidden rounded-4 shadow mb-4 w-100 d-flex justify-content-center align-items-center"
-              style={{ maxWidth: "400px" }}
-            >
+            <div className="rounded-4 shadow-lg overflow-hidden mb-4">
               <img
                 src={mainImage}
-                alt={product?.name}
+                alt={product?.name || "Product Image"}
                 className="img-fluid rounded shadow-sm"
                 style={{
                   objectFit: "cover",
@@ -125,16 +128,19 @@ const ProductDetail = () => {
               type="submit"
               size="lg"
               bsPrefix="neo"
-              className="btn-neo rounded-4 px-4 mt-4"
+              className="btn-neo rounded-4 px-5 py-2 d-inline-flex align-items-center gap-2"
               onClick={() => handleAddToCart(product)}
             >
-              Add to Cart
+              <BsCart /> Add to Cart
             </Button>
           </Col>
         </Row>
 
         {/* ✅ Reviews Section */}
-        <div className="mt-5 text-white">
+        <div
+          className="mt-5 text-white"
+          style={{ maxHeight: "300px", overflowY: "scroll" }}
+        >
           <h5 className="mb-3">Customer Reviews</h5>
 
           {!reviews || reviews.length === 0 ? (

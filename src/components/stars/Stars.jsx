@@ -69,11 +69,12 @@ export const ShowStars = ({ averageRating }) => {
   const emptyStar = maxRating - fullStar - halfStar;
   const starArray = [];
   for (let i = 0; i < fullStar; i++) {
-    starArray.push(<FaStar className="text-warning" />);
+    starArray.push(<FaStar key={`full-${i}`} className="text-warning" />);
   }
-  if (halfStar) starArray.push(<FaStarHalfAlt className="text-warning" />);
+  if (halfStar)
+    starArray.push(<FaStarHalfAlt key="half" className="text-warning" />);
   for (let i = 0; i < emptyStar; i++) {
-    starArray.push(<FaStar className="text-secondary" />);
+    starArray.push(<FaStar key={`empty-${i}`} className="text-secondary" />);
   }
   return <div>{starArray}</div>;
 };

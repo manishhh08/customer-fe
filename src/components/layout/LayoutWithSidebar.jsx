@@ -97,7 +97,7 @@ const LayoutWithSidebar = () => {
             userSelect: isSidebarOpen ? "none" : "auto",
             overflowY: "auto",
             padding: 0,
-            minHeight: "calc(100vh - 100px)",
+            // minHeight: "calc(100vh - 100px)",
             zIndex: 1,
           }}
         >

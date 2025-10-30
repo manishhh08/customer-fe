@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart, updateQuantity } from "../features/cart/cartSlice";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -51,7 +50,7 @@ const Cart = () => {
       <h1 className="mb-4 fw-bold">Shopping Cart</h1>
       <Row>
         <Col lg={8}>
-          {cartItems.map((item) => (
+          {cartItems?.map((item) => (
             <Card key={item._id} className="mb-3 shadow-sm">
               <Card.Body>
                 <Row className="align-items-center">
