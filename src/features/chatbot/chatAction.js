@@ -4,13 +4,14 @@ export const postMessageAction = async (message, onChunk, onDone) => {
   try {
     const response = await postMessageToChatbot(message);
 
-    if (!response || !response.result) {
+    if (!response || response.status !== "success") {
       throw new Error("Chatbot response failed");
     }
 
     // Send entire message at once
 
-    let formatted = response.result;
+    let formatted = response.text || "";
+    const products = response.products || [];
 
     if (formatted.includes("*")) {
       formatted = formatted
@@ -22,7 +23,7 @@ export const postMessageAction = async (message, onChunk, onDone) => {
     }
 
     onChunk(formatted);
-    onDone();
+    onDone({ text: formatted, products });
   } catch (err) {
     console.error("Chatbot action error:", err);
     onChunk("❌ Sorry, something went wrong.");
