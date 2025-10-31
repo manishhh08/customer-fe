@@ -13,11 +13,14 @@ import ChatBotResponse from "./ChatBotResponse";
 import { getChatMessage, storeChatMessage } from "../../utils/storageFunction";
 
 const ChatCard = ({ isOpen, onToggle }) => {
-  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const chatEndRef = useRef(null);
+  const [messages, setMessages] = useState(() => {
+    const storedMessages = getChatMessage();
+    return storedMessages ? JSON.parse(storedMessages) : [];
+  });
 
   // Scroll to bottom
   useEffect(() => {
@@ -31,14 +34,6 @@ const ChatCard = ({ isOpen, onToggle }) => {
       if (last.sender === "bot") setUnreadCount((prev) => prev + 1);
     }
   }, [messages, isOpen]);
-
-  // retrive chat message during session
-  useEffect(() => {
-    const retrieveMessage = getChatMessage();
-    if (retrieveMessage) {
-      setMessages(JSON.parse(retrieveMessage));
-    }
-  }, []);
 
   // store chat message during session
   useEffect(() => {
