@@ -10,6 +10,7 @@ import {
 import { FaTimes } from "react-icons/fa";
 import { postMessageAction } from "../../features/chatbot/chatAction";
 import ChatBotResponse from "./ChatBotResponse";
+import { getChatMessage, storeChatMessage } from "../../utils/storageFunction";
 
 const ChatCard = ({ isOpen, onToggle }) => {
   const [messages, setMessages] = useState([]);
@@ -30,6 +31,19 @@ const ChatCard = ({ isOpen, onToggle }) => {
       if (last.sender === "bot") setUnreadCount((prev) => prev + 1);
     }
   }, [messages, isOpen]);
+
+  // retrive chat message during session
+  useEffect(() => {
+    const retrieveMessage = getChatMessage();
+    if (retrieveMessage) {
+      setMessages(JSON.parse(retrieveMessage));
+    }
+  }, []);
+
+  // store chat message during session
+  useEffect(() => {
+    storeChatMessage(messages);
+  }, [messages]);
 
   // Reset unread count when chat opens
   useEffect(() => {
