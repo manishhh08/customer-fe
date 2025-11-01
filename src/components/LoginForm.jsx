@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import useForm from "../hooks/useForm";
 import { loginCustomerAction } from "../features/customer/customerAction";
-
+import { apiProcessor } from "../utils/axiosHelper";
 const LoginForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -61,6 +61,26 @@ const LoginForm = () => {
     }
   }, [customer?._id, redirectTo, navigate]);
 
+  const ForgotPasswordPage = () => {
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+
+      const response = await apiProcessor({
+        method: "POST",
+        url: "http://localhost:4001/api/auth/forgot-password",
+        data: { email },
+        isPrivate: false,
+      });
+
+      setMessage(response.message);
+    };
+
+    return <div></div>;
+  };
+
   return (
     <Form onSubmit={handleOnSubmit}>
       {inputFields.map((item, index) => (
@@ -74,6 +94,18 @@ const LoginForm = () => {
       >
         {loading ? "Logging in..." : "Login"}
       </Button>
+      <h2>Forgot Password</h2>
+      <form onSubmit={handleOnsubmit}>
+        <input
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <button type="submit">Send Reset Link</button>
+      </form>
+      {message && <p>{message}</p>}
     </Form>
   );
 };
