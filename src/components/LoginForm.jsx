@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import useForm from "../hooks/useForm";
 import { loginCustomerAction } from "../features/customer/customerAction";
 import { apiProcessor } from "../utils/axiosHelper";
+
 const LoginForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -14,6 +15,9 @@ const LoginForm = () => {
   const { customer } = useSelector((store) => store.customerStore);
 
   const [loading, setLoading] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
 
   const { form, handleOnChange } = useForm({ email: "", password: "" });
 
@@ -39,15 +43,26 @@ const LoginForm = () => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       const data = await dispatch(loginCustomerAction(form));
       toast[data.status](data.message);
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong! Please try again.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await apiProcessor({
+      method: "POST",
+      url: `${import.meta.env.VITE_APP_API_URL}/api/auth/forgot-password`,
+
+      data: { email },
+      isPrivate: false,
+    });
+    setMessage(response.message);
   };
 
   const redirectTo =
@@ -56,32 +71,26 @@ const LoginForm = () => {
     "/dashboard";
 
   useEffect(() => {
-    if (customer?._id) {
-      navigate(redirectTo, { replace: true });
-    }
+    if (customer?._id) navigate(redirectTo, { replace: true });
   }, [customer?._id, redirectTo, navigate]);
 
-  const ForgotPasswordPage = () => {
-    const [email, setEmail] = useState("");
-    const [message, setMessage] = useState("");
-
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-
-      const response = await apiProcessor({
-        method: "POST",
-        url: "http://localhost:4001/api/auth/forgot-password",
-        data: { email },
-        isPrivate: false,
-      });
-
-      setMessage(response.message);
-    };
-
-    return <div></div>;
-  };
-
-  return (
+  return showForgotPassword ? (
+    <form onSubmit={handleSubmit}>
+      <h2>Forgot Password</h2>
+      <input
+        type="email"
+        placeholder="Enter your email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <button type="submit">Send Reset Link</button>
+      {message && <p>{message}</p>}
+      <Button variant="link" onClick={() => setShowForgotPassword(false)}>
+        Back to Login
+      </Button>
+    </form>
+  ) : (
     <Form onSubmit={handleOnSubmit}>
       {inputFields.map((item, index) => (
         <CustomInput key={index} {...item} onChange={handleOnChange} />
@@ -94,18 +103,9 @@ const LoginForm = () => {
       >
         {loading ? "Logging in..." : "Login"}
       </Button>
-      <h2>Forgot Password</h2>
-      <form onSubmit={handleOnsubmit}>
-        <input
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <button type="submit">Send Reset Link</button>
-      </form>
-      {message && <p>{message}</p>}
+      <Button variant="link" onClick={() => setShowForgotPassword(true)}>
+        Forgot Password?
+      </Button>
     </Form>
   );
 };
