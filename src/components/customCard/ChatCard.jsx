@@ -47,6 +47,8 @@ const ChatCard = ({ isOpen, onToggle }) => {
 
   // Handle message sending
   const handleSend = async () => {
+
+    //return if input field is empty
     if (!input.trim()) return;
 
     const userMsg = {

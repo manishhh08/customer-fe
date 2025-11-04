@@ -24,6 +24,7 @@ export const fetchFeaturedProductsAction = async () => {
     return {
       bestSellerProducts: result.bestSellerProducts,
       recentlyAddedProducts: result.recentlyAddedProducts,
+      hotDealsProducts: result.hotDealsProducts,
     };
 };
 
