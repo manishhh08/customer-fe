@@ -50,7 +50,6 @@ const cartSlice = createSlice({
       localStorage.setItem("cartItems", JSON.stringify(state.items));
     },
     clearCart: (state) => {
-      console.log("clear cart fucntion triggered");
       state.items = [];
       localStorage.removeItem("cartItems");
     },
