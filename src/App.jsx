@@ -25,6 +25,7 @@ import { fetchAllProductsAction } from "./features/product/productAction";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import RecentPurchase from "./pages/RecentPurchase";
 import NotFound from "./pages/NotFound";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   const dispatch = useDispatch();
@@ -56,6 +57,7 @@ function App() {
           <Route path="privacy-policy" element={<PrivacyPolicy />} />
           <Route path="cart" element={<Cart />} />
           <Route path="verify" element={<Verify />} />
+          <Route path="reset-password" element={<ResetPassword />} />
         </Route>
 
         <Route

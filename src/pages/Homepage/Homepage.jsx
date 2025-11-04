@@ -14,9 +14,7 @@ import {
   fetchFeaturedProductsAction,
   fetchTopRatedProductsAction,
 } from "../../features/product/productAction";
-import { fetchAllCategoriesAction } from "../../features/category/categoryAction";
 import CustomFeaturedArea from "../../components/customCard/CustomFeaturedArea";
-import Category from "../Category/Category";
 
 export default function Homepage() {
   const dispatch = useDispatch();
@@ -24,9 +22,7 @@ export default function Homepage() {
   const [featured, setFeatured] = useState({});
   const [activePage, setActivePage] = useState(1);
 
-  const { products, topRatedProducts } = useSelector(
-    (store) => store.productStore
-  );
+  const { topRatedProducts } = useSelector((store) => store.productStore);
   const { categories, subCategories } = useSelector(
     (store) => store.categoryStore
   );
@@ -169,7 +165,7 @@ export default function Homepage() {
           majorTitle="Hot Deals This Week"
           minorTitle="Featured Collection"
           titleDescription="Handpicked selection of the most popular and trending tech products"
-          products={products}
+          products={featured.hotDealsProducts}
           tagLabel="HOT"
           tagClass="tag-hot"
         />
