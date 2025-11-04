@@ -75,3 +75,23 @@ export const getRecentlyViewedProducts = async (limit) => {
     isPrivate: true,
   });
 };
+
+// Forgot Password
+export const forgotPassword = async (email) => {
+  return apiProcessor({
+    method: "POST",
+    url: `${apiUrl}/auth/forgot-password`,
+    data: { email },
+    isPrivate: false,
+  });
+};
+
+// Reset Password
+export const resetPassword = async (data) => {
+  return apiProcessor({
+    method: "POST",
+    url: `${apiUrl}/auth/reset-password`,
+    data,
+    isPrivate: false,
+  });
+};
