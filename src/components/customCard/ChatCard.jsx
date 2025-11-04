@@ -8,14 +8,19 @@ import {
   Badge,
 } from "react-bootstrap";
 import { FaTimes } from "react-icons/fa";
-import { postMessageAction } from "../../features/chatbot/chatAction"; // adjust path
+import { postMessageAction } from "../../features/chatbot/chatAction";
+import ChatBotResponse from "./ChatBotResponse";
+import { getChatMessage, storeChatMessage } from "../../utils/storageFunction";
 
 const ChatCard = ({ isOpen, onToggle }) => {
-  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const chatEndRef = useRef(null);
+  const [messages, setMessages] = useState(() => {
+    const storedMessages = getChatMessage();
+    return storedMessages ? JSON.parse(storedMessages) : [];
+  });
 
   // Scroll to bottom
   useEffect(() => {
@@ -24,10 +29,16 @@ const ChatCard = ({ isOpen, onToggle }) => {
 
     // Unread badge logic
     if (!isOpen && messages.length > 0) {
-      const last = messages[messages.length - 1];``
+      const last = messages[messages.length - 1];
+      ``;
       if (last.sender === "bot") setUnreadCount((prev) => prev + 1);
     }
   }, [messages, isOpen]);
+
+  // store chat message during session
+  useEffect(() => {
+    storeChatMessage(messages);
+  }, [messages]);
 
   // Reset unread count when chat opens
   useEffect(() => {
@@ -73,8 +84,11 @@ const ChatCard = ({ isOpen, onToggle }) => {
       );
     };
 
-    const handleDone = () => {
+    const handleDone = (response = {}) => {
       // Called once the response is fully received
+      const products = response.products || [];
+      const text = response.text || "";
+
       setLoading(false);
       setMessages((prev) =>
         prev.map((msg) =>
@@ -83,6 +97,12 @@ const ChatCard = ({ isOpen, onToggle }) => {
                 ...msg,
                 typing: false,
                 timestamp: new Date().toLocaleTimeString(),
+                text,
+                products,
+                prependMessage:
+                  products?.length > 0
+                    ? "Here are the products I found for you:"
+                    : null,
               }
             : msg
         )
@@ -180,6 +200,21 @@ const ChatCard = ({ isOpen, onToggle }) => {
                       <Spinner animation="grow" size="sm" />
                       <Spinner animation="grow" size="sm" />
                     </div>
+                  ) : msg?.sender === "bot" ? (
+                    <>
+                      {msg?.prependMessage && (
+                        <div
+                          className="p-2 mb-1 rounded-3 bg-light border text-dark"
+                          style={{ maxWidth: "80%" }}
+                        >
+                          {msg.prependMessage}
+                        </div>
+                      )}
+                      <ChatBotResponse
+                        text={msg.text}
+                        products={msg.products}
+                      />
+                    </>
                   ) : (
                     <span>{msg.text}</span>
                   )}

@@ -45,7 +45,7 @@ const CustomCard = ({ product, tagLabel, tagClass }) => {
       </Link>
 
       <div className="d-flex flex-column flex-grow-1 p-4">
-        <h5 className="mb-1 line-clamp-2">
+        <h5 className="mb-1 line-clamp-2" style={{ minHeight: "3rem" }}>
           <Link
             to={`/product/${product.slug}`}
             className="small text-decoration-none link-title"
