@@ -241,7 +241,7 @@ export default function CustomerDashboard() {
           </div>
           <div className="d-flex flex-wrap gap-2">
             <Link
-              to="/products"
+              to="/"
               className="btn-neo rounded-4 d-inline-flex align-items-center gap-2 text-decoration-none"
             >
               Shop now <BsArrowRight />
