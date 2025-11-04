@@ -105,7 +105,7 @@ const Header = ({ toggleSidebar }) => {
               <Button
                 as={Link}
                 to="/auth?tab=login"
-                variant="primary"
+                bsPrefix="neo"
                 size="md"
                 className="btn-neo rounded-4 px-4 d-inline-flex align-items-center gap-2"
               >

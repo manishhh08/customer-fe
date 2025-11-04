@@ -28,7 +28,7 @@ const Category = () => {
 
   return (
     <main className="flex-grow-1 d-flex flex-column">
-      <section className="py-3 hero-wrap flex-grow-1">
+      <section className="py-5 hero-wrap flex-grow-1">
         <Container className="d-flex flex-column flex-grow-1">
           {/* Header */}
           <div className="d-flex justify-content-between align-items-center mb-4">

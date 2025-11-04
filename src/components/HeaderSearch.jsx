@@ -91,8 +91,8 @@ export default function HeaderSearch({ placeholder = "Search products…" }) {
             >
               <img
                 src={
-                  p.images ||
-                  p.image ||
+                  p.images[0] ||
+                  p.image[0] ||
                   "https://via.placeholder.com/40x40?text=🛒"
                 }
                 alt=""
