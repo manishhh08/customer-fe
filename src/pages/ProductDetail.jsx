@@ -116,13 +116,13 @@ const ProductDetail = () => {
           </Col>
 
           <Col md={6}>
-            <h2 className="mb-2">{product?.name}</h2>
+            <h2 className="mb-2">
+              {product?.name}
+              <div className="my-2" style={{ fontSize: "1rem" }}>
+                <ShowStars averageRating={product?.averageRating} />
+              </div>
+            </h2>
             <p className="mb-3">{product?.description}</p>
-
-            <div>
-              Average Rating:
-              <ShowStars averageRating={product?.averageRating} />
-            </div>
             <h3 className="my-3 ">$ {product?.price}</h3>
             <Button
               type="submit"
