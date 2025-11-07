@@ -71,9 +71,7 @@ const LoginForm = () => {
     "/dashboard";
 
   useEffect(() => {
-    if (customer?._id) {
-      navigate(redirectTo, { replace: true });
-    }
+    if (customer?._id) navigate(redirectTo, { replace: true });
   }, [customer?._id, redirectTo, navigate]);
 
   return (
