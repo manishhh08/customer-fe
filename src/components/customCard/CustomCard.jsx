@@ -16,7 +16,7 @@ const CustomCard = ({ product, tagLabel, tagClass }) => {
       >
         <div className="overflow-hidden">
           <img
-            src={product.images?.[0]}
+            src={product.images?.[0] || "/placeholder.jpg"}
             alt={product.name}
             className="img-fluid w-100 transition transform"
             style={{

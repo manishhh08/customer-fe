@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchCategoryProductsAction } from "../../features/category/categoryAction";
 import CustomCard from "../../components/customCard/CustomCard";
-
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../features/cart/cartSlice";
 import {
   Container,
   Row,
@@ -12,11 +13,14 @@ import {
   ToggleButtonGroup,
   ToggleButton,
 } from "react-bootstrap";
+import { BsCart } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const Category = () => {
   const { subCategory } = useParams();
   const [view, setView] = useState("grid");
   const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getProducts = async () => {
@@ -82,27 +86,44 @@ const Category = () => {
               {products.map((p) => (
                 <Card key={p._id} className="shadow-sm border-0">
                   <Card.Body className="d-flex align-items-center">
-                    <img
-                      src={p.images[0] || "/placeholder.jpg"}
-                      alt={p.name}
-                      style={{
-                        width: "100px",
-                        height: "100px",
-                        objectFit: "cover",
-                        marginRight: "20px",
-                        borderRadius: "10px",
-                      }}
-                    />
-                    <div className="flex-grow-1">
-                      <Card.Title>{p.name}</Card.Title>
-                      <Card.Text>${p.price}</Card.Text>
-                    </div>
-                    <Button
-                      size="lg"
-                      bsPrefix="neo"
-                      className="btn-neo rounded-4 px-4 d-inline-flex align-items-center gap-2"
+                    {/* Wrap image + name in a Link */}
+                    <Link
+                      to={`/product/${p.slug}`}
+                      className="d-flex align-items-center text-decoration-none text-dark flex-grow-1"
                     >
-                      Add to Cart
+                      <img
+                        src={p.images?.[0] || "/placeholder.jpg"}
+                        alt={p.name}
+                        style={{
+                          width: "100px",
+                          height: "100px",
+                          objectFit: "cover",
+                          marginRight: "20px",
+                          borderRadius: "10px",
+                          transition: "transform 0.3s ease",
+                        }}
+                        onMouseOver={(e) =>
+                          (e.currentTarget.style.transform = "scale(1.05)")
+                        }
+                        onMouseOut={(e) =>
+                          (e.currentTarget.style.transform = "scale(1)")
+                        }
+                      />
+                      <div>
+                        <Card.Title className="mb-1">{p.name}</Card.Title>
+                        <Card.Text className="text-muted mb-0">
+                          ${p.price.toFixed(2)}
+                        </Card.Text>
+                      </div>
+                    </Link>
+
+                    {/* Add to Cart Button */}
+                    <Button
+                      onClick={() => dispatch(addToCart(p))}
+                      bsPrefix="neo"
+                      className="btn-neo rounded-4 px-4 d-inline-flex align-items-center gap-2 ms-3"
+                    >
+                      <BsCart /> Add to Cart
                     </Button>
                   </Card.Body>
                 </Card>
