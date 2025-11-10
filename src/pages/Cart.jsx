@@ -37,11 +37,13 @@ const Cart = () => {
 
   if (cartItems.length === 0) {
     return (
-      <Container className="d-flex flex-column justify-content-center align-items-center vh-100 text-center">
-        <ShoppingCart size={64} className="text-secondary mb-3" />
-        <h2>Your cart is empty</h2>
-        <p className="text-muted">Add some items to get started!</p>
-      </Container>
+      <div className="hero-wrap text-light min-vh-100 d-flex flex-column">
+        <Container className="d-flex flex-column justify-content-center align-items-center vh-100 text-center">
+          <ShoppingCart size={64} className="text-secondary mb-3" />
+          <h2>Your cart is empty</h2>
+          <p>Add some items to get started!</p>
+        </Container>
+      </div>
     );
   }
 

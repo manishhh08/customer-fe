@@ -138,7 +138,10 @@ function SectionRecentOrders({ orders }) {
                 </td>
                 <td className="text-end">
                   <div className="d-flex justify-content-end gap-2">
-                    <Link to="/orders" className="btn-ghost neo rounded-4">
+                    <Link
+                      to={`/orders?orderId=${o._id}`}
+                      className="btn-ghost neo rounded-4"
+                    >
                       Details
                     </Link>
                   </div>
