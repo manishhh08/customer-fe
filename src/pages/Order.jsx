@@ -15,6 +15,7 @@ import { BsCartX } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 import ReviewForm from "../components/ReviewForm";
 import DashboardSidebar from "../components/DashboardSidebar";
+import DownloadReceiptButton from "../components/receipt/DownloadReceiptButton";
 
 const PAGE_SIZE = 10; // ✅ show 10 orders per page
 
@@ -149,7 +150,7 @@ const Order = () => {
       <Container className="px-4">
         <div className="mb-4">
           <h2 className="fw-bold m-0">Order History</h2>
-          <small>
+          <small className="text-white-50">
             Track recent orders, view details, and manage deliveries.
           </small>
         </div>
@@ -219,6 +220,7 @@ const Order = () => {
                     Method: {order.paymentMethod || "Card"} <br />
                     Total: <strong>${order.total?.toFixed(2)}</strong>
                   </p>
+                  <DownloadReceiptButton order={order} customer={customer} />
                 </Accordion.Body>
               </Accordion.Item>
             </Card>

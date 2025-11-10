@@ -105,7 +105,7 @@ export default function RecentPurchase() {
         {/* Header */}
         <div className="mb-4">
           <h2 className="fw-bold m-0">Recent purchases</h2>
-          <small>
+          <small className="text-white-50">
             Review your latest orders, track status, and download invoices.
           </small>
         </div>
