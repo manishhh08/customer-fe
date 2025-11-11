@@ -7,6 +7,7 @@ import {
   Alert,
   Button,
   Container,
+  Pagination, // ✅ added
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { retrieveAllOrder } from "../features/order/orderAPI";
@@ -14,21 +15,28 @@ import { BsCartX } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 import ReviewForm from "../components/ReviewForm";
 import DashboardSidebar from "../components/DashboardSidebar";
+import DownloadReceiptButton from "../components/receipt/DownloadReceiptButton";
+
+const PAGE_SIZE = 10; // ✅ show 10 orders per page
 
 const Order = () => {
   const { customer } = useSelector((store) => store.customerStore);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [activeKey, setActiveKey] = useState(null);
+  const [activeKey, setActiveKey] = useState(null); // now using orderId as key
   const [showModal, setShowModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+
+  // ✅ pagination
+  const [currentPage, setCurrentPage] = useState(1);
+
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const preSelectedOrderId = params.get("orderId");
 
   const toggleAccordion = (key) => {
-    setActiveKey(activeKey === key ? null : key);
+    setActiveKey((prev) => (prev === key ? null : key));
   };
 
   const getStatusVariant = (status) => {
@@ -44,6 +52,7 @@ const Order = () => {
         return "secondary";
     }
   };
+
   const handleReviewSuccess = (itemId, orderId) => {
     setOrders((prevOrders) =>
       prevOrders.map((order) =>
@@ -77,14 +86,29 @@ const Order = () => {
       }
     };
     fetchOrders();
-  }, [customer]);
+  }, [customer?._id]);
 
+  // ✅ When orders arrive and there's an orderId in query, open that order
+  // and jump to the page that contains it
   useEffect(() => {
     if (orders.length > 0 && preSelectedOrderId) {
       const idx = orders.findIndex((o) => o._id === preSelectedOrderId);
-      if (idx >= 0) setActiveKey(idx.toString());
+      if (idx >= 0) {
+        setActiveKey(preSelectedOrderId);
+        const page = Math.floor(idx / PAGE_SIZE) + 1;
+        setCurrentPage(page);
+      }
     }
   }, [orders, preSelectedOrderId]);
+
+  // ✅ keep currentPage valid if number of orders changes
+  const totalPages = Math.ceil(orders.length / PAGE_SIZE) || 1;
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [totalPages, currentPage]);
+
   if (loading)
     return (
       <div className="text-center mt-5">
@@ -111,6 +135,10 @@ const Order = () => {
       </div>
     );
 
+  // ✅ slice orders for current page
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  const paginatedOrders = orders.slice(startIndex, startIndex + PAGE_SIZE);
+
   return (
     <section
       className="py-5 text-white h-100 with-customer-sidebar"
@@ -122,20 +150,19 @@ const Order = () => {
       <Container className="px-4">
         <div className="mb-4">
           <h2 className="fw-bold m-0">Order History</h2>
-          <small>
+          <small className="text-white-50">
             Track recent orders, view details, and manage deliveries.
           </small>
         </div>
+
         <Accordion activeKey={activeKey}>
-          {orders.map((order, index) => (
+          {paginatedOrders.map((order) => (
             <Card key={order._id} className="mb-3 shadow-sm border-0">
-              <Accordion.Item eventKey={index.toString()}>
-                <Accordion.Header
-                  onClick={() => toggleAccordion(index.toString())}
-                >
+              <Accordion.Item eventKey={order._id}>
+                <Accordion.Header onClick={() => toggleAccordion(order._id)}>
                   <div className="d-flex justify-content-between w-100 align-items-center">
                     <div>
-                      <strong>Order #{order._id.slice(-6)}</strong> —
+                      <strong>Order #{order._id.slice(-6)}</strong> —{" "}
                       {new Date(order.createdAt).toLocaleDateString()}
                     </div>
                     <div className="d-flex align-items-center gap-2 me-2">
@@ -158,7 +185,8 @@ const Order = () => {
                         <div className="d-flex justify-content-between align-items-center p-2 border rounded">
                           {item.productName} × {item.quantity} — $
                           {item.price?.toFixed(2)}
-                          {order.status === "Delivered" && (
+                          {item.status?.toLowerCase() === "delivered" ||
+                          order.status?.toLowerCase() === "delivered" ? (
                             <Button
                               variant={
                                 item.isReviewed ? "secondary" : "primary"
@@ -178,23 +206,50 @@ const Order = () => {
                             >
                               {item.isReviewed ? "Already Reviewed" : "Review"}
                             </Button>
-                          )}
+                          ) : null}
                         </div>
                       </li>
                     ))}
                   </ul>
+
                   <h6>Shipping Address</h6>
                   <p className="mb-3">{order.address || "N/A"}</p>
+
                   <h5>Payment Details</h5>
                   <p>
-                    Method: {order.paymentMethod || "Card"} <br /> Total:
-                    <strong>${order.total?.toFixed(2)}</strong>
+                    Method: {order.paymentMethod || "Card"} <br />
+                    Total: <strong>${order.total?.toFixed(2)}</strong>
                   </p>
+                  <DownloadReceiptButton order={order} customer={customer} />
                 </Accordion.Body>
               </Accordion.Item>
             </Card>
           ))}
         </Accordion>
+
+        {/* ✅ Pagination controls */}
+        {totalPages > 1 && (
+          <Pagination className="justify-content-end mt-4">
+            <Pagination.Prev
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((p) => p - 1)}
+            />
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <Pagination.Item
+                key={page}
+                active={page === currentPage}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </Pagination.Item>
+            ))}
+            <Pagination.Next
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((p) => p + 1)}
+            />
+          </Pagination>
+        )}
+
         {selectedProduct && (
           <ReviewForm
             show={showModal}
