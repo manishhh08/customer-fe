@@ -83,7 +83,7 @@ const ProductDetail = () => {
           className="btn-ghost rounded-4 px-4 mb-5 d-flex align-items-center"
           onClick={() => navigate(-1)}
         >
-          <BsArrowLeft className="me-2" /> Back to Products
+          <BsArrowLeft className="me-2" /> Back
         </Button>
 
         <Row className="g-5 align-items-start">
