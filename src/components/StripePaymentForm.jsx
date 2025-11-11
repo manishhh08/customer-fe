@@ -71,6 +71,9 @@ const StripePaymentForm = ({ total, address, onPaymentSuccess }) => {
         }
         const orderObject = {
           customerId: customer._id,
+          customerName: `${customer.fname || ""} ${
+            customer.lname || ""
+          }`.trim(),
           address,
           items: cartItems.map((item) => ({
             productId: item._id,
